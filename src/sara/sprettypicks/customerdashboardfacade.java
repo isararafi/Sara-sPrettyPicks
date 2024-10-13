@@ -24,15 +24,19 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 /**
  *
  * @author sarar
  */
 public class customerdashboardfacade extends javax.swing.JFrame {
-surprisecheckout checkoutProcess=new surprisecheckout();
+
+    surprisecheckout checkoutProcess = new surprisecheckout();
 
     public customerdashboardfacade() {
+//        reviewcombobox ob = new reviewcombobox(listofproducts);
+        
+        // Populate the combo box when the dashboard is created
+//        ob.populateComboBox();
         initComponents(); // Initialize components in the dashboard
     }
 
@@ -441,8 +445,7 @@ surprisecheckout checkoutProcess=new surprisecheckout();
     private void checkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutActionPerformed
 
 //surprisecheckout checkoutProcess = new surprisecheckout(); // Create a new instance to ensure no previous values
-checkoutProcess.checkout(); // Call checkout
-
+        checkoutProcess.checkout(); // Call checkout
 
 
     }//GEN-LAST:event_checkoutActionPerformed
@@ -706,26 +709,29 @@ checkoutProcess.checkout(); // Call checkout
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // This would be in your event listener for the "Surprise Me" button
-Random rand = new Random();
-int discount = rand.nextInt(41) + 10; // Generates discount between 10% and 50%
-countdownclass obj = new countdownclass();
+        Random rand = new Random();
+        int discount = rand.nextInt(41) + 10; // Generates discount between 10% and 50%
+        countdownclass obj = new countdownclass();
 
 // Show the offer to the user
-JOptionPane.showMessageDialog(null, "Surprise! Get " + discount + "% off on your next purchase. Offer expires in 5 minutes!");
+        JOptionPane.showMessageDialog(null, "Surprise! Get " + discount + "% off on your next purchase. Offer expires in 5 minutes!");
 
 // Set the generated discount for the checkout process
 //surprisecheckout ob=new surprisecheckout();
-checkoutProcess.setSurpriseDiscount(discount); // Set the discount for the checkout
+        checkoutProcess.setSurpriseDiscount(discount); // Set the discount for the checkout
 
 // Start the countdown timer if applicable
-obj.startCountdown(discount);
+        obj.startCountdown(discount);
 
-        
 
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void reviewsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewsActionPerformed
+        
         // TODO add your handling code here:
+
+        reviews ob = new reviews();
+        ob.setVisible(true);
     }//GEN-LAST:event_reviewsActionPerformed
 
     /**
