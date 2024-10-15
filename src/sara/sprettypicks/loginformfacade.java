@@ -227,9 +227,23 @@ public class loginformfacade extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Please select a category (Customer or Admin).", "Selection Required", JOptionPane.WARNING_MESSAGE);
         return; // Exit the method if no category is selected
     }
+    // Inside your login frame's signup button action
+
+    String role;
+    
+    // Check which radio button is selected
+    if (adminradio.isSelected()) {
+        role = "admin";
+    } else {
+        role = "customer";
+    }
+
+    // Pass the role to the signup frame
+    
+
 
     // Proceed to open the signup form if a category is selected
-    Signupformfacade signup = new Signupformfacade();
+    Signupformfacade signup = new Signupformfacade(role);
     signup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set to dispose only BrowseProducts frame
     signup.setVisible(true);
 
@@ -269,6 +283,9 @@ if (customerradio.isSelected()) {
         
         // Set the logged-in admin's email in the session
         SessionManager.setLoggedInUserEmail(email);
+        Admindashboard admin = new Admindashboard();
+        admin.setVisible(true);
+        this.dispose(); // Close the current login frame
 
         // Navigate to the admin dashboard (add your admin dashboard navigation here)
         // adminDashboard admin = new adminDashboard();

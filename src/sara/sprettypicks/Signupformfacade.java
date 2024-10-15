@@ -12,10 +12,11 @@ import javax.swing.JOptionPane;
  */
 public class Signupformfacade extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Signupformfacade
-     */
-    public Signupformfacade() {
+    private String role; // Variable to store the role (admin/customer)
+
+    // Constructor to accept role
+    public Signupformfacade(String role) {
+        this.role = role; // Store the passed role (admin/customer)
         initComponents();
     }
 
@@ -150,84 +151,99 @@ public class Signupformfacade extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
-       
-    // Clear previous messages
-    usernamelabel.setText("");
-    emaillabel.setText("");
-    passwordlabel.setText("");
-    confirmpasswordlabel.setText("");
+ // Clear previous messages
+        usernamelabel.setText("");
+        emaillabel.setText("");
+        passwordlabel.setText("");
+        confirmpasswordlabel.setText("");
 
-    // Retrieve input values
-    String username = usernametext.getText().trim();
-    String email = emailtext.getText().trim();
-    String password = new String(passwordtext.getPassword());
-    String confirmPassword = new String(confirmpasswordtext.getPassword());
+        // Retrieve input values
+        String username = usernametext.getText().trim();
+        String email = emailtext.getText().trim();
+        String password = new String(passwordtext.getPassword());
+        String confirmPassword = new String(confirmpasswordtext.getPassword());
 
-    // Validation flags
-    boolean validUsername = false;
-    boolean validEmail = false;
-    boolean validPassword = false;
-    boolean validConfirmPassword = false;
+        // Validation flags
+        boolean validUsername = false;
+        boolean validEmail = false;
+        boolean validPassword = false;
+        boolean validConfirmPassword = false;
 
-    // Username validation
-    if (username.length() < 3 || username.length() > 255) {
-        usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
-    } else {
-         usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validUsername = true;
-    }
-
-    // Email validation (simple regex for format)
-    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    if (!email.matches(emailRegex)) {
-        emaillabel.setText("<html><b style='color:red;'>Incorrect format. *</b></html>");
-    } else {
-       emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validEmail = true;
-    }
-
-    // Password validation
-    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z]).{8,}$"; // 8 char, 1 lowercase, 1 uppercase
-if (!password.matches(passwordRegex)) {
-    passwordlabel.setText("<html><b style='color:red;'>Password must be 8 characters long, 1 lowercase, 1 uppercase, no special character. *</b></html>");
-} else {
-    passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-    validPassword = true;
-}
-
-    // Confirm password validation
-      if (!password.equals(confirmPassword)) {
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. Please enter again. *</b></html>");
-    validConfirmPassword = false; // Ensure this flag is false if passwords don't match
-} else {
-    // Set "Correct!" only if the password is valid
-    if (validPassword) {
-        confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validConfirmPassword = true; // Set this flag true if passwords match
-    }
-}
-
-    // Check if all fields are valid
-    if (validUsername && validEmail && validPassword && validConfirmPassword) {
-        // If all validations pass, insert into the database
-        boolean signupSuccess = Database.signupCustomer(username,email, password); // Assuming this method exists in your Database class
-        if (signupSuccess) {
-            JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-             // Clear previous fields after successful signup
-            usernametext.setText("");
-            emailtext.setText("");
-            passwordtext.setText("");
-            confirmpasswordtext.setText("");
-
-            // Switch to the login frame
-            // Assuming loginFrame is the instance of your login frame
-            loginformfacade loginFrame=new loginformfacade();
-            loginFrame.setVisible(true); // Show the login frame
-            this.dispose(); // Close the signup frame
+        // Username validation
+        if (username.length() < 3 || username.length() > 255) {
+            usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
         } else {
-            JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+            validUsername = true;
         }
+
+        // Email validation (simple regex for format)
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        if (!email.matches(emailRegex)) {
+            emaillabel.setText("<html><b style='color:red;'>Incorrect format. *</b></html>");
+        } else {
+            emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+            validEmail = true;
+        }
+
+        // Password validation
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z]).{8,}$"; // 8 char, 1 lowercase, 1 uppercase
+        if (!password.matches(passwordRegex)) {
+            passwordlabel.setText("<html><b style='color:red;'>Password must be 8 characters long, 1 lowercase, 1 uppercase, no special character. *</b></html>");
+        } else {
+            passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+            validPassword = true;
+        }
+
+        // Confirm password validation
+        if (!password.equals(confirmPassword)) {
+            confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. Please enter again. *</b></html>");
+            validConfirmPassword = false;
+        } else {
+            if (validPassword) {
+                confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+                validConfirmPassword = true;
+            }
+        }
+
+     // Check if all fields are valid
+if (validUsername && validEmail && validPassword && validConfirmPassword) {
+//    // Determine the role based on the selected radio button
+//    if (admin.isSelected()) {
+//        role = "admin"; // Admin role
+//    } else {
+//        role = "customer"; // Customer role
+//    }
+    
+    Database db = new Database();
+    boolean signupSuccess;
+
+    // Insert into the database based on role
+    if (role.equals("admin")) {
+        signupSuccess = db.signupAdmin( email,password,username); // Call the admin signup method
+    } else {
+        signupSuccess = db.signupCustomer(username, email, password); // Call the customer signup method
     }
+
+    if (signupSuccess) {
+        JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        // Clear previous fields after successful signup
+        usernametext.setText("");
+        emailtext.setText("");
+        passwordtext.setText("");
+        confirmpasswordtext.setText("");
+
+        // Switch to the login frame
+        loginformfacade loginFrame = new loginformfacade();
+        loginFrame.setVisible(true); // Show the login frame
+        this.dispose(); // Close the signup frame
+    } else {
+        JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    
 
     }//GEN-LAST:event_signupActionPerformed
 
@@ -260,10 +276,13 @@ if (!password.matches(passwordRegex)) {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
-                new Signupformfacade().setVisible(true);
+                String role = "admin"; // or "admin", depending on your logic
+                new Signupformfacade(role).setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

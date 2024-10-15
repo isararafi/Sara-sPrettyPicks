@@ -103,20 +103,26 @@ public class Database {
 
 
     // Method for admin signup
-    public static boolean signupAdmin(String email, String password) {
-        String query = "INSERT INTO admin (email, password) VALUES (?, ?)";
+    public static boolean signupAdmin(String email, String password,String name) {
+         String query = "INSERT INTO admin (email, password,admin_name) VALUES (?, ?,?)"; // Updated SQL query for inserting customer
 
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, email);
-            stmt.setString(2, password); // Ideally hash the password before storing
+    // Try-with-resources to automatically close resources
+    try (Connection conn = connect();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Returns true if a row was inserted
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception
-            return false;
-        }
+        // Set the query parameters
+        // Set the username
+        stmt.setString(1, email);     // Set the email
+        stmt.setString(2, password); 
+         stmt.setString(3, name);// Ideally, hash the password before storing it
+
+        // Execute the update
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0; // Returns true if a record was inserted
+    } catch (SQLException e) {
+        e.printStackTrace(); // Log the exception
+        return false;
+    }
     }
 
   public void addItemToCart(String userEmail, int productId, int quantity, double price) {
