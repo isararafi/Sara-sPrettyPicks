@@ -20,6 +20,7 @@ public class Addproducts extends javax.swing.JFrame {
      */
     public Addproducts() {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -194,7 +195,7 @@ try {
 Connection con = null;
 PreparedStatement stmt = null;
 
-Database db = new Database();
+ Database db = Database.getInstance();
 
 try {
     // Get connection from the Database class

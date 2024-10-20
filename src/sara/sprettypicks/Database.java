@@ -17,30 +17,50 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-import java.sql.*;
+
 import java.util.ArrayList;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
+
 
 
 public class Database {
-
+//static Database db = new Database();
+    // Database connection details
+    // Private static instance
+    private static Database db;
+    
     // Database connection details
     private static final String DB_URL = "jdbc:mysql://localhost:3306/onlineshopping"; // Replace with your DB URL
     private static final String DB_USER = "root"; // Replace with your DB username
     private static final String DB_PASSWORD = "56528"; // Replace with your DB password
 
+    // Private constructor to prevent instantiation
+    private Database() {
+        // Optionally initialize connection-related setup here
+    }
+
+    // Static method to get the single instance of the class
+    public static Database getInstance() {
+        if (db == null) {
+            synchronized (Database.class) { // Thread safety in case of multi-threaded access
+                if (db == null) {
+                    db = new Database();
+                }
+            }
+        }
+        return db;
+    }
+
     // Method to connect to the database
-    public static Connection connect() throws SQLException {
+    public Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 
     // Method to check customer login
-    public static boolean checkCustomerLogin(String email, String password) {
+    public  boolean checkCustomerLogin(String email, String password) {
         String query = "SELECT * FROM customers WHERE email = ? AND password = ?"; // SQL query
 
         // Try-with-resources to automatically close resources
-        try (Connection conn = connect();
+        try (Connection conn = this.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the query parameters
@@ -58,11 +78,11 @@ public class Database {
     }
 
     // Method to check admin login
-    public static boolean checkAdminLogin(String email, String password) {
+    public  boolean checkAdminLogin(String email, String password) {
         String query = "SELECT * FROM admin WHERE email = ? AND password = ?"; // SQL query for admin
 
         // Try-with-resources to automatically close resources
-        try (Connection conn = connect();
+        try (Connection conn = this.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the query parameters
@@ -80,11 +100,11 @@ public class Database {
     }
 
     // Method for customer signup
-    public static boolean signupCustomer(String username, String email, String password) {
+    public  boolean signupCustomer(String username, String email, String password) {
     String query = "INSERT INTO customers (first_name, email, password) VALUES (?, ?, ?)"; // Updated SQL query for inserting customer
 
     // Try-with-resources to automatically close resources
-    try (Connection conn = connect();
+    try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
@@ -103,11 +123,11 @@ public class Database {
 
 
     // Method for admin signup
-    public static boolean signupAdmin(String email, String password,String name) {
+    public  boolean signupAdmin(String email, String password,String name) {
          String query = "INSERT INTO admin (email, password,admin_name) VALUES (?, ?,?)"; // Updated SQL query for inserting customer
 
     // Try-with-resources to automatically close resources
-    try (Connection conn = connect();
+    try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
@@ -271,7 +291,7 @@ public void clearCart(String email) {
 
     try {
         // Get a connection to the database
-       conn = Database.connect();
+       conn = Database.this.connect();
 
         // SQL query to clear all items from the cart for the logged-in user
         String sql = "DELETE FROM cart WHERE email = ?";
@@ -466,12 +486,12 @@ public boolean createWishlist(String userEmail, String wishlistName) {
     }
 }
 
- public static boolean addProductToWishlist(String userEmail, String wishlistName, String productName) {
+ public  boolean addProductToWishlist(String userEmail, String wishlistName, String productName) {
         String productIdQuery = "SELECT product_id FROM products WHERE name = ?";
         String productInsertQuery = "INSERT INTO wishlist_items (wishlist_id, product_id) " +
                                      "VALUES ((SELECT id FROM wishlists WHERE user_email = ? AND wishlist_name = ?), ?)";
 
-        try (Connection conn = connect()) {
+        try (Connection conn = this.connect()) {
             // Get the product ID based on the selected product name
             int productId = 0;
             try (PreparedStatement productIdStmt = conn.prepareStatement(productIdQuery)) {
@@ -499,11 +519,11 @@ public boolean createWishlist(String userEmail, String wishlistName) {
         }
  }
  
-  public static List<String> getAllProducts() {
+  public  List<String> getAllProducts() {
         List<String> productList = new ArrayList<>();
         String productQuery = "SELECT name FROM products"; // Adjust based on your products table
 
-        try (Connection conn = connect();
+        try (Connection conn = this.connect();
              PreparedStatement productStmt = conn.prepareStatement(productQuery);
              ResultSet rs = productStmt.executeQuery()) {
              
@@ -578,7 +598,7 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
     boolean isDeleted = false;
 
     // Prepare statement and set parameters
-    try (PreparedStatement pstmt = connect().prepareStatement(query)) {
+    try (PreparedStatement pstmt = this.connect().prepareStatement(query)) {
         pstmt.setString(1, userEmail);      // Set user email
         pstmt.setString(2, wishlistName);    // Set wishlist name
         pstmt.setString(3, productName);     // Set product name

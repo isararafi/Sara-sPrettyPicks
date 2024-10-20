@@ -152,6 +152,7 @@ public class Signupformfacade extends javax.swing.JFrame {
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
  // Clear previous messages
+  Database db = Database.getInstance();
         usernamelabel.setText("");
         emaillabel.setText("");
         passwordlabel.setText("");
@@ -215,7 +216,7 @@ if (validUsername && validEmail && validPassword && validConfirmPassword) {
 //        role = "customer"; // Customer role
 //    }
     
-    Database db = new Database();
+   
     boolean signupSuccess;
 
     // Insert into the database based on role

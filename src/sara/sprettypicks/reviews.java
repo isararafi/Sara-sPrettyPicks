@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 
 public class reviews extends javax.swing.JFrame {
-
+ Database db = Database.getInstance();
     public reviews() {
         initComponents();
 
@@ -174,7 +174,7 @@ public class reviews extends javax.swing.JFrame {
 public void submitReview(Reviewclass review) {
     // SQL query to insert the review into the database
     String query = "INSERT INTO reviews (product_id, customer_email, review_text) VALUES (?, ?, ?)";
-    Database db = new Database(); // Assuming you have a Database class that manages connections
+    
 
     try (PreparedStatement pstmt = db.connect().prepareStatement(query)) {
         pstmt.setInt(1, review.getProductId()); // Set product ID as int

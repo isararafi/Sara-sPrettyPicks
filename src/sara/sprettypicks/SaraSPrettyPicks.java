@@ -9,7 +9,9 @@ package sara.sprettypicks;
  * @author sarar
  */
 public class SaraSPrettyPicks {
-//admin left 
+//admin 1,2,3 button done(not pushed on github)
+    //applied singlwton and facade
+    
         /**
      * @param args the command line arguments
      */

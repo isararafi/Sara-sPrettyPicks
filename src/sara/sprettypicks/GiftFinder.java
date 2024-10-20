@@ -18,7 +18,7 @@ import java.util.List;
 public class GiftFinder {
 
     // Method to fetch gift options from the database
-    Database db=new Database();
+     Database db = Database.getInstance();
     public List<Product> fetchGiftOptionsFromDatabase(String recipientType, String gender, String ageGroup) {
     List<Product> gifts = new ArrayList<>();
 

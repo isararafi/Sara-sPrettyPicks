@@ -24,7 +24,7 @@ public class ComboBoxRetriveProduct {
         String query = "SELECT product_id FROM products WHERE name = ?";
 
         // Create an instance of your Database class to connect to the database
-        Database db = new Database();
+         Database db = Database.getInstance();
         try (Connection conn = db.connect(); 
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -53,7 +53,7 @@ public class ComboBoxRetriveProduct {
     
     public void populateProductComboBox(JComboBox<String> productComboBox) {
         // SQL query to get all product names from the 'products' table
-        Database db=new Database();
+        Database db = Database.getInstance();
         String query = "SELECT name FROM products";
 
         try (Connection conn = db.connect();

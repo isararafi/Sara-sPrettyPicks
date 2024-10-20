@@ -6,8 +6,7 @@ package sara.sprettypicks;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import static sara.sprettypicks.Database.signupAdmin;
-import static sara.sprettypicks.Database.signupCustomer;
+
 
 /**
  *
@@ -59,6 +58,7 @@ public class loginformfacade extends javax.swing.JFrame {
         jLabel4.setText("Email");
 
         emailfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        emailfield.setCaretColor(new java.awt.Color(102, 102, 255));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Password");
@@ -96,6 +96,7 @@ public class loginformfacade extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
         jLabel6.setText("dont have Account?");
 
+        signupbutton.setBackground(new java.awt.Color(255, 204, 51));
         signupbutton.setText("Sign up");
         signupbutton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         signupbutton.addActionListener(new java.awt.event.ActionListener() {
@@ -112,6 +113,7 @@ public class loginformfacade extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(102, 102, 102));
         jLabel8.setText("Forgot Password?");
 
+        resetpassword.setBackground(new java.awt.Color(153, 255, 153));
         resetpassword.setText("Reset Password");
         resetpassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,10 +261,10 @@ if (email.isEmpty() || password.isEmpty()) {
     JOptionPane.showMessageDialog(null, "Please enter both email and password.");
     return;
 }
-
+ Database db = Database.getInstance();
 // Check which radio button is selected
 if (customerradio.isSelected()) {
-    boolean isLoginSuccessful = Database.checkCustomerLogin(email, password);
+    boolean isLoginSuccessful = db.checkCustomerLogin(email, password);
     if (isLoginSuccessful) {
         JOptionPane.showMessageDialog(null, "Successful login");
         
@@ -270,14 +272,14 @@ if (customerradio.isSelected()) {
         SessionManager.setLoggedInUserEmail(email);
 
         // Navigate to the customer dashboard
-        customerdashboardfacade customer = new customerdashboardfacade();
+        customerdashboardfacade customer = new customerdashboardfacade(email);
         customer.setVisible(true);
         this.dispose(); // Close the current login frame
     } else {
         JOptionPane.showMessageDialog(null, "Email not found. Please sign up first.");
     }
 } else if (adminradio.isSelected()) {
-    boolean isLoginSuccessful = Database.checkAdminLogin(email, password);
+    boolean isLoginSuccessful = db.checkAdminLogin(email, password);
     if (isLoginSuccessful) {
         JOptionPane.showMessageDialog(null, "Successful login");
         
@@ -302,7 +304,7 @@ if (customerradio.isSelected()) {
 
     private void resetpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetpasswordActionPerformed
         // Get the user’s email or username (assuming you have a JTextField for this)
-Database db = new Database();
+ Database db = Database.getInstance();
 String email = JOptionPane.showInputDialog("Enter your email:");
 
 // If the user cancels or doesn't provide an input, return early

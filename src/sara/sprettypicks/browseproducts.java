@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class browseproducts extends javax.swing.JFrame {
 
-   
+    Database db = Database.getInstance();
     int currentQuantityProduct1 = 0;
     int currentQuantityProduct2 = 0; 
     int currentQuantityProduct3 = 0;  // For Product 1
@@ -926,7 +926,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 12;  // Example Product ID for Product 1
         double price = 14.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+         
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -947,7 +947,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 11;  // Example Product ID for Product 1
         double price = 10.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+            
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -968,7 +968,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 9;  // Example Product ID for Product 1
         double price = 9.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+          
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -989,7 +989,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 10;  // Example Product ID for Product 1
         double price = 21.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+           
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1011,7 +1011,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 7;  // Example Product ID for Product 1
         double price = 40.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+         
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1032,7 +1032,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 8;  // Example Product ID for Product 1
         double price = 15.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+          
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1054,7 +1054,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 5;  // Example Product ID for Product 1
         double price = 40.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+            //Database db = new Database();
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1075,7 +1075,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 4;  // Example Product ID for Product 1
         double price = 30.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+            //Database db = new Database();
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1096,7 +1096,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 6;  // Example Product ID for Product 1
         double price = 11.00;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+            //Database db = new Database();
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1121,7 +1121,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 1;  // Example Product ID for Product 1
         double price = 21.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+            //Database db = new Database();
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {
@@ -1143,7 +1143,7 @@ public class browseproducts extends javax.swing.JFrame {
         int prodId = 2;  // Example Product ID for Product 1
         double price = 20.99;  // Example price for Product 1
         if (userEmail != null && !userEmail.isEmpty()) {
-            Database db = new Database();
+            //Database db = new Database();
             db.addItemToCart(userEmail, prodId, quantityToAdd, price);
             JOptionPane.showMessageDialog(this, "Product added to cart successfully! Quantity: " + quantityToAdd);
         } else {

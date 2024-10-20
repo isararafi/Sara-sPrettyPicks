@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -24,6 +26,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+
 /**
  *
  * @author sarar
@@ -32,12 +36,22 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     surprisecheckout checkoutProcess = new surprisecheckout();
 
-    public customerdashboardfacade() {
-//        reviewcombobox ob = new reviewcombobox(listofproducts);
-        
-        // Populate the combo box when the dashboard is created
-//        ob.populateComboBox();
-        initComponents(); // Initialize components in the dashboard
+    private String userEmail; // Store the user's email
+    private int orderId; // Store the order ID
+    private orders obj; // Create an instance of the Orders class
+
+    public customerdashboardfacade(String userEmail) {
+        this.userEmail = userEmail; // Set the user's email
+        this.obj = new orders(); // Instantiate the Orders class
+
+        // Retrieve the order ID based on the user's email
+        this.orderId = obj.getOrderIdByEmail(userEmail);
+
+        // Debugging output
+        System.out.println("Order ID for user " + userEmail + ": " + orderId);
+
+        // Initialize components in the dashboard
+        initComponents();
     }
 
     /**
@@ -66,10 +80,12 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         reviews = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
+        jButton2 = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -182,6 +198,14 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(255, 153, 255));
+        jButton4.setText("cancel order");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -195,7 +219,6 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                         .addGap(55, 55, 55)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(checkout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(faqs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(viewcart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(browseproducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -205,10 +228,12 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(reviews, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(reviews, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(checkout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -222,9 +247,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addComponent(viewcart)
                 .addGap(18, 18, 18)
                 .addComponent(faqs)
-                .addGap(26, 26, 26)
+                .addGap(32, 32, 32)
                 .addComponent(checkout)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton10)
                 .addGap(18, 18, 18)
                 .addComponent(jButton8)
@@ -234,7 +259,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addComponent(jButton6)
                 .addGap(28, 28, 28)
                 .addComponent(reviews)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jButton4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -242,6 +269,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1056, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,8 +283,11 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton7)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(546, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(52, 52, 52))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 255));
@@ -297,16 +328,21 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
         jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        jButton2.setText("jButton2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1056, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1056, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -321,7 +357,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(42, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -348,7 +386,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_faqsActionPerformed
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
-        Database db = new Database();
+        Database db = Database.getInstance();
         String userEmail = SessionManager.getLoggedInUserEmail(); // Get logged-in user's email
 
 // Fetch the cart items for the logged-in user
@@ -451,7 +489,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_checkoutActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        Database db = new Database();
+        Database db = Database.getInstance();
         String wishlistName = JOptionPane.showInputDialog(this, "Enter the name for your wishlist:");
 
 // Validate wishlist name
@@ -514,7 +552,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
 
-        Database db = new Database();
+        Database db = Database.getInstance();
         String userEmail = SessionManager.getLoggedInUserEmail(); // Get the logged-in user's email
 
         // Step 1: Fetch the wishlists for the user
@@ -727,12 +765,54 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void reviewsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewsActionPerformed
-        
-        // TODO add your handling code here:
 
+        // TODO add your handling code here:
         reviews ob = new reviews();
         ob.setVisible(true);
     }//GEN-LAST:event_reviewsActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       orders ob = new orders();
+int orderId = this.orderId; // Make sure this is assigned correctly
+String orderStatus = ob.getOrderStatus(orderId); // Fetch the status of the order
+
+// Check if orderStatus is null
+if (orderStatus == null) {
+    JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
+    return; // Exit if order status is not found
+}
+
+// Step 1: Check if the order can be canceled
+if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
+    JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
+    return;
+}
+
+// Step 2: Confirm cancellation action
+int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
+if (confirmCancel != JOptionPane.YES_OPTION) {
+    return; // User chose not to cancel the order
+}
+
+// Step 3: Update the order status to "Cancelled"
+boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
+if (isCancelled) {
+    JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
+
+    // Step 4: Optionally process refund if applicable
+    boolean refundSuccess = ob.processRefund(orderId);
+    if (refundSuccess) {
+        System.out.println("Refund processed successfully.");
+        JOptionPane.showMessageDialog(null, "Refund processed successfully.");
+    } else {
+        System.out.println("Refund failed or not applicable.");
+        JOptionPane.showMessageDialog(null, "Refund processing failed.");
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "Failed to cancel the order. Please try again.");
+}
+
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -783,6 +863,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     private javax.swing.JButton faqs;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
