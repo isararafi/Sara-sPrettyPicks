@@ -56,47 +56,48 @@ public class Database {
     }
 
     // Method to check customer login
-    public  boolean checkCustomerLogin(String email, String password) {
-        String query = "SELECT * FROM customers WHERE email = ? AND password = ?"; // SQL query
+    public boolean checkCustomerLogin(String name, String password) {
+    String query = "SELECT * FROM customers WHERE first_name = ? AND password = ?"; // SQL query
 
-        // Try-with-resources to automatically close resources
-        try (Connection conn = this.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+    // Try-with-resources to automatically close resources
+    try (Connection conn = this.connect();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Set the query parameters
-            stmt.setString(1, email);
-            stmt.setString(2, password); // Use hashed password in production
+        // Set the query parameters
+        stmt.setString(1, name); // Use name instead of email
+        stmt.setString(2, password); // Use hashed password in production
 
-            // Execute the query and process the result set
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // Returns true if a record is found
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception
-            return false;
+        // Execute the query and process the result set
+        try (ResultSet rs = stmt.executeQuery()) {
+            return rs.next(); // Returns true if a record is found
         }
+    } catch (SQLException e) {
+        e.printStackTrace(); // Log the exception
+        return false;
     }
+}
+
 
     // Method to check admin login
-    public  boolean checkAdminLogin(String email, String password) {
-        String query = "SELECT * FROM admin WHERE email = ? AND password = ?"; // SQL query for admin
+    public  boolean checkAdminLogin(String name, String password) {
+        String query = "SELECT * FROM admin WHERE admin_name = ? AND password = ?"; // SQL query
 
-        // Try-with-resources to automatically close resources
-        try (Connection conn = this.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+    // Try-with-resources to automatically close resources
+    try (Connection conn = this.connect();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Set the query parameters
-            stmt.setString(1, email);
-            stmt.setString(2, password); // Use hashed password in production
+        // Set the query parameters
+        stmt.setString(1, name); // Use name instead of email
+        stmt.setString(2, password); // Use hashed password in production
 
-            // Execute the query and process the result set
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // Returns true if a record is found
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Log the exception
-            return false;
+        // Execute the query and process the result set
+        try (ResultSet rs = stmt.executeQuery()) {
+            return rs.next(); // Returns true if a record is found
         }
+    } catch (SQLException e) {
+        e.printStackTrace(); // Log the exception
+        return false;
+    }
     }
 
     // Method for customer signup
@@ -696,5 +697,20 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
     public String getDescription() { return description; }
     public double getPrice() { return price; }
 }
+ 
+ public boolean checkEmailExists(String email) {
+    String query = "SELECT * FROM customers WHERE email = ?";
+    try (Connection conn = this.connect();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, email);
+        try (ResultSet rs = stmt.executeQuery()) {
+            return rs.next(); // Returns true if an email record is found
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
 }
