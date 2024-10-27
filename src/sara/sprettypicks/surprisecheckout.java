@@ -31,11 +31,11 @@ public class surprisecheckout {
 
     // Method to handle the checkout process
    public void checkout() {
-    String userEmail = SessionManager.getLoggedInUserEmail();  // Method to get current logged-in user's email
+    String email = SessionManager.getLoggedInUserEmail(); // Method to get current logged-in user's email
 
     try {
         // Fetch all items in the user's cart from the database
-        List<CartItem> cartItems = db.getCartItemsByEmail(userEmail);
+        List<CartItem> cartItems = db.getCartItemsByuseremail(email);
 
         if (cartItems == null || cartItems.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -80,13 +80,13 @@ public class surprisecheckout {
 
             // Step 2: Insert Order into the orders table, including the shipping address
             orders ob = new orders();
-            int orderId = ob.storeOrderInDatabase(userEmail, totalBill, shippingAddress); // Modify this method to accept shipping address
+            int orderId = ob.storeOrderInDatabase(email, totalBill, shippingAddress); // Modify this method to accept shipping address
 
             // Step 3: Store cart items in the order_items table
             ob.storeOrderItemsInDatabase(orderId, cartItems);
 
             // Step 4: Handle payment without discount
-            handlePayment(totalBill, db, userEmail);
+            handlePayment(totalBill, db, email);
         }
 
     } catch (HeadlessException | SQLException e) {

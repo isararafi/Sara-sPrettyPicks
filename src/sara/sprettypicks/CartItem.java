@@ -4,6 +4,12 @@
  */
 package sara.sprettypicks;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.*;                // Import JDBC classes for database connection
+import java.util.ArrayList;      // Import for ArrayList
+import java.util.List; 
 /**
  *
  * @author sarar
@@ -38,5 +44,5 @@ public class CartItem {
     public int getQuantity() {
         return quantity; // Getter for quantity
     }
-     
+    
 }

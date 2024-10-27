@@ -146,12 +146,16 @@ public class Database {
     }
     }
 
-  public void addItemToCart(String userEmail, int productId, int quantity, double price) {
+  public void addItemToCart(String useremail, int productId, int quantity, double price) {
     try {
         // Check if the product already exists in the cart
-        String query = "SELECT quantity FROM cart WHERE email = ? AND product_id = ?";
+        String query = "SELECT c.first_name, cart.quantity " +
+               "FROM cart " +
+               "JOIN customers c ON cart.user_email = c.email " + // Ensure 'c.email' matches the actual column name in 'customers'
+               "WHERE cart.user_email = ? AND cart.product_id = ?";
+
         PreparedStatement stmt = connect().prepareStatement(query);
-        stmt.setString(1, userEmail);
+        stmt.setString(1, useremail);
         stmt.setInt(2, productId);
 
         ResultSet rs = stmt.executeQuery();
@@ -163,17 +167,20 @@ public class Database {
             System.out.println("Existing quantity in cart: " + existingQuantity);
 
             // Update the quantity based on what is passed (no additional changes)
-            String updateQuery = "UPDATE cart SET quantity = ? WHERE email = ? AND product_id = ?";
+           String updateQuery = "UPDATE cart SET quantity = ? " +
+                     "WHERE user_email = (SELECT email FROM customers WHERE first_name = ?) " +
+                     "AND product_id = ?";
+
             PreparedStatement updateStmt = connect().prepareStatement(updateQuery);
             updateStmt.setInt(1, quantity);  // Set the exact quantity, no addition
-            updateStmt.setString(2, userEmail);
+            updateStmt.setString(2, useremail);
             updateStmt.setInt(3, productId);
             updateStmt.executeUpdate();
         } else {
             // Insert the new product into the cart
-            String insertQuery = "INSERT INTO cart (email, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO cart (user_email, product_id, quantity, price) VALUES (?, ?, ?, ?)";
             PreparedStatement insertStmt = connect().prepareStatement(insertQuery);
-            insertStmt.setString(1, userEmail);
+            insertStmt.setString(1, useremail);
             insertStmt.setInt(2, productId);
             insertStmt.setInt(3, quantity);  // Insert the exact quantity
             insertStmt.setDouble(4, price);
@@ -186,7 +193,7 @@ public class Database {
 
 
 
-    public List<CartItem> getCartItemsByEmail(String email) {
+    public List<CartItem> getCartItemsByname(String email) {
     List<CartItem> cartItems = new ArrayList<>();
     Connection conn = null;
     PreparedStatement pstmt = null;
@@ -197,10 +204,13 @@ public class Database {
         conn = connect(); // Ensure you have the right connection method
 
         // SQL query to get cart items for the specific user, joining with products table
-        String sql = "SELECT c.product_id, p.name, c.quantity, p.price " +
-                     "FROM cart c " +
-                     "JOIN products p ON c.product_id = p.product_id " +
-                     "WHERE c.email = ?";
+       String sql = "SELECT c.product_id, p.name, c.quantity, p.price " +
+             "FROM cart c " +
+             "JOIN products p ON c.product_id = p.product_id " +
+             "JOIN customers cust ON c.user_email = cust.email " + // Join with customers table using email
+             "WHERE c.user_email = ?"; // Filter by user_email
+
+
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, email);
         rs = pstmt.executeQuery();
@@ -230,20 +240,31 @@ public class Database {
 
     return cartItems;
 }
+ public String getEmailByUsername(String username) throws SQLException {
+    String email = null; // Initialize the email variable
+    String query = "SELECT email FROM customers WHERE first_name = ?"; // SQL query
 
+    // Ensure the connection is established
+    try (Connection connection = db.connect(); // Use db.connect() directly
+         PreparedStatement statement = connection.prepareStatement(query)) {
 
-    public String getLoggedInUserEmail() {
-    // Retrieve the logged-in user's email from the session manager
-    String userEmail = SessionManager.getLoggedInUserEmail();
+        statement.setString(1, username); // Set the username parameter
+        ResultSet resultSet = statement.executeQuery(); // Execute the query
 
-    // Check if a user is logged in
-    if (userEmail == null) {
-        // Handle the case where no user is logged in (return null or a default value)
-        return "No user is logged in."; // Or handle it as needed
+        // Check if a result was returned
+        if (resultSet.next()) {
+            email = resultSet.getString("email"); // Get the email from the result set
+        }
+    } catch (SQLException e) {
+        // Print detailed error message
+        System.err.println("SQL Exception: " + e.getMessage());
+        throw e; // Propagate the exception to the caller
     }
 
-    return userEmail;
+    return email; // Return the email or null if not found
 }
+
+ 
 // Remove a specific item from the cart
 public void removeItemFromCart(String email, int productId) {
     Connection conn = null;
@@ -251,7 +272,7 @@ public void removeItemFromCart(String email, int productId) {
 
     try {
         conn = connect(); // Ensure you're using the correct connection method
-        String sql = "DELETE FROM cart WHERE email = ? AND product_id = ?"; // Adjust SQL query accordingly
+        String sql = "DELETE FROM cart WHERE user_email = ? AND product_id = ?"; // Adjust SQL query accordingly
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, email);
         pstmt.setInt(2, productId);
@@ -295,7 +316,7 @@ public void clearCart(String email) {
        conn = Database.this.connect();
 
         // SQL query to clear all items from the cart for the logged-in user
-        String sql = "DELETE FROM cart WHERE email = ?";
+        String sql = "DELETE FROM cart WHERE user_email = ?";
 
         // Prepare the statement
         pstmt = conn.prepareStatement(sql);
@@ -711,6 +732,49 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
         return false;
     }
 }
+ 
+     public List<CartItem> getCartItemsByuseremail(String email) {
+        List<CartItem> cartItems = new ArrayList<>();
+        try {
+            // Get the database connection
+            Database db = Database.getInstance();
+            Connection conn = db.connect();
+
+            // SQL query to retrieve cart items for the given user email
+            String query = "SELECT p.product_id, p.name, p.price, c.quantity " +
+                           "FROM cart c " +
+                           "JOIN products p ON c.product_id = p.product_id " +
+                           "WHERE c.user_email = ?";
+
+            // Prepare the statement
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery();
+
+            // Process the results
+            while (rs.next()) {
+                int productId = rs.getInt("product_id");
+                String productName = rs.getString("name");
+                int price = rs.getInt("price");
+                int quantity = rs.getInt("quantity");
+
+                // Create a CartItem object and add it to the list
+                cartItems.add(new CartItem(productId, productName, price, quantity));
+            }
+
+            // Close resources
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cartItems;
+    }
+     
 
 
 }

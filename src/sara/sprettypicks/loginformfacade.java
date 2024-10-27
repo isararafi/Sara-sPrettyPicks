@@ -4,8 +4,23 @@
  */
 package sara.sprettypicks;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 
 /**
@@ -283,45 +298,61 @@ public class loginformfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_signupbuttonActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-         String username = usernamefield.getText(); // Replace email with username
-         String password = new String(passwordfield.getPassword());
+       // Get username and password from fields
+String username = usernamefield.getText();
+String password = new String(passwordfield.getPassword());
 
-        // Check if username and password are empty
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter both username and password.");
-            return;
+// Check if username and password are empty
+if (username.isEmpty() || password.isEmpty()) {
+    JOptionPane.showMessageDialog(null, "Please enter both username and password.");
+    return;
+}
+
+Database db = Database.getInstance();
+
+// Check which radio button is selected
+if (customerradio.isSelected()) {
+    // Check login credentials for a customer
+    boolean isLoginSuccessful = db.checkCustomerLogin(username, password);
+    if (isLoginSuccessful) {
+        JOptionPane.showMessageDialog(null, "Successful login");
+
+        // Retrieve email based on username and store it in SessionManager
+        String email = null;
+        try {
+            email = db.getEmailByUsername(username); // Assuming `getEmailByUsername` is a method in Database to fetch email by username
+        } catch (SQLException ex) {
+            Logger.getLogger(loginformfacade.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (email != null) {
+            SessionManager.setLoggedInUserEmail(email); // Store email in session
+            SessionManager.setLoggedInUserName(username); // Store username in session
 
-        Database db = Database.getInstance();
-
-        // Check which radio button is selected
-        if (customerradio.isSelected()) {
-            boolean isLoginSuccessful = db.checkCustomerLogin(username, password); // Check username instead of email
-            if (isLoginSuccessful) {
-                JOptionPane.showMessageDialog(null, "Successful login");
-
-        // Set the logged-in user's username in the session
-        SessionManager.setLoggedInUserEmail(username); // You might want to rename this method to setLoggedInUsername
-
-        // Navigate to the customer dashboard
-        customerdashboardfacade customerDashboard = new customerdashboardfacade(username);
-        customerDashboard.setVisible(true);
-        this.dispose(); // Close the current login frame
+            // Navigate to the customer dashboard
+            customerdashboardfacade customerDashboard = new customerdashboardfacade(username);
+            customerDashboard.setVisible(true);
+            this.dispose(); // Close the login frame
+        } else {
+            JOptionPane.showMessageDialog(null, "Error retrieving email. Please contact support.");
+        }
     } else {
-        JOptionPane.showMessageDialog(null, "Username not found. Please sign up first.");
+        JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.");
     }
 } else if (adminradio.isSelected()) {
-    boolean isLoginSuccessful = db.checkAdminLogin(username, password); // Check username instead of email
+    // Check login credentials for an admin
+    boolean isLoginSuccessful = db.checkAdminLogin(username, password);
     if (isLoginSuccessful) {
         JOptionPane.showMessageDialog(null, "Successful login");
 
         // Set the logged-in admin's username in the session
-        SessionManager.setLoggedInUserEmail(username); // You might want to rename this method to setLoggedInUsername
-        Admindashboard admin = new Admindashboard();
-        admin.setVisible(true);
-        this.dispose(); // Close the current login frame
+        SessionManager.setLoggedInUserName(username);
+
+        // Navigate to the admin dashboard
+        Admindashboardfacade adminDashboard = new Admindashboardfacade();
+        adminDashboard.setVisible(true);
+        this.dispose(); // Close the login frame
     } else {
-        JOptionPane.showMessageDialog(null, "Username not found. Please sign up first.");
+        JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.");
     }
 } else {
     JOptionPane.showMessageDialog(this, "Please select a user type.");

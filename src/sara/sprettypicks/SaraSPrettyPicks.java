@@ -6,7 +6,7 @@ package sara.sprettypicks;
 
 /**
  *
- * @author sarar
+ * @author sarars
  */
 public class SaraSPrettyPicks {
 //admin 1,2,3 button done

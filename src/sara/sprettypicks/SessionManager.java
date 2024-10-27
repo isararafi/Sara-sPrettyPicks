@@ -10,7 +10,7 @@ package sara.sprettypicks;
  */
 public class SessionManager {
     private static String loggedInUserEmail;
-    private static String loggedInUserFirstName; // New field for first name
+    private static String loggedInUserName;
 
     public static void setLoggedInUserEmail(String email) {
         loggedInUserEmail = email;
@@ -19,18 +19,12 @@ public class SessionManager {
     public static String getLoggedInUserEmail() {
         return loggedInUserEmail;
     }
-    
-    public static void setLoggedInUserFirstName(String firstName) { // Method to set first name
-        loggedInUserFirstName = firstName;
+
+    public static void setLoggedInUserName(String username) {
+        loggedInUserName = username;
     }
 
-    public static String getLoggedInUserFirstName() { // Method to get first name
-        return loggedInUserFirstName;
-    }
-    
-    public static void clearSession() {
-        loggedInUserEmail = null;
-        loggedInUserFirstName = null; // Clear first name on session clear
+    public static String getLoggedInUserName() {
+        return loggedInUserName;
     }
 }
-

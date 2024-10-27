@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package sara.sprettypicks;
+import sara.sprettypicks.InsertImageWithPath;  // Adjust the package name as necessary
 
 import com.sun.jdi.connect.spi.Connection;
 import java.awt.Dimension;
@@ -30,6 +31,7 @@ import javax.swing.JScrollPane;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import static sara.sprettypicks.InsertImageWithPath.displayAllProducts;
 
 /**
  *
@@ -383,14 +385,17 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_faqsActionPerformed
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
+        // Get database instance
         Database db = Database.getInstance();
-        String userEmail = SessionManager.getLoggedInUserEmail(); // Get logged-in user's email
+// Get logged-in user's email
+        String userEmail = SessionManager.getLoggedInUserEmail(); // Use the method to get the user's email
+        String username = SessionManager.getLoggedInUserName(); // You can keep this if you want the first name
 
 // Fetch the cart items for the logged-in user
-        List<CartItem> cartItems = db.getCartItemsByEmail(userEmail);
+        List<CartItem> cartItems = db.getCartItemsByuseremail(userEmail); // Fetch cart items using the email
 
 // Prepare data to display
-        StringBuilder cartDetails = new StringBuilder("Cart Items for " + userEmail + ":\n\n");
+        StringBuilder cartDetails = new StringBuilder("Cart Items for " + username + ":\n\n");
 
         if (cartItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Your cart is empty.");
@@ -457,14 +462,16 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         }
 
-
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
-        browseproducts browse = new browseproducts();
-        browse.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set to dispose only BrowseProducts frame
-        browse.setVisible(true);
 
+    // Create an instance of InsertImageWithPath
+    InsertImageWithPath productsPage = new InsertImageWithPath();
+
+    // Call the method to display products, passing an empty string to show all products
+    productsPage.createSearchableProductDisplay();
+    //this.dispose();// Call the correct method on the instance
 
     }//GEN-LAST:event_browseproductsActionPerformed
 
@@ -769,45 +776,45 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_reviewsActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       orders ob = new orders();
-int orderId = this.orderId; // Make sure this is assigned correctly
-String orderStatus = ob.getOrderStatus(orderId); // Fetch the status of the order
+        orders ob = new orders();
+        int orderId = this.orderId; // Make sure this is assigned correctly
+        String orderStatus = ob.getOrderStatus(orderId); // Fetch the status of the order
 
 // Check if orderStatus is null
-if (orderStatus == null) {
-    JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
-    return; // Exit if order status is not found
-}
+        if (orderStatus == null) {
+            JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Exit if order status is not found
+        }
 
 // Step 1: Check if the order can be canceled
-if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
-    JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
-    return;
-}
+        if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
+            JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
+            return;
+        }
 
 // Step 2: Confirm cancellation action
-int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
-if (confirmCancel != JOptionPane.YES_OPTION) {
-    return; // User chose not to cancel the order
-}
+        int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
+        if (confirmCancel != JOptionPane.YES_OPTION) {
+            return; // User chose not to cancel the order
+        }
 
 // Step 3: Update the order status to "Cancelled"
-boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
-if (isCancelled) {
-    JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
+        boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
+        if (isCancelled) {
+            JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
 
-    // Step 4: Optionally process refund if applicable
-    boolean refundSuccess = ob.processRefund(orderId);
-    if (refundSuccess) {
-        System.out.println("Refund processed successfully.");
-        JOptionPane.showMessageDialog(null, "Refund processed successfully.");
-    } else {
-        System.out.println("Refund failed or not applicable.");
-        JOptionPane.showMessageDialog(null, "Refund processing failed.");
-    }
-} else {
-    JOptionPane.showMessageDialog(null, "Failed to cancel the order. Please try again.");
-}
+            // Step 4: Optionally process refund if applicable
+            boolean refundSuccess = ob.processRefund(orderId);
+            if (refundSuccess) {
+                System.out.println("Refund processed successfully.");
+                JOptionPane.showMessageDialog(null, "Refund processed successfully.");
+            } else {
+                System.out.println("Refund failed or not applicable.");
+                JOptionPane.showMessageDialog(null, "Refund processing failed.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to cancel the order. Please try again.");
+        }
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
