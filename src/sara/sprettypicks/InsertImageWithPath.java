@@ -164,7 +164,7 @@ public InsertImageWithPath() {
 
                     // Create labels and buttons for price, quantity, and actions
                     JLabel priceLabel = new JLabel("Price: $" + price);
-                    JLabel quantityLabel = new JLabel("Quantity: 1");
+                    JLabel quantityLabel = new JLabel("Quantity: 0");
 
                     // Button to increase quantity
                     JButton increaseButton = new JButton("+");
@@ -173,6 +173,17 @@ increaseButton.setForeground(Color.BLACK); // Set text color to white
 increaseButton.setBorderPainted(false); // Remove border
 increaseButton.setFocusPainted(false); // Remove focus outline
 increaseButton.setFont(new Font("Arial", Font.BOLD, 12)); // Set font size to 12 for a smaller appearance
+
+
+JButton decreaseButton = new JButton("-");
+decreaseButton.setBackground(new Color(255, 140, 0)); // Set background color to orange
+decreaseButton.setForeground(Color.BLACK); // Set text color to black
+decreaseButton.setBorderPainted(false); // Remove border
+decreaseButton.setFocusPainted(false); // Remove focus outline
+decreaseButton.setFont(new Font("Arial", Font.BOLD, 12)); // Set font size
+decreaseButton.setPreferredSize(new Dimension(30, 20)); // Set button size
+decreaseButton.setMargin(new Insets(2, 5, 2, 5)); // Set margin for top, left, bottom, right
+
 
 // Set a smaller preferred size
 increaseButton.setPreferredSize(new Dimension(30, 20)); // Set button size
@@ -186,6 +197,18 @@ increaseButton.setMargin(new Insets(2, 5, 2, 5)); // Set margin for top, left, b
                             quantityLabel.setText("Quantity: " + currentQuantity);
                         }
                     });
+                    
+//                    JButton decreaseButton = new JButton("-");
+
+               
+               decreaseButton.addActionListener(e -> {
+    int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+    if (currentQuantity > 0) {
+        currentQuantity--;
+        quantityLabel.setText("Quantity: " + currentQuantity);
+    }
+});
+
 
                     // Button to add to cart
                     JButton addToCartButton = new JButton("Add to Cart");
@@ -214,11 +237,18 @@ increaseButton.setMargin(new Insets(2, 5, 2, 5)); // Set margin for top, left, b
 
                     // Create a panel for the bottom section with price, quantity, and buttons
                     JPanel bottomPanel = new JPanel();
-                    bottomPanel.setLayout(new FlowLayout()); // Horizontal layout
-                    bottomPanel.add(priceLabel);
-                    bottomPanel.add(quantityLabel);
-                    bottomPanel.add(increaseButton);
-                    bottomPanel.add(addToCartButton);
+//                    bottomPanel.setLayout(new FlowLayout()); // Horizontal layout
+//                    bottomPanel.add(priceLabel);
+//                    bottomPanel.add(quantityLabel);
+//                    bottomPanel.add(increaseButton);
+//                    bottomPanel.add(addToCartButton);
+                    
+                    // Add the decrease button
+bottomPanel.add(priceLabel);
+bottomPanel.add(quantityLabel);
+bottomPanel.add(increaseButton);
+ bottomPanel.add(decreaseButton);
+bottomPanel.add(addToCartButton);
                    
                 bottomPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
 
@@ -300,6 +330,16 @@ public static void displayProducts(String keyword) {
                         quantityLabel.setText("Quantity: " + currentQuantity);
                     }
                 });
+JButton decreaseButton = new JButton("-");
+
+               
+                decreaseButton.addActionListener(e -> {
+                    int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+                    if (currentQuantity > 1) {
+                        currentQuantity--;
+                        quantityLabel.setText("Quantity: " + currentQuantity);
+                    }
+                });
 
                 // Button to add to cart
                 JButton addToCartButton = new JButton("Add to Cart");
@@ -317,8 +357,10 @@ public static void displayProducts(String keyword) {
 
                 // Create a panel for the bottom section with price, quantity, and buttons
                 JPanel bottomPanel = new JPanel();
-                bottomPanel.setLayout(new FlowLayout()); // Horizontal layout
+               bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5)); // Center alignment with spacing
+
                 bottomPanel.add(priceLabel);
+                bottomPanel.add(decreaseButton);
                 bottomPanel.add(quantityLabel);
                 bottomPanel.add(increaseButton);
                 bottomPanel.add(addToCartButton);
@@ -332,15 +374,13 @@ public static void displayProducts(String keyword) {
             }
         }
 
-        mainPanel.revalidate(); // Refresh the main panel
-        mainPanel.repaint(); // Repaint to update UI
+        // Refresh the main panel to display the updated products
+        mainPanel.revalidate();
+        mainPanel.repaint();
 
-        // Close resources
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error displaying products: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 
