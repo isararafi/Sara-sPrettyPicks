@@ -734,47 +734,28 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
 }
  
      public List<CartItem> getCartItemsByuseremail(String email) {
-        List<CartItem> cartItems = new ArrayList<>();
-        try {
-            // Get the database connection
-            Database db = Database.getInstance();
-            Connection conn = db.connect();
-
-            // SQL query to retrieve cart items for the given user email
-            String query = "SELECT p.product_id, p.name, p.price, c.quantity " +
-                           "FROM cart c " +
-                           "JOIN products p ON c.product_id = p.product_id " +
-                           "WHERE c.user_email = ?";
-
-            // Prepare the statement
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, email);
-
-            // Execute the query
-            ResultSet rs = stmt.executeQuery();
-
-            // Process the results
-            while (rs.next()) {
-                int productId = rs.getInt("product_id");
-                String productName = rs.getString("name");
-                int price = rs.getInt("price");
-                int quantity = rs.getInt("quantity");
-
-                // Create a CartItem object and add it to the list
-                cartItems.add(new CartItem(productId, productName, price, quantity));
-            }
-
-            // Close resources
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    List<CartItem> cartItems = new ArrayList<>();
+    String query = "SELECT p.product_id, p.name, c.quantity, p.price FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.user_email = ?";
+    
+    try (Connection conn = db.connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+            int productId = rs.getInt("product_id");
+            String productName = rs.getString("name");
+            int quantity = rs.getInt("quantity");
+            double price = rs.getDouble("price");
+            
+            CartItem item = new CartItem(productId, productName, quantity, price);
+            cartItems.add(item);
         }
-
-        return cartItems;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-     
+    return cartItems;
+}
+
 
 
 }
