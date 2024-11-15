@@ -8,6 +8,7 @@ import sara.sprettypicks.SessionManager;
 
 public class InsertImageWithPath  extends JFrame{
     private static JPanel mainPanel; // Main panel to display products
+    
 public InsertImageWithPath() {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -16,17 +17,22 @@ public InsertImageWithPath() {
         
         // Insert Product Data
         insertProductImage(1, "tumbler", "bottle", "bottles", 13.99, 12, "C:\\SARA University Data\\FIFTH SEMESTER\\SCD LAB\\tumbler.jpg");
-        insertProductImage(2, "blue silicon case", "phone cases", "a pretty case", 123.99, 12, "C:\\initialshopping\\phonecase1.jpg");
-        insertProductImage(3, "shiny case", "phone cases", "a pretty case", 12.99, 12, "C:\\initialshopping\\phonecase2.jpg");
-        insertProductImage(4, "wavy case", "phone cases", "a pretty case", 19.99, 22, "C:\\initialshopping\\phonecase3.jpg");
-        insertProductImage(5, "purple case", "phone cases", "a pretty case", 19.99, 12, "C:\\initialshopping\\phonecase6.jpg");
-        insertProductImage(6, "sea case", "phone cases", "a pretty case", 10.99, 12, "C:\\initialshopping\\phonecase9.jpg");
-        insertProductImage(7, "purple cream", "skin care", "a soothing cream", 11.99, 34, "C:\\initialshopping\\skin0.jpg");
-        insertProductImage(8, "honey and lemon cream", "skin care", "a soothing cream", 12.99, 34, "C:\\initialshopping\\skin1.jpg");
-        insertProductImage(9, "neem wash", "skin care", "a soothing face wash", 13.99, 20, "C:\\initialshopping\\skin3.jpg");
-        insertProductImage(10, "pink face wash", "skin care", "a soothing face wash", 17.00, 34, "C:\\initialshopping\\skin5.jpg");
-        insertProductImage(11, "cetaphil wash", "skin care", "a soothing face wash", 11.99, 10, "C:\\initialshopping\\skin6.jpg");
-        insertProductImage(12, "red serum", "skin care", "a nourishing serum", 23.99, 34, "C:\\initialshopping\\skin10.jpg");
+        insertProductImage(2, "blue silicon case", "phone cases", "a pretty case phone case mobile cover", 123.99, 12, "C:\\initialshopping\\phonecase1.jpg");
+        insertProductImage(3, "shiny case", "phone cases", "a pretty case phone case mobile cover", 12.99, 12, "C:\\initialshopping\\phonecase2.jpg");
+        insertProductImage(4, "wavy case", "phone cases", "a pretty case phone case mobile cover", 19.99, 22, "C:\\initialshopping\\phonecase3.jpg");
+        insertProductImage(5, "purple case", "phone cases", "a pretty case phone case mobile cover", 19.99, 12, "C:\\initialshopping\\phonecase6.jpg");
+        insertProductImage(6, "sea case", "phone cases", "a pretty case phone case mobile cover", 10.99, 12, "C:\\initialshopping\\phonecase9.jpg");
+        insertProductImage(7, "purple cream", "skin care", "a soothing cream skin product", 11.99, 34, "C:\\initialshopping\\skin0.jpg");
+        insertProductImage(8, "honey and lemon cream", "skin care", "a soothing cream skin product", 12.99, 34, "C:\\initialshopping\\skin1.jpg");
+        insertProductImage(9, "neem wash", "skin care", "a soothing face wash skin product", 13.99, 20, "C:\\initialshopping\\skin3.jpg");
+        insertProductImage(10, "pink face wash", "skin care", "a soothing face wash skin product", 17.00, 34, "C:\\initialshopping\\skin5.jpg");
+        insertProductImage(11, "cetaphil wash", "skin care", "a soothing face wash skin product", 11.99, 10, "C:\\initialshopping\\skin6.jpg");
+        insertProductImage(12, "red serum", "skin care", "a nourishing serum skin product", 23.99, 34, "C:\\initialshopping\\skin10.jpg");
+        insertProductImage(13,"Pink scarf", "hijabs", "a full coverage hijab scarf", 90.22, 90, "C:\\initialshopping\\hijab1.jpg");
+        insertProductImage(14, "Green royal", "hijabs", "a full coverage hijab scarf", 21.99, 10, "C:\\initialshopping\\hijab4.jpg");
+//        insertProductImage(15, "Grey scarf", "hijabs", "a soft hijab", 11.99, 45, "C:\\initialshopping\\hijab5.jpg");
+        //insertProductImage(16, "Yellow scarf", "hijabs", "a soft hijab", 14.99, 34, "C:\\initialshopping\\hijab11.jpg");
+        
         
         // Create GUI with search functionality
         createSearchableProductDisplay();
@@ -69,42 +75,53 @@ public InsertImageWithPath() {
     }
 
     // Method to create a searchable product display
-    public static void createSearchableProductDisplay() {
-        // Create a JFrame for the product display
-        JFrame frame = new JFrame("Product Search");
-        frame.setLayout(new BorderLayout());
+   public static JFrame createSearchableProductDisplay() {
+    // Create a JFrame for the product display
+    JFrame frame = new JFrame("Product Search");
+    frame.setLayout(new BorderLayout());
 
-        // Create a JPanel for the search bar
-        JPanel searchPanel = new JPanel();
-        JTextField searchField = new JTextField(15); // Input field for search
-        JButton searchButton = new JButton("Search");
+    // Create a JPanel for the search bar
+    JPanel searchPanel = new JPanel();
+    searchPanel.setBackground(new Color(200, 200, 240));
+    JTextField searchField = new JTextField(15);
+    searchField.setPreferredSize(new Dimension(200, 30)); // Input field for search
+    JButton searchButton = new JButton("Search");
+    searchButton.setBackground(new Color(255, 140, 0)); // Darker orange background color
+    searchButton.setForeground(Color.BLACK); // Black text color
+    searchButton.setFont(new Font("Arial", Font.BOLD, 14)); // Bold font style with size 14
+    searchButton.setPreferredSize(new Dimension(100, 30));
 
-        // Add action listener to the search button
-        searchButton.addActionListener(e -> {
-            String category = searchField.getText().trim();
-            // If the search field is empty, display all products
-            if (category.isEmpty()) {
-                displayAllProducts();
-            } else {
-                displayProducts(category);
-            }
-        });
+    // Add action listener to the search button
+    searchButton.addActionListener(e -> {
+        String keyword = searchField.getText().trim(); // Get the text from the search field
 
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
-        frame.add(searchPanel, BorderLayout.NORTH);
+        // If the search field is empty, display all products
+        if (keyword.isEmpty()) {
+            displayAllProducts();
+        } else {
+            displayProducts(keyword); // Pass the keyword to displayProducts
+        }
+    });
 
-        // Initialize the main panel for product display
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(0, 2)); // Adjust grid layout as needed (2 columns)
-        frame.add(new JScrollPane(mainPanel), BorderLayout.CENTER); // Add scrollable area for products
+    searchPanel.add(searchField);
+    searchPanel.add(searchButton);
+    frame.add(searchPanel, BorderLayout.NORTH);
 
-        frame.setSize(new Dimension(800, 600)); // Adjust as needed
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close application on exit
+    // Initialize the main panel for product display
+    mainPanel = new JPanel();
+    mainPanel.setLayout(new GridLayout(0, 3)); // Adjust grid layout as needed (3 columns)
+    mainPanel.setBackground(new Color(230, 230, 250));
+    frame.add(new JScrollPane(mainPanel), BorderLayout.CENTER); // Add scrollable area for products
 
-        displayAllProducts(); // Display all products by default
-    }
+    // Adjust frame properties
+    frame.setSize(new Dimension(800, 600)); // Adjust as needed
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose only this frame when closed
+    frame.setVisible(true);
+
+    displayAllProducts(); // Display all products by default
+
+    return frame; // Return the frame for further customization if needed
+}
 
     // Method to retrieve and display all product images
     public static void displayAllProducts() {
@@ -139,6 +156,7 @@ public InsertImageWithPath() {
                     // Create a panel for each product
                     JPanel productPanel = new JPanel();
                     productPanel.setLayout(new BorderLayout());
+                    productPanel.setBackground(new Color(230, 230, 250)); 
 
                     // Create and add image label
                     JLabel imageLabel = new JLabel(imageIcon);
@@ -150,6 +168,17 @@ public InsertImageWithPath() {
 
                     // Button to increase quantity
                     JButton increaseButton = new JButton("+");
+                   increaseButton.setBackground(new Color(255, 165, 0)); // Set background color to orange
+increaseButton.setForeground(Color.BLACK); // Set text color to white
+increaseButton.setBorderPainted(false); // Remove border
+increaseButton.setFocusPainted(false); // Remove focus outline
+increaseButton.setFont(new Font("Arial", Font.BOLD, 12)); // Set font size to 12 for a smaller appearance
+
+// Set a smaller preferred size
+increaseButton.setPreferredSize(new Dimension(30, 20)); // Set button size
+
+// Reduce padding
+increaseButton.setMargin(new Insets(2, 5, 2, 5)); // Set margin for top, left, bottom, right
                     increaseButton.addActionListener(e -> {
                         int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
                         if (currentQuantity < quantityAvailable) { // Check against available quantity
@@ -160,7 +189,18 @@ public InsertImageWithPath() {
 
                     // Button to add to cart
                     JButton addToCartButton = new JButton("Add to Cart");
-                    addToCartButton.addActionListener(e -> {
+                    addToCartButton.setBackground(new Color(255, 165, 0)); // Set background color to orange
+                    addToCartButton.setForeground(Color.BLACK); // Set text color to white
+                    addToCartButton.setBorderPainted(false); // Remove border
+                    addToCartButton.setFocusPainted(false); // Remove focus outline
+                    addToCartButton.setFont(new Font("Arial", Font.BOLD, 12)); // Set font size to 12 for a smaller appearance
+
+                    // Set a preferred size for the button
+                    addToCartButton.setPreferredSize(new Dimension(100, 20)); // Set button size
+
+                    // Reduce padding
+                    addToCartButton.setMargin(new Insets(5, 10, 5, 10)); // Set margin for top, left, bottom, right
+                                        addToCartButton.addActionListener(e -> {
                         int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
                         String useremail = SessionManager.getLoggedInUserEmail();
                         if (useremail != null && !useremail.isEmpty()) {
@@ -179,6 +219,9 @@ public InsertImageWithPath() {
                     bottomPanel.add(quantityLabel);
                     bottomPanel.add(increaseButton);
                     bottomPanel.add(addToCartButton);
+                   
+                bottomPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
+
 
                     // Add bottom panel to the product panel
                     productPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -189,6 +232,7 @@ public InsertImageWithPath() {
             }
 
             mainPanel.revalidate(); // Refresh the main panel
+            mainPanel.setBackground(new Color(230, 230, 250)); 
             mainPanel.repaint(); // Repaint to update UI
 
             // Close resources
@@ -202,25 +246,21 @@ public InsertImageWithPath() {
 
     // Method to retrieve and display the product images based on category
     // Method to retrieve and display the product images based on category
-public static void displayProducts(String category) {
+public static void displayProducts(String keyword) {
     try {
         // Clear the main panel before displaying new products
         mainPanel.removeAll();
-
-        // Check if the category is empty
-        if (category.isEmpty()) {
-            displayAllProducts(); // Call the method to display all products
-            return; // Exit the method early
-        }
 
         // Get the database connection
         Database db = Database.getInstance();
         Connection conn = db.connect();
 
-        // Query to retrieve products by category from the database
-        String query = "SELECT product_id, image, price, quantity FROM products WHERE category = ?";
+        // Query to retrieve products matching the keyword in category or description
+        String query = "SELECT product_id, image, price, quantity FROM products WHERE category LIKE ? OR description LIKE ?";
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, category);
+        String likeKeyword = "%" + keyword + "%"; // To allow for partial matches
+        stmt.setString(1, likeKeyword);
+        stmt.setString(2, likeKeyword);
 
         // Execute the query
         ResultSet rs = stmt.executeQuery();
@@ -240,6 +280,7 @@ public static void displayProducts(String category) {
 
                 // Create a panel for each product
                 JPanel productPanel = new JPanel();
+                productPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
                 productPanel.setLayout(new BorderLayout());
 
                 // Create and add image label
@@ -281,6 +322,7 @@ public static void displayProducts(String category) {
                 bottomPanel.add(quantityLabel);
                 bottomPanel.add(increaseButton);
                 bottomPanel.add(addToCartButton);
+                bottomPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
 
                 // Add bottom panel to the product panel
                 productPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -300,7 +342,7 @@ public static void displayProducts(String category) {
     } catch (SQLException e) {
         e.printStackTrace();
     }
-
 }
+
 
 }

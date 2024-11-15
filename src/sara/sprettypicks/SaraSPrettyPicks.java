@@ -10,7 +10,7 @@ package sara.sprettypicks;
  */
 public class SaraSPrettyPicks {
 //admin 1,2,3 button done
-    //applied singleton and facade
+    //applied singleton and facade,mvc
                     //************************************************************************88
                     /*Single Point of Access: The GUI frames serve as a single point of 
                     access for different functionalities (like browsing products, placing orders, 

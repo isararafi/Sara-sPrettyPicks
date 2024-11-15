@@ -2,6 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
+
 package sara.sprettypicks;
 import sara.sprettypicks.InsertImageWithPath;  // Adjust the package name as necessary
 
@@ -386,7 +388,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
         // Get database instance
-        Database db = Database.getInstance();
+        Database db = Database.getInstance();// singleton--reference variable.
 // Get logged-in user's email
         String userEmail = SessionManager.getLoggedInUserEmail(); // Use the method to get the user's email
         String username = SessionManager.getLoggedInUserName(); // You can keep this if you want the first name
@@ -465,13 +467,18 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
+// Create an instance of InsertImageWithPath
+InsertImageWithPath productsPage = new InsertImageWithPath();
 
-    // Create an instance of InsertImageWithPath
-    InsertImageWithPath productsPage = new InsertImageWithPath();
+// Call the method to display products, passing an empty string to show all products
+JFrame browseProductsFrame = productsPage.createSearchableProductDisplay();
 
-    // Call the method to display products, passing an empty string to show all products
-    productsPage.createSearchableProductDisplay();
-    //this.dispose();// Call the correct method on the instance
+// Set the close operation for the Browse Products frame
+browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+// Optionally, you can add a listener for closing events (if needed)
+// this.dispose(); // Uncomment this only if you want to close the current frame
+
 
     }//GEN-LAST:event_browseproductsActionPerformed
 

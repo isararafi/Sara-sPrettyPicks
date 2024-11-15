@@ -308,7 +308,7 @@ if (username.isEmpty() || password.isEmpty()) {
     return;
 }
 
-Database db = Database.getInstance();
+Database db = Database.getInstance();  //singleton pattern --reference variable
 
 // Check which radio button is selected
 if (customerradio.isSelected()) {
