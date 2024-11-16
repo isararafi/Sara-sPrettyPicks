@@ -101,17 +101,19 @@ public class Database {
     }
 
     // Method for customer signup
-    public  boolean signupCustomer(String username, String email, String password) {
-    String query = "INSERT INTO customers (first_name, email, password) VALUES (?, ?, ?)"; // Updated SQL query for inserting customer
+   public boolean signupCustomer(String name, String username, String email, String password) {
+    // SQL query updated to include the correct columns
+    String query = "INSERT INTO customers (first_name, cuser_name, email, password) VALUES (?, ?, ?, ?)";
 
     // Try-with-resources to automatically close resources
     try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
-        stmt.setString(1, username); // Set the username
-        stmt.setString(2, email);     // Set the email
-        stmt.setString(3, password);  // Ideally, hash the password before storing it
+        stmt.setString(1, name);      // Set the first_name
+        stmt.setString(2, username); // Set the cuser_name
+        stmt.setString(3, email);    // Set the email
+        stmt.setString(4, password); // Ideally, hash the password before storing it
 
         // Execute the update
         int rowsAffected = stmt.executeUpdate();
@@ -124,18 +126,19 @@ public class Database {
 
 
     // Method for admin signup
-    public  boolean signupAdmin(String email, String password,String name) {
-         String query = "INSERT INTO admin (email, password,admin_name) VALUES (?, ?,?)"; // Updated SQL query for inserting customer
+   public boolean signupAdmin(String email, String password, String name, String username) {
+    // Updated SQL query for inserting admin, using the new column names
+    String query = "INSERT INTO admin (email, password, admin_name, auser_name) VALUES (?, ?, ?, ?)"; 
 
     // Try-with-resources to automatically close resources
     try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
-        // Set the username
         stmt.setString(1, email);     // Set the email
-        stmt.setString(2, password); 
-         stmt.setString(3, name);// Ideally, hash the password before storing it
+        stmt.setString(2, password);  // Set the password
+        stmt.setString(3, name);      // Set the name (stored in admin_name)
+        stmt.setString(4, username);  // Set the username (stored in auser_name)
 
         // Execute the update
         int rowsAffected = stmt.executeUpdate();
@@ -144,7 +147,8 @@ public class Database {
         e.printStackTrace(); // Log the exception
         return false;
     }
-    }
+}
+
 
   public void addItemToCart(String useremail, int productId, int quantity, double price) {
     try {

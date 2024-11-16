@@ -51,6 +51,9 @@ public class Signupformfacade extends javax.swing.JFrame {
         confirmpasswordtext = new javax.swing.JPasswordField();
         signup = new javax.swing.JButton();
         confirmpasswordlabel = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        nametext = new javax.swing.JTextField();
+        namelabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +85,12 @@ public class Signupformfacade extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Password");
 
+        passwordtext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordtextActionPerformed(evt);
+            }
+        });
+
         passwordlabel.setText(".");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -99,6 +108,11 @@ public class Signupformfacade extends javax.swing.JFrame {
 
         confirmpasswordlabel.setText(".");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("Name");
+
+        namelabel.setText(".");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -106,66 +120,76 @@ public class Signupformfacade extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(usernametext, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(emailtext)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passwordtext)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(confirmpasswordtext)
-                            .addComponent(usernamelabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(emaillabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(passwordlabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(usernamelabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addComponent(signup, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(namelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emaillabel, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nametext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(confirmpasswordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(signup, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 135, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addGap(120, 120, 120))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
-                .addGap(28, 28, 28)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(usernamelabel)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(nametext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(namelabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(emaillabel)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel6)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordlabel)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel8)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(confirmpasswordtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(confirmpasswordlabel)
                 .addGap(45, 45, 45)
                 .addComponent(signup)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,7 +202,10 @@ public class Signupformfacade extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -188,38 +215,63 @@ public class Signupformfacade extends javax.swing.JFrame {
  
     // Clear previous messages
     Database db = Database.getInstance();
-    usernamelabel.setText("<html>Username *:</html>"); // Indicate required fields with *
-    emaillabel.setText("<html>Email *:</html>");
-    passwordlabel.setText("<html>Password *:</html>");
-    confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
+    namelabel.setText("<html>Name *:</html>"); // Indicate required fields with *
+usernamelabel.setText("<html>Username *:</html>");
+emaillabel.setText("<html>Email *:</html>");
+passwordlabel.setText("<html>Password *:</html>");
+confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
+
 
     // Retrieve input values
-    String username = usernametext.getText().trim();
-    String email = emailtext.getText().trim();
-    String password = new String(passwordtext.getPassword());
-    String confirmPassword = new String(confirmpasswordtext.getPassword());
+    String name = nametext.getText().trim();
+String username = usernametext.getText().trim();
+String email = emailtext.getText().trim();
+String password = new String(passwordtext.getPassword());
+String confirmPassword = new String(confirmpasswordtext.getPassword());
+
 
     // Validation flags
-    boolean validUsername = false;
-    boolean validEmail = false;
-    boolean validPassword = false;
-    boolean validConfirmPassword = false;
+   boolean validName = false;
+boolean validUsername = false;
+boolean validEmail = false;
+boolean validPassword = false;
+boolean validConfirmPassword = false;
+
+    
 
     // Check for empty fields and display a message
-    if (username.isEmpty()) {
-        usernamelabel.setText("<html><b style='color:red;'>Username is a mandatory field. *</b></html>");
+   if (username.isEmpty()) {
+    usernamelabel.setText("<html><b style='color:red;'>Username is a mandatory field. *</b></html>");
+} else {
+    // Updated Username validation regex: 
+    // Allows underscores and ensures at least 1 letter and 1 number.
+    String alphanumericRegex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9_]+$";
+    
+    if (username.length() < 3 || username.length() > 255) {
+        usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
+    } else if (!username.matches(alphanumericRegex)) {
+        usernamelabel.setText("<html><b style='color:red;'>Username must contain both letters and numbers. Only underscores are allowed as special characters. *</b></html>");
     } else {
-        // Username validation
-        String alphanumericRegex = "^[a-zA-Z0-9]+$";
-        if (username.length() < 3 || username.length() > 255) {
-            usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
-        } else if (!username.matches(alphanumericRegex)) {
-            usernamelabel.setText("<html><b style='color:red;'>Username must contain only alphabets and numbers, no special characters. *</b></html>");
-        } else {
-            usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-            validUsername = true;
-        }
+        usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+        validUsername = true;
     }
+}
+if (name.isEmpty()) {
+    namelabel.setText("<html><b style='color:red;'>Name is a mandatory field. *</b></html>");
+} else {
+    // Name validation: Only alphabets (and spaces, if needed)
+    String alphabetRegex = "^[a-zA-Z]+(\\s[a-zA-Z]+)*$";
+    
+    if (name.length() < 2 || name.length() > 255) {
+        namelabel.setText("<html><b style='color:red;'>Name must be between 2 and 255 characters. *</b></html>");
+    } else if (!name.matches(alphabetRegex)) {
+        namelabel.setText("<html><b style='color:red;'>Name must contain alphabets only. No numbers or special characters allowed. *</b></html>");
+    } else {
+        namelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+        validName = true;
+    }
+}
+
 
     if (email.isEmpty()) {
         emaillabel.setText("<html><b style='color:red;'>Email is a mandatory field. *</b></html>");
@@ -234,18 +286,21 @@ public class Signupformfacade extends javax.swing.JFrame {
         }
     }
 
-    if (password.isEmpty()) {
-        passwordlabel.setText("<html><b style='color:red;'>Password is a mandatory field. *</b></html>");
+   if (password.isEmpty()) {
+    passwordlabel.setText("<html><b style='color:red;'>Password is a mandatory field. *</b></html>");
+} else {
+    // Updated Password validation regex: 
+    // At least 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character. Minimum length of 8 characters.
+    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$";
+    
+    if (!password.matches(passwordRegex)) {
+        passwordlabel.setText("<html><b style='color:red;'>Password must be at least 8 characters long, contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character. *</b></html>");
     } else {
-        // Password validation
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z]).{8,}$";
-        if (!password.matches(passwordRegex)) {
-            passwordlabel.setText("<html><b style='color:red;'>Password must be 8 characters long, 1 lowercase, 1 uppercase, no special character. *</b></html>");
-        } else {
-            passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-            validPassword = true;
-        }
+        passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+        validPassword = true;
     }
+}
+
 
     if (confirmPassword.isEmpty()) {
         confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm Password is a mandatory field. *</b></html>");
@@ -257,36 +312,39 @@ public class Signupformfacade extends javax.swing.JFrame {
     }
 
     // Check if all fields are valid
-    if (validUsername && validEmail && validPassword && validConfirmPassword) {
-        // Check if the email already exists in the database
-        if (db.checkEmailExists(email)) {
-            JOptionPane.showMessageDialog(this, "User with the same email already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+if (validName && validUsername && validEmail && validPassword && validConfirmPassword) {
+    // Check if the email already exists in the database
+    if (db.checkEmailExists(email)) {
+        JOptionPane.showMessageDialog(this, "User with the same email already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+        boolean signupSuccess;
+
+        // Insert into the database based on role
+        if (role.equals("admin")) {
+            signupSuccess = db.signupAdmin(email, password, name,username);
         } else {
-            boolean signupSuccess;
+            signupSuccess = db.signupCustomer(name, username, email, password); // Assuming name is required for customer
+        }
 
-            // Insert into the database based on role
-            if (role.equals("admin")) {
-                signupSuccess = db.signupAdmin(email, password, username);
-            } else {
-                signupSuccess = db.signupCustomer(username, email, password);
-            }
+        if (signupSuccess) {
+            JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            nametext.setText(""); // Clear the name field
+            usernametext.setText(""); // Clear the username field
+            emailtext.setText(""); // Clear the email field
+            passwordtext.setText(""); // Clear the password field
+            confirmpasswordtext.setText(""); // Clear the confirm password field
 
-            if (signupSuccess) {
-                JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                usernametext.setText("");
-                emailtext.setText("");
-                passwordtext.setText("");
-                confirmpasswordtext.setText("");
-
-                // Switch to the login frame
-                loginformfacade loginFrame = new loginformfacade();
-                loginFrame.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            // Switch to the login frame
+            loginformfacade loginFrame = new loginformfacade();
+            loginFrame.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+} else {
+    JOptionPane.showMessageDialog(this, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
+}
 
 
     
@@ -296,6 +354,10 @@ public class Signupformfacade extends javax.swing.JFrame {
     private void emailtextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailtextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_emailtextActionPerformed
+
+    private void passwordtextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordtextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordtextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -344,9 +406,12 @@ public class Signupformfacade extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel namelabel;
+    private javax.swing.JTextField nametext;
     private javax.swing.JLabel passwordlabel;
     private javax.swing.JPasswordField passwordtext;
     private javax.swing.JButton signup;
