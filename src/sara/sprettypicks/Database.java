@@ -56,15 +56,15 @@ public class Database {
     }
 
     // Method to check customer login
-    public boolean checkCustomerLogin(String name, String password) {
-    String query = "SELECT * FROM customers WHERE first_name = ? AND password = ?"; // SQL query
+    public boolean checkCustomerLogin(String username, String password) {
+    String query = "SELECT * FROM customers WHERE cuser_name = ? AND password = ?"; // SQL query
 
     // Try-with-resources to automatically close resources
     try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
-        stmt.setString(1, name); // Use name instead of email
+        stmt.setString(1, username); // Use name instead of email
         stmt.setString(2, password); // Use hashed password in production
 
         // Execute the query and process the result set
@@ -79,15 +79,15 @@ public class Database {
 
 
     // Method to check admin login
-    public  boolean checkAdminLogin(String name, String password) {
-        String query = "SELECT * FROM admin WHERE admin_name = ? AND password = ?"; // SQL query
+    public  boolean checkAdminLogin(String username, String password) {
+        String query = "SELECT * FROM admin WHERE auser_name = ? AND password = ?"; // SQL query
 
     // Try-with-resources to automatically close resources
     try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
-        stmt.setString(1, name); // Use name instead of email
+        stmt.setString(1, username); // Use name instead of email
         stmt.setString(2, password); // Use hashed password in production
 
         // Execute the query and process the result set
@@ -246,7 +246,7 @@ public class Database {
 }
  public String getEmailByUsername(String username) throws SQLException {
     String email = null; // Initialize the email variable
-    String query = "SELECT email FROM customers WHERE first_name = ?"; // SQL query
+    String query = "SELECT email FROM customers WHERE cuser_name = ?"; // SQL query
 
     // Ensure the connection is established
     try (Connection connection = db.connect(); // Use db.connect() directly

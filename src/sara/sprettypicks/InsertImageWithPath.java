@@ -16,6 +16,7 @@ public class InsertImageWithPath extends JFrame {
     private static int cartItemCount = 0; // To keep track of items in the cart
 
     public InsertImageWithPath() {
+          cartLabel = new JLabel("Cart (0 items)");
         ///////////////////////////////
        // createSearchableProductDisplay();
        //displayAllProducts();
@@ -47,10 +48,12 @@ public class InsertImageWithPath extends JFrame {
         ////////////////////////////////
         createSearchableProductDisplay();
     }
+  
+
    // Ensure the method is inside the class with access to the JFrame and other components
 
 // Method to update the cart item count
-  static void updateCartItemCount(JLabel cartLabel) {
+ static void updateCartItemCount(JLabel cartLabel) {
     if (cartLabel == null) {
         System.out.println("cartLabel is null. Please check initialization.");
         return;
@@ -73,6 +76,8 @@ public class InsertImageWithPath extends JFrame {
     System.out.println("Total items in cart: " + totalQuantity); // Debugging output
     cartLabel.setText(totalQuantity + " items");
 }
+
+
 
 
 
@@ -119,6 +124,7 @@ public class InsertImageWithPath extends JFrame {
    // Method to create a searchable product display
 public static JFrame createSearchableProductDisplay() {
     // Create a JFrame for the product display
+    
     JFrame frame = new JFrame("Product Search");
     frame.setLayout(new BorderLayout());
 
@@ -161,8 +167,13 @@ public static JFrame createSearchableProductDisplay() {
     Image scaledCartImage = originalCartIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Adjust size
     ImageIcon scaledCartIcon = new ImageIcon(scaledCartImage);
 
-    JLabel cartIcon = new JLabel(scaledCartIcon); // Use the scaled icon
-    cartLabel = new JLabel(" 0 items");
+    JLabel cartIcon = new JLabel(scaledCartIcon); 
+//// Use the scaled icon
+////////////////////////////////
+////////////////////
+//   cartLabel = new JLabel(" 0 items");
+  
+
     JButton addToCartButton = new JButton("Add to Cart");
     addToCartButton.setBackground(new Color(255, 165, 0));
     addToCartButton.setForeground(Color.BLACK);
@@ -209,7 +220,15 @@ public static JFrame createSearchableProductDisplay() {
 
     return frame; // Return the frame for further customization if needed
 }
-
+public void showcartvalue(JLabel cartLabel) {
+    System.out.println("showcartvalue called");
+    String userEmail = SessionManager.getLoggedInUserEmail();
+    if (userEmail != null && !userEmail.isEmpty()) {
+        updateCartItemCount(cartLabel);
+    } else {
+        cartLabel.setText("Cart (0 items)");
+    }
+}
 
    public static void displayAllProducts() {
        

@@ -393,16 +393,19 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
 // Create an instance of InsertImageWithPath
-InsertImageWithPath productsPage = new InsertImageWithPath();
+    InsertImageWithPath productsPage = new InsertImageWithPath();
 
-// Call the method to display products, passing an empty string to show all products
-JFrame browseProductsFrame = productsPage.createSearchableProductDisplay();
+    // Make sure to update the cart item count before displaying the products page
+    productsPage.showcartvalue(productsPage.cartLabel);   // Updates the cart label with the latest item count
 
-// Set the close operation for the Browse Products frame
-browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    // Call the method to display products, passing an empty string to show all products
+    JFrame browseProductsFrame = productsPage.createSearchableProductDisplay();
 
-// Optionally, you can add a listener for closing events (if needed)
-// this.dispose(); // Uncomment this only if you want to close the current frame
+    // Set the close operation for the Browse Products frame
+    browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    // Optionally, you can add a listener for closing events (if needed)
+    // this.dispose(); // Uncomment this only if you want to close the current frame
 
 
     }//GEN-LAST:event_browseproductsActionPerformed
