@@ -387,83 +387,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_faqsActionPerformed
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
-        // Get database instance
-        Database db = Database.getInstance();// singleton--reference variable.
-// Get logged-in user's email
-        String userEmail = SessionManager.getLoggedInUserEmail(); // Use the method to get the user's email
-        String username = SessionManager.getLoggedInUserName(); // You can keep this if you want the first name
-
-// Fetch the cart items for the logged-in user
-        List<CartItem> cartItems = db.getCartItemsByuseremail(userEmail); // Fetch cart items using the email
-
-// Prepare data to display
-        StringBuilder cartDetails = new StringBuilder("Cart Items for " + username + ":\n\n");
-
-        if (cartItems.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Your cart is empty.");
-        } else {
-            // Display each cart item with details
-            int itemNumber = 1;
-            double totalCartPrice = 0; // Initialize total cart price
-
-            for (CartItem item : cartItems) {
-                String productId = String.valueOf(item.getProductId());
-                String productName = item.getProductName(); // Assuming this method exists in CartItem
-                int quantity = item.getQuantity();
-                double price = item.getPrice();
-
-                // Calculate total price for the current item
-                double totalPriceForItem = price * quantity;
-
-                cartDetails.append(itemNumber++)
-                        .append(". Product ID: ").append(productId)
-                        .append(", Product Name: ").append(productName)
-                        .append(", Quantity: ").append(quantity)
-                        .append(", Price per Unit: $").append(String.format("%.2f", price))
-                        .append(", Total Price: $").append(String.format("%.2f", totalPriceForItem))
-                        .append("\n");
-
-                totalCartPrice += totalPriceForItem; // Add to total cart price
-            }
-
-            // Show the total cart price
-            cartDetails.append("\nTotal Cart Price: $").append(String.format("%.2f", totalCartPrice)).append("\n");
-
-            cartDetails.append("\nOptions:\n1. Clear specific item\n2. Clear entire cart\n");
-
-            // Show the cart items and ask for user input
-            String input = JOptionPane.showInputDialog(this, cartDetails.toString() + "\nEnter your option (1 or 2):");
-
-            // Handle user input for clearing specific item or entire cart
-            if (input != null) {
-                if (input.equals("1")) {
-                    // Clear specific item
-                    String itemNumberStr = JOptionPane.showInputDialog(this, "Enter the item number to clear:");
-                    if (itemNumberStr != null) {
-                        try {
-                            int itemNumberToClear = Integer.parseInt(itemNumberStr);
-                            if (itemNumberToClear >= 1 && itemNumberToClear < itemNumber) {
-                                // Get the product ID for the selected item number
-                                int productIdToRemove = cartItems.get(itemNumberToClear - 1).getProductId(); // Adjusted to get product ID directly from CartItem
-                                db.removeItemFromCart(userEmail, productIdToRemove); // Remove the item
-                                JOptionPane.showMessageDialog(this, "Item removed successfully.");
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Invalid item number.");
-                            }
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(this, "Please enter a valid number.");
-                        }
-                    }
-                } else if (input.equals("2")) {
-                    // Clear entire cart
-                    db.clearCart(userEmail); // Clears the entire cart for this user
-                    JOptionPane.showMessageDialog(this, "Cart cleared successfully.");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Invalid option.");
-                }
-            }
-        }
-
+    showcartitems ob=new showcartitems();
+    ob.cart();
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
