@@ -4,6 +4,8 @@ import java.sql.*;
 import java.io.*;
 import javax.swing.*; // For ImageIcon and JFrame
 import java.awt.*;    // For Dimension
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sara.sprettypicks.Database;
 import sara.sprettypicks.SessionManager;
 
@@ -71,6 +73,7 @@ public class InsertImageWithPath extends JFrame {
     System.out.println("Total items in cart: " + totalQuantity); // Debugging output
     cartLabel.setText(totalQuantity + " items");
 }
+
 
 
 
@@ -294,21 +297,30 @@ public static JFrame createSearchableProductDisplay() {
                 addToCartButton.setMargin(new Insets(5, 10, 5, 10));
                addToCartButton.addActionListener(e -> {
     int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
-    String useremail = SessionManager.getLoggedInUserEmail();
-    if (useremail != null && !useremail.isEmpty()) {
-        // Add item to the cart in the database or session
-        db.addItemToCart(useremail, productId, currentQuantity, price);
-        
-        // Show the success message
-        JOptionPane.showMessageDialog(null, "Product added to cart successfully! Quantity: " + currentQuantity);
-        
-        // Update the cart label after adding the item (this happens once the message is dismissed)
-        updateCartItemCount(cartLabel);
+    
+    // Check if the current quantity is greater than 0
+    if (currentQuantity <= 0) {
+        // Display an error message if the quantity is invalid (less than or equal to 0)
+        JOptionPane.showMessageDialog(null, "Invalid quantity. Please select a valid quantity.", "Error", JOptionPane.ERROR_MESSAGE);
     } else {
-        // Show an error message if the user is not logged in
-        JOptionPane.showMessageDialog(null, "You need to log in to add products to your cart.", "Error", JOptionPane.ERROR_MESSAGE);
+        String useremail = SessionManager.getLoggedInUserEmail();
+        
+        if (useremail != null && !useremail.isEmpty()) {
+            // Add item to the cart in the database or session if the user is logged in
+            db.addItemToCart(useremail, productId, currentQuantity, price);
+            
+            // Show the success message after adding to cart
+            JOptionPane.showMessageDialog(null, "Product added to cart successfully! Quantity: " + currentQuantity);
+            
+            // Update the cart item count after adding the item to the cart
+            updateCartItemCount(cartLabel);
+        } else {
+            // Show an error message if the user is not logged in
+            JOptionPane.showMessageDialog(null, "You need to log in to add products to your cart.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 });
+
                 // Create a panel for the bottom section with price, quantity, and buttons
                 JPanel bottomPanel = new JPanel();
                 bottomPanel.setBackground(new Color(230, 230, 250));
@@ -374,7 +386,7 @@ public static JFrame createSearchableProductDisplay() {
                     ImageIcon imageIcon = new ImageIcon(imageData);
 
                     double price = rs.getDouble("price");
-                    int quantityAvailable = rs.getInt("quantity"); // Total quantity available
+//                    int quantityAvailable = rs.getInt("quantity"); // Total quantity available
 
                     // Create a panel for each product
                     JPanel productPanel = new JPanel();
@@ -391,13 +403,44 @@ public static JFrame createSearchableProductDisplay() {
 
                     // Button to increase quantity
                     JButton increaseButton = new JButton("+");
-                    increaseButton.addActionListener(e -> {
-                        int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
-                        if (currentQuantity < quantityAvailable) { // Check against available quantity
-                            currentQuantity++;
-                            quantityLabel.setText("Quantity: " + currentQuantity);
-                        }
-                    });
+                   increaseButton.addActionListener(e -> {
+    // Assuming rs (ResultSet) contains the data from the database query
+    int quantityAvailable = 0; // Default value if database value is unavailable
+    try {
+        // Retrieve the current quantity available from the database or the product details
+        if (rs.next()) { // Ensure the ResultSet contains data
+            quantityAvailable = rs.getInt("quantity");
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(InsertImageWithPath.class.getName()).log(Level.SEVERE, null, ex);
+        // Show an error message if there is a problem fetching the quantity
+        JOptionPane.showMessageDialog(null, "Error retrieving stock information.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        return; // Exit the action listener if there's a database error
+    }
+
+    if (quantityAvailable <= 0) {
+        // Show error message if quantity is 0 or less
+        JOptionPane.showMessageDialog(null, "Please select a valid quantity. This product is out of stock.", "Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+        // If the quantity is valid, allow adding the item to the cart
+        try {
+            int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+            
+            if (currentQuantity < quantityAvailable) {
+                currentQuantity++;
+                quantityLabel.setText("Quantity: " + currentQuantity);
+            } else {
+                // If the cart is already full or reaches available quantity, show an alert
+                JOptionPane.showMessageDialog(null, "Cannot add more. Quantity exceeds available stock.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            // Handle error in case the quantity label's format is unexpected
+            JOptionPane.showMessageDialog(null, "Error reading current quantity.", "Format Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+});
+
+
                     JButton decreaseButton = new JButton("-");
 
                     decreaseButton.addActionListener(e -> {
