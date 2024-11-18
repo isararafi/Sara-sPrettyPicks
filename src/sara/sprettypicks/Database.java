@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 
@@ -822,4 +823,73 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
     }
     return cartItems; // Return the list of cart items
 }
+     
+     public boolean deleteAccountFromDatabase() {
+    boolean isDeleted = false;
+    String username = SessionManager.getLoggedInUserName(); // Get logged-in user
+
+    // First, delete related data like orders, cart, etc.
+    boolean isRelatedDataDeleted = deleteUserRelatedData();
+
+    if (isRelatedDataDeleted) {
+        // Now, delete the user account from the customers table
+        String deleteUserQuery = "DELETE FROM customers WHERE cuser_name = ?";
+
+        try (Connection conn = connect()) {
+            PreparedStatement stmt = conn.prepareStatement(deleteUserQuery);
+            stmt.setString(1, username); // Set the username to delete
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                isDeleted = true;
+                System.out.println("User account deleted successfully.");
+            } else {
+                System.out.println("No account found for the username: " + username);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } else {
+        System.out.println("Failed to delete related data.");
+    }
+
+    return isDeleted;
+}
+
+
+public boolean deleteUserRelatedData() {
+    boolean isDeleted = false;
+    String username = SessionManager.getLoggedInUserName();
+
+    // SQL queries to delete related data from other tables like orders, cart, etc.
+    String deleteOrdersQuery = "DELETE FROM orders WHERE user_name = ?";
+    String deleteCartQuery = "DELETE FROM cart WHERE user_name = ?";
+    String deleteOrderItemsQuery = "DELETE FROM order_items WHERE order_id IN (SELECT order_id FROM orders WHERE user_name = ?)";
+
+    try (Connection conn = connect()) {
+        // Delete order items first (dependent on orders)
+        PreparedStatement stmt1 = conn.prepareStatement(deleteOrderItemsQuery);
+        stmt1.setString(1, username);
+        stmt1.executeUpdate();
+
+        // Delete orders
+        PreparedStatement stmt2 = conn.prepareStatement(deleteOrdersQuery);
+        stmt2.setString(1, username);
+        stmt2.executeUpdate();
+
+        // Delete from the cart
+        PreparedStatement stmt3 = conn.prepareStatement(deleteCartQuery);
+        stmt3.setString(1, username);
+        stmt3.executeUpdate();
+
+        isDeleted = true;
+        System.out.println("User-related data (orders, cart, order_items) deleted successfully.");
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return isDeleted;
+}
+
+ 
 }
