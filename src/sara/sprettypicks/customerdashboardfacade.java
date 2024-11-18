@@ -43,19 +43,19 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     surprisecheckout checkoutProcess = new surprisecheckout();
 
-    private String userEmail; // Store the user's email
+    private String userName; // Store the user's email
     private int orderId; // Store the order ID
     private orders obj; // Create an instance of the Orders class
 
-    public customerdashboardfacade(String userEmail) {
-        this.userEmail = userEmail; // Set the user's email
+    public customerdashboardfacade(String userName) {
+        this.userName = userName; // Set the user's email
         this.obj = new orders(); // Instantiate the Orders class
 
         // Retrieve the order ID based on the user's email
-        this.orderId = obj.getOrderIdByEmail(userEmail);
+       // this.orderId = obj.getOrderIdByUsername(userName);
 
         // Debugging output
-        System.out.println("Order ID for user " + userEmail + ": " + orderId);
+        //System.out.println("Order ID for user " + userName + ": " + orderId);
 
         // Initialize components in the dashboard
         initComponents();
@@ -705,7 +705,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         orders ob = new orders();
-        int orderId = this.orderId; // Make sure this is assigned correctly
+        int orderId=ob.getOrderIdByUsername(userName);
+        // Make sure this is assigned correctly
         String orderStatus = ob.getOrderStatus(orderId); // Fetch the status of the order
 
 // Check if orderStatus is null

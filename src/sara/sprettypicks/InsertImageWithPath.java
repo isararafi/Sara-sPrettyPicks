@@ -19,8 +19,8 @@ public class InsertImageWithPath extends JFrame {
          
           cartLabel = new JLabel("Cart (0 items)");
       
-        ///////////////////////////////
-       // createSearchableProductDisplay();
+        
+        //createSearchableProductDisplay();
        //displayAllProducts();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -47,13 +47,14 @@ public class InsertImageWithPath extends JFrame {
 //        insertProductImage(34, "aloevera ", "skin care", "a soothing face wash skin product", 14.99, 34, "C:\\initialshopping\\skin14.jpg");
 //        insertProductImage(35, "clear serum ", "skin care", "a soothing face wash skin product", 14.99, 34, "C:\\initialshopping\\skin11.jpg");
 //         insertProductImage(17, "lavender case ", "phone case", "a pretty case phone case mobile cover", 19.99, 34, "C:\\initialshopping\\phonecase5.jpg");
-          //insertProductImage(18, "tumbler set of 3", "bottle", "bottles", 13.99, 12, "C:\\initialshopping\\tumbler1.jpg");
-          insertProductImage(19, "named tumbler", "bottle", "bottles tumbler bottle", 13.99, 12, "C:\\initialshopping\\tumbler2.jpg");
+//          insertProductImage(18, "tumbler set of 3", "bottle", "bottles", 13.99, 12, "C:\\initialshopping\\tumbler1.jpg");
+//          insertProductImage(19, "named tumbler", "bottle", "bottles tumbler bottle", 13.99, 12, "C:\\initialshopping\\tumbler2.jpg");
           
           
         // Create GUI with search functionality
         ////////////////////////////////
         createSearchableProductDisplay();
+       // displayAllProducts();
     }
   
 
@@ -67,13 +68,14 @@ public class InsertImageWithPath extends JFrame {
     }
 
     String userEmail = SessionManager.getLoggedInUserEmail();
+    String userName=SessionManager.getLoggedInUserName();
     if (userEmail == null || userEmail.isEmpty()) {
         System.out.println("User email is null or empty. Cannot fetch cart items.");
         return;
     }
 
     Database db = Database.getInstance();
-    java.util.List<CartItem> cartItems = db.getCartItemsByuseremail(userEmail);
+    java.util.List<CartItem> cartItems = db.getCartItemsByUsername(userName);
 
     int totalQuantity = 0;
     for (CartItem item : cartItems) {
@@ -331,10 +333,11 @@ public static void displayAllProducts() {
     if (currentQuantity <= 0) {
         JOptionPane.showMessageDialog(null, "Invalid quantity. Please select a valid quantity.", "Error", JOptionPane.ERROR_MESSAGE);
     } else {
-        String useremail = SessionManager.getLoggedInUserEmail();
+      //  String useremail = SessionManager.getLoggedInUserEmail();
+        String username=SessionManager.getLoggedInUserName();
         
-        if (useremail != null && !useremail.isEmpty()) {
-            db.addItemToCart(useremail, productId, currentQuantity, price);
+        if (username != null && !username.isEmpty()) {
+            db.addItemToCart(username, productId, currentQuantity, price);
             JOptionPane.showMessageDialog(null, "Product added to cart successfully! Quantity: " + currentQuantity);
             
             // Update the cart label with the latest item count

@@ -26,7 +26,7 @@ public class showcartitems {
         String username = SessionManager.getLoggedInUserName(); // You can keep this if you want the first name
 
         // Fetch the cart items for the logged-in user
-        List<CartItem> cartItems = db.getCartItemsByuseremail(userEmail);  // Correct method name
+        List<CartItem> cartItems = db.getCartItemsByUsername(username);  // Correct method name
 
         // Prepare data to display
         StringBuilder cartDetails = new StringBuilder("Cart Items for " + username + ":\n\n");
@@ -77,7 +77,7 @@ public class showcartitems {
                             if (itemNumberToClear >= 1 && itemNumberToClear < itemNumber) {
                                 // Get the product ID for the selected item number
                                 int productIdToRemove = cartItems.get(itemNumberToClear - 1).getProductId(); // Adjusted to get product ID directly from CartItem
-                                db.removeItemFromCart(userEmail, productIdToRemove); // Remove the item
+                                db.removeItemFromCart(username, productIdToRemove); // Remove the item
                                 JOptionPane.showMessageDialog(null, "Item removed successfully.");
                             } else {
                                 JOptionPane.showMessageDialog(null, "Invalid item number.");
@@ -88,7 +88,7 @@ public class showcartitems {
                     }
                 } else if (input.equals("2")) {
                     // Clear entire cart
-                    db.clearCart(userEmail); // Clears the entire cart for this user
+                    db.clearCart(username); // Clears the entire cart for this user
                     JOptionPane.showMessageDialog(null, "Cart cleared successfully.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid option.");

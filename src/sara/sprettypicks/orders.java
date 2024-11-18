@@ -12,11 +12,11 @@ import java.sql.Statement; // This is necessary for Statement.RETURN_GENERATED_K
 
 
 public class orders {
-public int storeOrderInDatabase(String userEmail, double totalBill, String shippingAddress) {
+public int storeOrderInDatabase(String userName, double totalBill, String shippingAddress) {
     int orderId = -1; // Default to -1 to indicate not found
 
     // SQL query to insert a new order
-    String query = "INSERT INTO orders (user_email, total_amount, shipping_address, order_status) VALUES (?, ?, ?, ?)";
+    String query = "INSERT INTO orders (user_name, total_amount, shipping_address, order_status) VALUES (?, ?, ?, ?)";
 
     try (Connection conn = Database.getInstance().connect()) {
         if (conn == null) {
@@ -25,7 +25,7 @@ public int storeOrderInDatabase(String userEmail, double totalBill, String shipp
 
         // Prepare the statement with the correct query to retrieve generated keys
         PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, userEmail);
+        ps.setString(1, userName);
         ps.setDouble(2, totalBill);
         ps.setString(3, shippingAddress);
         ps.setString(4, "Pending"); // Set the initial order status
@@ -110,30 +110,40 @@ public int storeOrderInDatabase(String userEmail, double totalBill, String shipp
 
 
       // Method to get order ID by user email
-    public int getOrderIdByEmail(String userEmail) {
-        int orderId = -1; // Default to -1 to indicate not found
+   public int getOrderIdByUsername(String username) {
+    int orderId = -1; // Default to -1 to indicate not found
 
-        // Establish a connection to the database
-        try (Connection conn = Database.getInstance().connect()) {
-            String query = "SELECT order_id FROM orders WHERE user_email = ? ORDER BY order_id DESC LIMIT 1"; // Get the latest order
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, userEmail);
-
-            // Execute the query
-            ResultSet rs = ps.executeQuery();
-
-            // Check if an order exists for the given email
-            if (rs.next()) {
-                orderId = rs.getInt("order_id"); // Retrieve the order ID
-            } else {
-                System.out.println("No orders found for the user: " + userEmail); // Handle case where no orders exist
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Print stack trace for debugging
+    // Establish a connection to the database
+    try (Connection conn = Database.getInstance().connect()) {
+        if (conn == null) {
+            System.out.println("Database connection failed.");
+            return -1; // Return -1 if the connection failed
         }
 
-        return orderId; // Return the retrieved order ID
+        String query = "SELECT order_id FROM orders WHERE user_name = ? ORDER BY order_id DESC LIMIT 1"; // Get the latest order by username
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, username);
+
+        // Execute the query
+        ResultSet rs = ps.executeQuery();
+        System.out.println("Executing query for username: " + username); // Log the query being executed
+
+        // Check if an order exists for the given username
+        if (rs.next()) {
+            orderId = rs.getInt("order_id"); // Retrieve the order ID
+            System.out.println("Found Order ID: " + orderId); // Log the retrieved order ID
+        } else {
+            System.out.println("No orders found for the user: " + username); // Handle case where no orders exist
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL error occurred.");
+        e.printStackTrace(); // Print stack trace for debugging
     }
+
+    return orderId; // Return the retrieved order ID
+}
+
+
  public boolean updateOrderStatus(int orderId, String newStatus) {
         boolean isUpdated = false; // Default value
 

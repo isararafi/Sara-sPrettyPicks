@@ -298,7 +298,7 @@ public class loginformfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_signupbuttonActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-       // Get username and password from fields
+        // Get username and password from fields
 String username = usernamefield.getText();
 String password = new String(passwordfield.getPassword());
 
@@ -321,6 +321,7 @@ if (customerradio.isSelected()) {
         String email = null;
         try {
             email = db.getEmailByUsername(username); // Assuming `getEmailByUsername` is a method in Database to fetch email by username
+           
         } catch (SQLException ex) {
             Logger.getLogger(loginformfacade.class.getName()).log(Level.SEVERE, null, ex);
         }

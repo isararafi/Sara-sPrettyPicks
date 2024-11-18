@@ -31,11 +31,12 @@ public class surprisecheckout {
 
     // Method to handle the checkout process
    public void checkout() {
-    String email = SessionManager.getLoggedInUserEmail(); // Method to get current logged-in user's email
+    //String email = SessionManager.getLoggedInUserEmail(); // Method to get current logged-in user's email
+    String Username=SessionManager.getLoggedInUserName();
 
     try {
         // Fetch all items in the user's cart from the database
-        List<CartItem> cartItems = db.getCartItemsByuseremail(email);
+        List<CartItem> cartItems = db.getCartItemsByUsername(Username);
 
         if (cartItems == null || cartItems.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -80,13 +81,13 @@ public class surprisecheckout {
 
             // Step 2: Insert Order into the orders table, including the shipping address
             orders ob = new orders();
-            int orderId = ob.storeOrderInDatabase(email, totalBill, shippingAddress); // Modify this method to accept shipping address
+            int orderId = ob.storeOrderInDatabase(Username, totalBill, shippingAddress); // Modify this method to accept shipping address
 
             // Step 3: Store cart items in the order_items table
             ob.storeOrderItemsInDatabase(orderId, cartItems);
 
             // Step 4: Handle payment without discount
-            handlePayment(totalBill, db, email);
+            handlePayment(totalBill, db, Username);
         }
 
     } catch (HeadlessException | SQLException e) {
@@ -123,7 +124,7 @@ public class surprisecheckout {
     }
 
     // Method to handle payment processing
-    public void handlePayment(double totalBill, Database db, String userEmail) throws SQLException {
+    public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
         // Prompt the user to enter the payment amount, showing the total amount
           
         String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
@@ -144,7 +145,7 @@ public class surprisecheckout {
         // Proceed with payment handling
         if (paymentAmount >= totalBill) {
             double change = paymentAmount - totalBill;
-            boolean paymentSaved = db.savePayment(userEmail, totalBill, paymentAmount);
+            boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
 
             if (paymentSaved) {
                 String message = "Payment successful!";

@@ -146,50 +146,113 @@ public class Database {
 }
 
 
-  public void addItemToCart(String useremail, int productId, int quantity, double price) {
+  public void addItemToCart(String username, int productId, int quantity, double price) {
     try {
-        // Check if the product already exists in the cart
-        String query = "SELECT c.first_name, cart.quantity " +
-               "FROM cart " +
-               "JOIN customers c ON cart.user_email = c.email " + // Ensure 'c.email' matches the actual column name in 'customers'
-               "WHERE cart.user_email = ? AND cart.product_id = ?";
+        // Check if the username exists in the customers table
+        String checkUserQuery = "SELECT cuser_name FROM customers WHERE cuser_name = ?";
+        PreparedStatement checkUserStmt = connect().prepareStatement(checkUserQuery);
+        checkUserStmt.setString(1, username);
+        ResultSet userRs = checkUserStmt.executeQuery();
 
-        PreparedStatement stmt = connect().prepareStatement(query);
-        stmt.setString(1, useremail);
-        stmt.setInt(2, productId);
+        if (userRs.next()) {
+            // User exists, proceed with adding to the cart
 
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            // Product exists in the cart, update its quantity
-            int existingQuantity = rs.getInt("quantity");
+            // First, check if the product is already in the cart
+            String checkCartQuery = "SELECT quantity FROM cart WHERE user_name = ? AND product_id = ?";
+            PreparedStatement checkCartStmt = connect().prepareStatement(checkCartQuery);
+            checkCartStmt.setString(1, username);
+            checkCartStmt.setInt(2, productId);
+            ResultSet cartRs = checkCartStmt.executeQuery();
 
-            // Debug: Print the existing quantity in the database
-            System.out.println("Existing quantity in cart: " + existingQuantity);
+            if (cartRs.next()) {
+                // Product exists in the cart, update its quantity
+                int existingQuantity = cartRs.getInt("quantity");
+                int newQuantity = existingQuantity + quantity; // Update the quantity based on the new quantity
 
-            // Update the quantity based on what is passed (no additional changes)
-           String updateQuery = "UPDATE cart SET quantity = ? " +
-                     "WHERE user_email = (SELECT email FROM customers WHERE first_name = ?) " +
-                     "AND product_id = ?";
+                // Update the quantity in the cart
+                String updateCartQuery = "UPDATE cart SET quantity = ? WHERE user_name = ? AND product_id = ?";
+                PreparedStatement updateCartStmt = connect().prepareStatement(updateCartQuery);
+                updateCartStmt.setInt(1, newQuantity);
+                updateCartStmt.setString(2, username);
+                updateCartStmt.setInt(3, productId);
+                updateCartStmt.executeUpdate();
+                System.out.println("Updated quantity in the cart.");
+            } else {
+                // Product does not exist in the cart, insert it
+                String insertCartQuery = "INSERT INTO cart (user_name, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+                PreparedStatement insertCartStmt = connect().prepareStatement(insertCartQuery);
+                insertCartStmt.setString(1, username);
+                insertCartStmt.setInt(2, productId);
+                insertCartStmt.setInt(3, quantity);
+                insertCartStmt.setDouble(4, price);
+                insertCartStmt.executeUpdate();
+                System.out.println("Item added to the cart.");
+            }
 
-            PreparedStatement updateStmt = connect().prepareStatement(updateQuery);
-            updateStmt.setInt(1, quantity);  // Set the exact quantity, no addition
-            updateStmt.setString(2, useremail);
-            updateStmt.setInt(3, productId);
-            updateStmt.executeUpdate();
+            // Now, add the item to the order_items table
+            // Get the order_id of the user's current pending order, or create a new order
+            int orderId = createOrderIfNeeded(username);
+
+            if (orderId != -1) {
+                String insertOrderItemsQuery = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+                PreparedStatement insertOrderItemsStmt = connect().prepareStatement(insertOrderItemsQuery);
+                insertOrderItemsStmt.setInt(1, orderId);  // Insert the order_id
+                insertOrderItemsStmt.setInt(2, productId);
+                insertOrderItemsStmt.setInt(3, quantity);  // Insert the quantity
+                insertOrderItemsStmt.setDouble(4, price);
+                insertOrderItemsStmt.executeUpdate();
+                System.out.println("Item added to order_items with order_id: " + orderId);
+            }
         } else {
-            // Insert the new product into the cart
-            String insertQuery = "INSERT INTO cart (user_email, product_id, quantity, price) VALUES (?, ?, ?, ?)";
-            PreparedStatement insertStmt = connect().prepareStatement(insertQuery);
-            insertStmt.setString(1, useremail);
-            insertStmt.setInt(2, productId);
-            insertStmt.setInt(3, quantity);  // Insert the exact quantity
-            insertStmt.setDouble(4, price);
-            insertStmt.executeUpdate();
+            // Handle case where the username doesn't exist
+            System.out.println("Username does not exist in the customers table.");
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
 }
+
+private int createOrderIfNeeded(String username) {
+    int orderId = -1;
+
+    // Check if there is an existing order with status "Pending" for the user
+    String query = "SELECT order_id FROM orders WHERE user_name = ? AND order_status = 'Pending'";
+
+    try (Connection conn = Database.getInstance().connect()) {
+        if (conn == null) {
+            throw new SQLException("Failed to connect to the database.");
+        }
+
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            // If a pending order exists, return its order_id
+            orderId = rs.getInt("order_id");
+        } else {
+            // If no pending order exists, create a new order
+            String insertOrderQuery = "INSERT INTO orders (user_name, order_status) VALUES (?, 'Pending')";
+            PreparedStatement insertOrderStmt = conn.prepareStatement(insertOrderQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            insertOrderStmt.setString(1, username);
+            insertOrderStmt.executeUpdate();
+
+            // Retrieve the generated order_id
+            ResultSet generatedKeys = insertOrderStmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                orderId = generatedKeys.getInt(1);
+                System.out.println("Created new order with order_id: " + orderId);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return orderId;
+}
+
+
+
 
 
 
@@ -266,15 +329,15 @@ public class Database {
 
  
 // Remove a specific item from the cart
-public void removeItemFromCart(String email, int productId) {
+public void removeItemFromCart(String username, int productId) {
     Connection conn = null;
     PreparedStatement pstmt = null;
 
     try {
         conn = connect(); // Ensure you're using the correct connection method
-        String sql = "DELETE FROM cart WHERE user_email = ? AND product_id = ?"; // Adjust SQL query accordingly
+        String sql = "DELETE FROM cart WHERE user_name = ? AND product_id = ?"; // Adjust SQL query accordingly
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, email);
+        pstmt.setString(1, username);
         pstmt.setInt(2, productId);
 
         int rowsAffected = pstmt.executeUpdate();
@@ -307,7 +370,7 @@ public void removeItemFromCart(String email, int productId) {
 
 
 // Clear the entire cart for the user
-public void clearCart(String email) {
+public void clearCart(String username) {
     Connection conn = null;
     PreparedStatement pstmt = null;
 
@@ -316,11 +379,11 @@ public void clearCart(String email) {
        conn = Database.this.connect();
 
         // SQL query to clear all items from the cart for the logged-in user
-        String sql = "DELETE FROM cart WHERE user_email = ?";
+        String sql = "DELETE FROM cart WHERE user_name = ?";
 
         // Prepare the statement
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, email);
+        pstmt.setString(1, username);
 
         // Execute the query
         int rowsAffected = pstmt.executeUpdate();
@@ -446,14 +509,14 @@ public boolean resetPassword(String email, String newPassword) {
 
 
 
-public boolean savePayment(String userEmail, double totalBill, double paymentAmount) throws SQLException {
-    String query = "INSERT INTO billing_info (user_email, total_bill, payment_amount, payment_status) VALUES (?, ?, ?, ?)";
+public boolean savePayment(String userName, double totalBill, double paymentAmount) throws SQLException {
+    String query = "INSERT INTO billing_info (user_name, total_bill, payment_amount, payment_status) VALUES (?, ?, ?, ?)";
     
     try (Connection conn = connect(); 
          PreparedStatement stmt = conn.prepareStatement(query)) {
         
         // Set values for the SQL statement
-        stmt.setString(1, userEmail);          // Set user email
+        stmt.setString(1, userName);          // Set user email
         stmt.setDouble(2, totalBill);          // Set total bill amount
         stmt.setDouble(3, paymentAmount);      // Set payment amount
         stmt.setString(4, "Completed");        // Set payment status (could be "Pending" or "Completed")
@@ -733,12 +796,15 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
     }
 }
  
-     public List<CartItem> getCartItemsByuseremail(String email) {
+     public List<CartItem> getCartItemsByUsername(String username) {
     List<CartItem> cartItems = new ArrayList<>();
-    String query = "SELECT p.product_id, p.name, c.quantity, p.price FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.user_email = ?";
+    String query = "SELECT p.product_id, p.name, c.quantity, p.price " +
+                   "FROM cart c " +
+                   "JOIN products p ON c.product_id = p.product_id " +
+                   "WHERE c.user_name = ?";
     
     try (Connection conn = db.connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setString(1, email);
+        stmt.setString(1, username); // Set the username parameter
         ResultSet rs = stmt.executeQuery();
         
         while (rs.next()) {
@@ -747,15 +813,13 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
             int quantity = rs.getInt("quantity");
             double price = rs.getDouble("price");
             
+            // Create a CartItem object and add it to the list
             CartItem item = new CartItem(productId, productName, quantity, price);
             cartItems.add(item);
         }
     } catch (SQLException e) {
-        e.printStackTrace();
+        e.printStackTrace(); // Print stack trace for debugging
     }
-    return cartItems;
+    return cartItems; // Return the list of cart items
 }
-
-
-
 }
