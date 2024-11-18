@@ -48,7 +48,7 @@ public class Signupformfacade extends javax.swing.JFrame {
         passwordtext = new javax.swing.JPasswordField();
         passwordlabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        confirmpasswordtext = new javax.swing.JPasswordField();
+        confirmpassword = new javax.swing.JPasswordField();
         signup = new javax.swing.JButton();
         confirmpasswordlabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -96,6 +96,12 @@ public class Signupformfacade extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Confirm Password");
 
+        confirmpassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmpasswordActionPerformed(evt);
+            }
+        });
+
         signup.setBackground(new java.awt.Color(255, 153, 0));
         signup.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         signup.setForeground(new java.awt.Color(255, 255, 255));
@@ -122,25 +128,28 @@ public class Signupformfacade extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(usernamelabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(usernamelabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(namelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(emaillabel, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nametext, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(confirmpasswordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(signup, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(signup, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nametext, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(310, 310, 310)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -160,32 +169,32 @@ public class Signupformfacade extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(usernamelabel)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nametext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nametext, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(namelabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emaillabel)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordlabel)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(confirmpasswordtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(confirmpasswordlabel)
                 .addGap(45, 45, 45)
                 .addComponent(signup)
@@ -227,7 +236,7 @@ confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
 String username = usernametext.getText().trim();
 String email = emailtext.getText().trim();
 String password = new String(passwordtext.getPassword());
-String confirmPassword = new String(confirmpasswordtext.getPassword());
+String confirmPassword = new String(confirmpassword.getPassword());
 
 
     // Validation flags
@@ -302,14 +311,29 @@ if (name.isEmpty()) {
 }
 
 
-    if (confirmPassword.isEmpty()) {
-        confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm Password is a mandatory field. *</b></html>");
-    } else if (!password.equals(confirmPassword)) {
-        confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. Please enter again. *</b></html>");
-    } else if (validPassword) {
-        confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validConfirmPassword = true;
-    }
+  // Password format regex: Minimum 8 characters, at least one uppercase, one lowercase, one number, and one special character
+String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$";
+
+if (confirmPassword.isEmpty()) {  
+    // If the confirm password field is empty
+    confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm Password is a mandatory field. *</b></html>");
+    validConfirmPassword = false; // Ensure the flag is set to false
+} else if (!confirmPassword.matches(passwordRegex)) {  
+    // If confirm password does not match the defined format
+    confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm Password must match the required format. *</b></html>");
+    validConfirmPassword = false; // Ensure the flag is set to false
+} else if (!password.equals(confirmPassword)) { 
+    // If confirm password does not match the original password
+    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. Please enter again. *</b></html>");
+    validConfirmPassword = false; // Ensure the flag is set to false
+} else {
+    // If confirm password matches the original password and meets format criteria
+    confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+    validConfirmPassword = true; // Set the flag to true
+}
+
+
+
 
     // Check if all fields are valid
 if (validName && validUsername && validEmail && validPassword && validConfirmPassword) {
@@ -332,7 +356,7 @@ if (validName && validUsername && validEmail && validPassword && validConfirmPas
             usernametext.setText(""); // Clear the username field
             emailtext.setText(""); // Clear the email field
             passwordtext.setText(""); // Clear the password field
-            confirmpasswordtext.setText(""); // Clear the confirm password field
+            confirmpassword.setText(""); // Clear the confirm password field
 
             // Switch to the login frame
             loginformfacade loginFrame = new loginformfacade();
@@ -358,6 +382,10 @@ if (validName && validUsername && validEmail && validPassword && validConfirmPas
     private void passwordtextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordtextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordtextActionPerformed
+
+    private void confirmpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmpasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_confirmpasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -398,8 +426,8 @@ if (validName && validUsername && validEmail && validPassword && validConfirmPas
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField confirmpassword;
     private javax.swing.JLabel confirmpasswordlabel;
-    private javax.swing.JPasswordField confirmpasswordtext;
     private javax.swing.JLabel emaillabel;
     private javax.swing.JTextField emailtext;
     private javax.swing.JLabel jLabel1;
