@@ -96,7 +96,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        viewcustomer.setBackground(new java.awt.Color(102, 255, 102));
+        viewcustomer.setBackground(new java.awt.Color(153, 255, 102));
         viewcustomer.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
         viewcustomer.setText("View Customers");
         viewcustomer.addActionListener(new java.awt.event.ActionListener() {

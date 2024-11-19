@@ -9,7 +9,8 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-//admin 1,2,3 button done
+    //fix extra option coming during customer login and add product frame
+//admin 1,2,3,4 button done
     //applied singleton and facade,mvc
                     //************************************************************************88
                     /*Single Point of Access: The GUI frames serve as a single point of 
