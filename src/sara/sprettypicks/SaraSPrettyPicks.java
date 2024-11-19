@@ -9,7 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-    //fix extra option coming during customer login and add product frame
+    
 //admin 1,2,3,4 button done
     //applied singleton and facade,mvc
                     //************************************************************************88
