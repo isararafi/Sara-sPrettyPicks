@@ -133,6 +133,9 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="addproducts">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="66" green="ff" red="99" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Add Products"/>
               </Properties>
               <Events>
@@ -141,6 +144,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="deleteproducts">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="66" green="ff" red="99" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Delete Products"/>
               </Properties>
               <Events>
@@ -149,6 +155,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="showproducts">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="66" green="ff" red="99" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="View Products"/>
               </Properties>
               <Events>

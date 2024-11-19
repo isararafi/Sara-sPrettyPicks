@@ -67,6 +67,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(102, 153, 255));
 
+        addproducts.setBackground(new java.awt.Color(153, 255, 102));
         addproducts.setText("Add Products");
         addproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,6 +75,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             }
         });
 
+        deleteproducts.setBackground(new java.awt.Color(153, 255, 102));
         deleteproducts.setText("Delete Products");
         deleteproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,6 +83,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             }
         });
 
+        showproducts.setBackground(new java.awt.Color(153, 255, 102));
         showproducts.setText("View Products");
         showproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

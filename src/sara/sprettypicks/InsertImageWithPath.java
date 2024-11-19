@@ -97,7 +97,7 @@ public class InsertImageWithPath extends JFrame {
 
 
     // Method to insert product image
-    private static void insertProductImage(int productId, String name, String category, String description, double price, int quantity, String imagePath) {
+    public static void insertProductImage(int productId, String name, String category, String description, double price, int quantity, String imagePath) {
         try {
             // Get the database connection
             Database db = Database.getInstance();

@@ -4,9 +4,14 @@
  */
 package sara.sprettypicks;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -71,6 +76,12 @@ public class Addproducts extends javax.swing.JFrame {
         addproduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addproductActionPerformed(evt);
+            }
+        });
+
+        productIdTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productIdTextFieldActionPerformed(evt);
             }
         });
 
@@ -208,98 +219,66 @@ public class Addproducts extends javax.swing.JFrame {
     }//GEN-LAST:event_descriptionTextFieldActionPerformed
 
     private void addproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addproductActionPerformed
- // Retrieve the product details from the text fields
-String productId = productIdTextField.getText();
-String name = nameTextField.getText();
-String description = descriptionTextField.getText();
-String category = categoryTextField.getText();
-String priceStr = priceTextField.getText();
-String imagePath = imagetextfield.getText(); // Text field for image path
-String quantityStr = quantityTextField.getText(); // New text field for quantity
+        // Get the input values from the form
+        String productIdString = productIdTextField.getText(); // Should be String
+        String name = nameTextField.getText();
+        String description = descriptionTextField.getText();
+        String category = categoryTextField.getText();
+        String priceStr = priceTextField.getText();
+        String imagePath = imagetextfield.getText(); // Text field for image path
+        String quantityStr = quantityTextField.getText();
 
-// Validate input fields (ensure none are empty)
-if (productId.isEmpty() || name.isEmpty() || description.isEmpty() || category.isEmpty() || priceStr.isEmpty() || imagePath.isEmpty() || quantityStr.isEmpty()) {
-    JOptionPane.showMessageDialog(null, "Please fill in all fields!");
-    return; // Stop execution if validation fails
-}
+// Validate inputs to make sure none are empty
+        if (productIdString.isEmpty() || name.isEmpty() || description.isEmpty() || category.isEmpty() || priceStr.isEmpty() || imagePath.isEmpty() || quantityStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+            return; // Stop execution if validation fails
+        }
 
-// Convert price to a number (handle exceptions for incorrect formats)
-double price;
-try {
-    price = Double.parseDouble(priceStr);
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(null, "Invalid price format! Please enter a valid number.");
-    return; // Stop execution if validation fails
-}
+// Convert productId from String to int
+        int productId = 0;
+        try {
+            productId = Integer.parseInt(productIdString); // Convert productId from String to int
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid product ID format! Please enter a valid integer.");
+            return; // Stop execution if conversion fails
+        }
 
-// Convert quantity to an integer (handle exceptions for incorrect formats)
-int quantity;
-try {
-    quantity = Integer.parseInt(quantityStr);
-    if (quantity <= 0) throw new NumberFormatException(); // Ensure positive quantity
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(null, "Invalid quantity! Please enter a valid positive integer.");
-    return; // Stop execution if validation fails
-}
+// Convert price to double
+        double price = 0;
+        try {
+            price = Double.parseDouble(priceStr); // Convert price to double
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid price format! Please enter a valid number.");
+            return;
+        }
 
-// Database connection variables
-Connection con = null;
-PreparedStatement stmt = null;
+// Convert quantity to int
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(quantityStr); // Convert quantity to integer
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid quantity format! Please enter a valid integer.");
+            return;
+        }
 
-Database db = Database.getInstance();
+// Create an instance of InsertImageWithPath and call the insert method
+        InsertImageWithPath insertImage = new InsertImageWithPath();
+        insertImage.insertProductImage(productId, name, category, description, price, quantity, imagePath);
 
-try {
-    // Get connection from the Database class
-    con = db.connect(); // Assuming your Database class has a 'connect()' method that returns a Connection
-
-    // SQL query to insert product data, including quantity
-    String query = "INSERT INTO products (product_id, name, description, category, price, image, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    stmt = con.prepareStatement(query);
-
-    // Set the parameters in the prepared statement
-    stmt.setString(1, productId);
-    stmt.setString(2, name);
-    stmt.setString(3, description);
-    stmt.setString(4, category);
-    stmt.setDouble(5, price);
-    stmt.setString(6, imagePath); // Insert the image path into the database
-    stmt.setInt(7, quantity); // Insert the quantity into the database
-
-    // Execute the query (insert data into the database)
-    int rowsInserted = stmt.executeUpdate();
-
-    // Show success message if the insertion is successful
-    if (rowsInserted > 0) {
+// Optionally, show a confirmation message
         JOptionPane.showMessageDialog(null, "Product added successfully!");
-    }
 
-    // Clear the text fields after successful insertion
-    productIdTextField.setText("");
-    nameTextField.setText("");
-    descriptionTextField.setText("");
-    categoryTextField.setText("");
-    priceTextField.setText("");
-    imagetextfield.setText(""); // Clear the new image path field
-    quantityTextField.setText(""); // Clear the new quantity field
-
-} catch (SQLException e) {
-    // Handle SQL exceptions (e.g., connection issues or query errors)
-    JOptionPane.showMessageDialog(null, "Error while adding product to the database: " + e.getMessage());
-} finally {
-    // Close the statement and connection in the 'finally' block to avoid resource leaks
-    try {
-        if (stmt != null) stmt.close();
-        if (con != null) con.close(); // You may want to handle connection closing in your Database class
-    } catch (SQLException ex) {
-        ex.printStackTrace(); // Optionally log or handle the exception
-    }
-}
+       
 
     }//GEN-LAST:event_addproductActionPerformed
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameTextFieldActionPerformed
+
+    private void productIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIdTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_productIdTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
