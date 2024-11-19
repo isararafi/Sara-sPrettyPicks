@@ -298,7 +298,7 @@ public class loginformfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_signupbuttonActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-        // Get username and password from fields
+      // Get username and password from fields
 String username = usernamefield.getText();
 String password = new String(passwordfield.getPassword());
 
@@ -308,7 +308,7 @@ if (username.isEmpty() || password.isEmpty()) {
     return;
 }
 
-Database db = Database.getInstance();  //singleton pattern --reference variable
+Database db = Database.getInstance();  // Singleton pattern -- reference variable
 
 // Check which radio button is selected
 if (customerradio.isSelected()) {
@@ -321,7 +321,6 @@ if (customerradio.isSelected()) {
         String email = null;
         try {
             email = db.getEmailByUsername(username); // Assuming `getEmailByUsername` is a method in Database to fetch email by username
-           
         } catch (SQLException ex) {
             Logger.getLogger(loginformfacade.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -331,6 +330,8 @@ if (customerradio.isSelected()) {
 
             // Navigate to the customer dashboard
             customerdashboardfacade customerDashboard = new customerdashboardfacade(username);
+
+            // Ensure no unnecessary messages in customerDashboard initialization
             customerDashboard.setVisible(true);
             this.dispose(); // Close the login frame
         } else {
@@ -339,7 +340,7 @@ if (customerradio.isSelected()) {
     } else {
         JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.");
     }
-} if (adminradio.isSelected()) {
+} else if (adminradio.isSelected()) {
     // Check login credentials for an admin
     boolean isLoginSuccessful = db.checkAdminLogin(username, password);
     if (isLoginSuccessful) {
