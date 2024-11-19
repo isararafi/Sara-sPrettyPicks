@@ -50,7 +50,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         addproducts = new javax.swing.JButton();
         deleteproducts = new javax.swing.JButton();
         showproducts = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        viewcustomer = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -60,6 +60,8 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         admin = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        customer_table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +70,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(102, 153, 255));
 
         addproducts.setBackground(new java.awt.Color(153, 255, 102));
+        addproducts.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
         addproducts.setText("Add Products");
         addproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,6 +79,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         });
 
         deleteproducts.setBackground(new java.awt.Color(153, 255, 102));
+        deleteproducts.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
         deleteproducts.setText("Delete Products");
         deleteproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +88,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         });
 
         showproducts.setBackground(new java.awt.Color(153, 255, 102));
+        showproducts.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
         showproducts.setText("View Products");
         showproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,7 +96,14 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("View Customers");
+        viewcustomer.setBackground(new java.awt.Color(102, 255, 102));
+        viewcustomer.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
+        viewcustomer.setText("View Customers");
+        viewcustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewcustomerActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Delete Customers");
 
@@ -105,28 +117,29 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 45, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                    .addComponent(deleteproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(viewcustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
+                    .addComponent(showproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 34, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(41, 41, 41)
                 .addComponent(addproducts)
-                .addGap(29, 29, 29)
+                .addGap(26, 26, 26)
                 .addComponent(deleteproducts)
-                .addGap(33, 33, 33)
+                .addGap(34, 34, 34)
                 .addComponent(showproducts)
-                .addGap(24, 24, 24)
-                .addComponent(jButton5)
-                .addGap(33, 33, 33)
+                .addGap(29, 29, 29)
+                .addComponent(viewcustomer)
+                .addGap(28, 28, 28)
                 .addComponent(jButton6)
                 .addGap(34, 34, 34)
                 .addComponent(jButton7)
@@ -189,6 +202,19 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        customer_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "cust_username", "cust_email", "cust_firstname", "cust_lastname"
+            }
+        ));
+        jScrollPane2.setViewportView(customer_table);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -199,7 +225,9 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
@@ -207,13 +235,15 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap(1618, Short.MAX_VALUE))
         );
 
@@ -396,6 +426,43 @@ try {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void viewcustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcustomerActionPerformed
+        // TODO add your handling code here:
+        Database db = Database.getInstance();
+// Clear existing rows in the table before showing customer data
+DefaultTableModel tableModel = (DefaultTableModel) customer_table.getModel();
+tableModel.setRowCount(0);
+
+try {
+    // Retrieve the database connection
+    Connection conn = db.connect();
+    
+    // SQL query to retrieve all customer information
+    String sql = "SELECT cuser_name, email, first_name, last_name FROM customers";
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    
+    ResultSet rs = pstmt.executeQuery();
+    
+    while (rs.next()) {
+        String customerUsername = rs.getString("cuser_name");
+        String firstName = rs.getString("email");
+        String lastName = rs.getString("first_name");
+        String email = rs.getString("last_name");
+
+        // Add customer row to the table
+        tableModel.addRow(new Object[]{customerUsername, firstName, lastName, email});
+    }
+    
+    rs.close();
+    pstmt.close();
+    
+} catch (SQLException ex) {
+    ex.printStackTrace();
+    JOptionPane.showMessageDialog(this, "Error retrieving customer data from the database.");
+}
+
+    }//GEN-LAST:event_viewcustomerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -436,9 +503,9 @@ try {
     private javax.swing.JTable Product_table;
     private javax.swing.JButton addproducts;
     private javax.swing.JLabel admin;
+    private javax.swing.JTable customer_table;
     private javax.swing.JButton deleteproducts;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
@@ -447,6 +514,8 @@ try {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton showproducts;
+    private javax.swing.JButton viewcustomer;
     // End of variables declaration//GEN-END:variables
 }
