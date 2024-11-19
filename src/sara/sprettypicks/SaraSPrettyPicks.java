@@ -9,7 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-    
+    //add fairy lights images and data
 //admin 1,2,3,4 button done
     //applied singleton and facade,mvc
                     //************************************************************************88
