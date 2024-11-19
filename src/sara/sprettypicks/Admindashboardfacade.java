@@ -3,11 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package sara.sprettypicks;
+import java.awt.Component;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,8 +27,15 @@ public class Admindashboardfacade extends javax.swing.JFrame {
      */
     public Admindashboardfacade() {
         initComponents();
+        setUserNameInTextFieldadmin();
     }
-
+ private void setUserNameInTextFieldadmin() {
+    String username = SessionManager.getLoggedInUserName(); // Assuming you have a method to get the logged-in username.
+    
+    // Set the username in jTextField2
+    //jTextField2.setText(username);
+    admin.setText(username);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,12 +59,13 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        admin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 
-        jPanel2.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel2.setBackground(new java.awt.Color(102, 153, 255));
 
         addproducts.setText("Add Products");
         addproducts.addActionListener(new java.awt.event.ActionListener() {
@@ -131,19 +145,22 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(Product_table);
 
-        jPanel3.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel3.setBackground(new java.awt.Color(153, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Source Code Pro", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setText("Admin Dashboard");
 
-        jButton1.setBackground(new java.awt.Color(204, 255, 204));
-        jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton1.setText("Log Out");
+        jButton1.setBackground(new java.awt.Color(255, 153, 0));
+        jButton1.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jButton1.setText("Sign out");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        admin.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        admin.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -152,6 +169,8 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addGap(236, 236, 236)
+                .addComponent(admin, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
@@ -162,7 +181,8 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(admin))
                 .addContainerGap())
         );
 
@@ -175,8 +195,9 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,11 +206,11 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(1618, Short.MAX_VALUE))
         );
 
@@ -219,95 +240,145 @@ public class Admindashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_addproductsActionPerformed
 
     private void deleteproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteproductsActionPerformed
-                                               
-    // Get the selected row index
-    int selectedRow = Product_table.getSelectedRow();
-    
-    if (selectedRow == -1) {
-        // No row is selected, show an error message
-        JOptionPane.showMessageDialog(this, "Please select a product to delete.");
-        return;
+ // Get the selected row index
+int selectedRow = Product_table.getSelectedRow();
+
+if (selectedRow == -1) {
+    // No row is selected, show an error message
+    JOptionPane.showMessageDialog(this, "Please select a product to delete.");
+    return;
+}
+
+// Get the product ID from the selected row (assuming it's in the first column)
+DefaultTableModel tableModel = (DefaultTableModel) Product_table.getModel();
+String productId = tableModel.getValueAt(selectedRow, 0).toString();
+
+// Confirm the deletion action
+int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this product?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+if (confirm != JOptionPane.YES_OPTION) {
+    return; // If user clicks 'No', exit the method
+}
+
+// Database instance
+Database db = Database.getInstance();
+Connection conn = null;
+
+try {
+    // Establish the connection
+    conn = db.connect();
+    conn.setAutoCommit(false);  // Start transaction
+
+    // Step 1: Check if the product exists in the cart table
+    String checkCartSql = "SELECT COUNT(*) FROM cart WHERE product_id = ?";
+    PreparedStatement checkCartStmt = conn.prepareStatement(checkCartSql);
+    checkCartStmt.setString(1, productId);
+
+    ResultSet cartResult = checkCartStmt.executeQuery();
+    cartResult.next(); // Move to the first result
+    int cartCount = cartResult.getInt(1); // Get the count of rows with this product_id in the cart table
+
+    System.out.println("Cart Count: " + cartCount); // Debugging statement to check cart count
+
+    cartResult.close();
+    checkCartStmt.close();
+
+    if (cartCount > 0) {
+        // If the product exists in the cart table, delete it from the cart first
+        String deleteFromCartSql = "DELETE FROM cart WHERE product_id = ?";
+        PreparedStatement deleteFromCartStmt = conn.prepareStatement(deleteFromCartSql);
+        deleteFromCartStmt.setString(1, productId);
+        int cartRowsDeleted = deleteFromCartStmt.executeUpdate();
+        System.out.println("Rows deleted from cart: " + cartRowsDeleted);  // Debugging statement to check if item was deleted
+        deleteFromCartStmt.close();
+
+        // Now show a message to the user that the product was removed from the cart
+        JOptionPane.showMessageDialog(this, "Product was removed from the cart.");
     }
 
-    // Get the product ID from the selected row (assuming it's in the first column)
-    DefaultTableModel tableModel = (DefaultTableModel) Product_table.getModel();
-    String productId = tableModel.getValueAt(selectedRow, 0).toString();
+    // Step 2: Delete the product from the products table
+    String deleteProductSql = "DELETE FROM products WHERE product_id = ?";
+    PreparedStatement productStmt = conn.prepareStatement(deleteProductSql);
+    productStmt.setString(1, productId);
 
-    // Confirm the deletion action
-    int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this product?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-    if (confirm != JOptionPane.YES_OPTION) {
-        return; // If user clicks 'No', exit the method
+    int rowsDeleted = productStmt.executeUpdate(); // Execute the deletion from the products table
+    System.out.println("Rows deleted from products table: " + rowsDeleted);  // Debugging statement
+
+    productStmt.close();
+
+    if (rowsDeleted > 0) {
+        // If the deletion was successful, remove the row from the table
+        tableModel.removeRow(selectedRow);
+        JOptionPane.showMessageDialog(this, "Product deleted successfully.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Error: Product not found in the database.");
     }
 
-    // Now delete the product from the database
-    Database db = Database.getInstance();
-    try {
-        // Establish the connection
-        Connection conn = db.connect();
-        
-        // SQL query to delete the product from the database
-        String sql = "DELETE FROM products WHERE product_id = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        
-        // Set the product ID in the SQL query
-        pstmt.setString(1, productId);
-        
-        // Execute the deletion
-        int rowsDeleted = pstmt.executeUpdate();
-        
-        if (rowsDeleted > 0) {
-            // If the deletion was successful, remove the row from the table
-            tableModel.removeRow(selectedRow);
-            JOptionPane.showMessageDialog(this, "Product deleted successfully.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: Product not found in the database.");
+    // Commit the transaction
+    conn.commit();
+
+} catch (SQLException ex) {
+    // Handle SQLException which may include foreign key constraint violation
+    if (conn != null) {
+        try {
+            // Rollback in case of an error
+            conn.rollback();
+        } catch (SQLException rollbackEx) {
+            rollbackEx.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error during rollback: " + rollbackEx.getMessage());
         }
-
-        // Close resources
-        pstmt.close();
-        
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error deleting product from the database.");
     }
+
+    // Handle specific error codes
+    if (ex.getErrorCode() == 1451) { // MySQL error code for foreign key constraint violation
+       // JOptionPane.showMessageDialog(this, "Cannot delete the product. It is currently in someone's cart. Please remove it from the cart first.");
+    } else {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error deleting product from the database: " + ex.getMessage());
+    }
+} finally {
+    // Ensure the connection is closed regardless of success or failure
+    if (conn != null) {
+        try {
+            conn.close();
+        } catch (SQLException closeEx) {
+            closeEx.printStackTrace();
+        }
+    }
+}
+
 
     }//GEN-LAST:event_deleteproductsActionPerformed
 
     private void showproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showproductsActionPerformed
-                         Database db = Database.getInstance();                 
+             Database db = Database.getInstance();
 // Clear existing rows in the table before showing products
 DefaultTableModel tableModel = (DefaultTableModel) Product_table.getModel();
 tableModel.setRowCount(0);
 
 try {
-    // Retrieve the database connection from the Database class
+    // Retrieve the database connection
     Connection conn = db.connect();
     
-    // SQL query to retrieve all products from the database
+    // SQL query to retrieve all products (excluding image)
     String sql = "SELECT product_id, name, price, category, description, quantity FROM products";
     PreparedStatement pstmt = conn.prepareStatement(sql);
     
-    // Execute the query and get the result set
     ResultSet rs = pstmt.executeQuery();
     
-    // Iterate through the result set
     while (rs.next()) {
-        // Get product details from the current row
         String productId = rs.getString("product_id");
-        String productName = rs.getString("name"); // Ensure "name" is correct as per the database schema
-        double price = rs.getDouble("price"); // Added "price" to SQL query
+        String productName = rs.getString("name");
+        double price = rs.getDouble("price");
         String category = rs.getString("category");
         String description = rs.getString("description");
         int quantity = rs.getInt("quantity");
 
-        // Add a row to the table model with product data
+        // Add product row to the table without image
         tableModel.addRow(new Object[]{productId, productName, price, category, description, quantity});
     }
     
-    // Close resources after use
     rs.close();
     pstmt.close();
-    // No need to close conn here if you manage connection lifecycle in Database class
     
 } catch (SQLException ex) {
     ex.printStackTrace();
@@ -361,6 +432,7 @@ try {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Product_table;
     private javax.swing.JButton addproducts;
+    private javax.swing.JLabel admin;
     private javax.swing.JButton deleteproducts;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;

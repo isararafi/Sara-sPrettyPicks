@@ -339,7 +339,7 @@ if (customerradio.isSelected()) {
     } else {
         JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.");
     }
-} else if (adminradio.isSelected()) {
+} if (adminradio.isSelected()) {
     // Check login credentials for an admin
     boolean isLoginSuccessful = db.checkAdminLogin(username, password);
     if (isLoginSuccessful) {
@@ -348,16 +348,19 @@ if (customerradio.isSelected()) {
         // Set the logged-in admin's username in the session
         SessionManager.setLoggedInUserName(username);
 
-        // Navigate to the admin dashboard
+        // Open the admin dashboard
         Admindashboardfacade adminDashboard = new Admindashboardfacade();
         adminDashboard.setVisible(true);
-        this.dispose(); // Close the login frame
+
+        // Close the login frame
+        this.dispose();
     } else {
         JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.");
     }
 } else {
     JOptionPane.showMessageDialog(this, "Please select a user type.");
 }
+
 
     }//GEN-LAST:event_loginbuttonActionPerformed
 
