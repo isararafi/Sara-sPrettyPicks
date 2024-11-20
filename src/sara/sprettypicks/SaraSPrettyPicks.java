@@ -11,22 +11,22 @@ package sara.sprettypicks;
 public class SaraSPrettyPicks {
     //add fairy lights images and data
 //admin 1,2,3,4 button done
-    //applied singleton and facade,mvc
+    //applied singleton and observer,mvc
                     //************************************************************************88
                     /*Single Point of Access: The GUI frames serve as a single point of 
                     access for different functionalities (like browsing products, placing orders, 
                     viewing history), simplifying how the user interacts with the system.*/
-                //********************************************************************************
-                /*Hiding Complexity: The user doesn't need to know how the database 
-                  is queried or how orders are processed—they just interact with the graphical interface. 
-                  The complexity is hidden behind these frames, which delegate the tasks to other classes.*/
                     //*****************************************************************************
-                    /*in your system, the GUI frames can indeed be considered facade 
-                    classes, as they simplify user interaction by providing a clean, easy-to-use interface,
-                    while hiding the internal complexities of the system (such as database access, 
-                    product browsing, and order management). They serve as an intermediary between
-                    the user and the internal logic of the shopping system, 
-                    adhering to the Facade Design Pattern.*/
+                   /* Subject (Observable): The Admin acts as the subject, responsible for sending notifications. When the admin triggers a notification, the system notifies all registered observers (customers).
+
+                     Observers: The Customer class implements the Observer interface.
+                      Each customer registers themselves as an observer to receive notifications.
+                      When a notification is sent by the admin, the customers (observers) are notified
+                        and their JList (or notification list) is updated with the new message.
+                         Notification Flow: When the admin sends a notification, 
+                        the notifyObservers() method is called, and all customers in
+                        the system are updated with the new message via the update() method, 
+                        which adds the message to their notification list model (DefaultListModel).*/
     
         /**
      * @param args the command line arguments

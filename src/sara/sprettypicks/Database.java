@@ -5,6 +5,7 @@ package sara.sprettypicks;
  * @author sarar
  */
 
+import com.mysql.cj.xdevapi.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,9 +13,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
 
 
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 
@@ -890,6 +898,72 @@ public boolean deleteUserRelatedData() {
 
     return isDeleted;
 }
+ public static List<Customer> getCustomersFromDatabase() {
+    List<Customer> customers = new ArrayList<>();
+
+    // Use the existing connection to fetch data
+    String sql = "SELECT cuser_name FROM customers"; // Adjust the query if needed
+    try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+         java.sql.Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        // Loop through the result set and create Customer objects
+        while (rs.next()) {
+            String username = rs.getString("cuser_name");
+
+            // Create a DefaultListModel for notifications
+            DefaultListModel<String> notificationListModel = new DefaultListModel<>();
+
+            // Create the Customer object with the username and the new DefaultListModel
+            Customer customer = new Customer(username, notificationListModel);
+            customers.add(customer);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return customers;
+}
+ public static List<String> getAllNotifications() {
+    List<String> notifications = new ArrayList<>();
+    String sql = "SELECT message FROM notifications ORDER BY timestamp DESC";
+
+    try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+         java.sql.Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        while (rs.next()) {
+            notifications.add(rs.getString("message"));
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return notifications;
+}
+
+ public static void sendNotificationToAllCustomers(String message) {
+    // Insert the message into the notifications table (without customer-specific info)
+    String sql = "INSERT INTO notifications (message) VALUES (?)";
+
+    try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        // Set the notification message (no need for customer info here)
+        stmt.setString(1, message);
+        
+        // Execute the insertion for all notifications
+        stmt.executeUpdate();
+
+        System.out.println("Notification sent to all customers!");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
 
  
 }
