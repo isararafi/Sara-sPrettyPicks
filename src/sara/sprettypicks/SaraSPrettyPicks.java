@@ -9,7 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-    //add fairy lights images and data
+    //add view password option on login and signup page
 //admin 1,2,3,4 button done
     //applied singleton and observer,mvc
                     //************************************************************************88
