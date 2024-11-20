@@ -4,6 +4,7 @@
  */
 package sara.sprettypicks;
 
+import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 
 
@@ -32,6 +34,11 @@ public class loginformfacade extends javax.swing.JFrame {
     
     public loginformfacade() {
         initComponents();
+         ImageIcon eyeIcon = new ImageIcon("C:\\initialshopping\\eye.png"); // Load the image
+Image scaledImage = eyeIcon.getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH); // Scale to a smaller size (16x16)
+ImageIcon smallIcon = new ImageIcon(scaledImage); // Create a new ImageIcon with the scaled image
+button.setIcon(smallIcon); // Set the smaller icon on the button
+
     }
 
     /**
@@ -59,6 +66,7 @@ public class loginformfacade extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        button = new javax.swing.JButton();
 
         jLabel2.setText("LOGIN PAGE");
 
@@ -169,6 +177,13 @@ public class loginformfacade extends javax.swing.JFrame {
                 .addGap(136, 136, 136))
         );
 
+        button.setBackground(new java.awt.Color(255, 204, 51));
+        button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -204,7 +219,9 @@ public class loginformfacade extends javax.swing.JFrame {
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(resetpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(407, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(340, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,7 +237,9 @@ public class loginformfacade extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addGap(12, 12, 12)
-                        .addComponent(passwordfield, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(passwordfield, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(adminradio)
@@ -428,6 +447,20 @@ try {
     private void usernamefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernamefieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernamefieldActionPerformed
+private boolean isPasswordVisible = false; 
+    private void buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonActionPerformed
+      // TODO add your handling code here:
+if (isPasswordVisible) {
+    // Hide the password with bold round dots
+    passwordfield.setEchoChar('\u2022'); // Unicode character for a bold dot (●)
+    isPasswordVisible = false;
+} else {
+    // Show the password as plain text
+    passwordfield.setEchoChar((char) 0); // Display characters as plain text
+    isPasswordVisible = true;
+}
+
+    }//GEN-LAST:event_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -445,6 +478,7 @@ try {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton adminradio;
+    private javax.swing.JButton button;
     private javax.swing.JRadioButton customerradio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
