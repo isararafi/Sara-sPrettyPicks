@@ -9,7 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-   
+   //update customers after wishlists buttons
 //admin 1,2,3,4 button done
     //applied singleton and observer,mvc
                     //************************************************************************88

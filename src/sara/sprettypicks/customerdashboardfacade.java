@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +45,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
+import javax.swing.UIManager;
 
 /**
  *
@@ -120,7 +123,7 @@ notificationList.setModel(notificationListModel);
         checkout = new javax.swing.JButton();
         createwishlist = new javax.swing.JButton();
         showwishlist = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        findgift = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         reviews = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -230,13 +233,13 @@ notificationList.setModel(notificationListModel);
             }
         });
 
-        jButton9.setBackground(new java.awt.Color(102, 204, 255));
-        jButton9.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jButton9.setText("Find Gift???");
-        jButton9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        findgift.setBackground(new java.awt.Color(102, 204, 255));
+        findgift.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        findgift.setText("Find Gift???");
+        findgift.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        findgift.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                findgiftActionPerformed(evt);
             }
         });
 
@@ -297,7 +300,7 @@ notificationList.setModel(notificationListModel);
                                 .addComponent(browseproducts, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                                 .addComponent(viewcart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(showwishlist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(findgift, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(reviews, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(faqs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -325,7 +328,7 @@ notificationList.setModel(notificationListModel);
                 .addGap(18, 18, 18)
                 .addComponent(showwishlist, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(findgift, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -824,70 +827,99 @@ if (wishlistName != null && !wishlistName.trim().isEmpty()) {
 
     }//GEN-LAST:event_showwishlistActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+    private void findgiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findgiftActionPerformed
 
-        String[] recipientOptions = {"Friend", "Father", "Sibling", "Mother", "Child"};
-        String[] genderOptions = {"Male", "Female"};
-        String[] ageGroupOptions = {"16-20", "21-25", "26-30"};
+        
+        
+        
+          UIManager.put("OptionPane.okButtonText", "OK");
+        UIManager.put("OptionPane.cancelButtonText", "Cancel");
+        UIManager.put("Button.background", new Color(255, 165, 0)); // Lighter orange
+ // Default button background
 
-        // Select recipient type
-        String recipientType = (String) JOptionPane.showInputDialog(
-                null,
-                "Select the type of recipient:",
-                "Find Gift",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                recipientOptions,
-                recipientOptions[0]
-        );
-
-        // Select gender
-        String gender = (String) JOptionPane.showInputDialog(
-                null,
-                "Select the gender of the recipient:",
-                "Find Gift",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                genderOptions,
-                genderOptions[0]
-        );
-
-        // Select age group
-        String ageGroup = (String) JOptionPane.showInputDialog(
-                null,
-                "Select the age group of the recipient:",
-                "Find Gift",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                ageGroupOptions,
-                ageGroupOptions[0]
-        );
-
-        if (recipientType != null && gender != null && ageGroup != null) {
-            GiftFinder giftt = new GiftFinder();
-            // Fetch gift options based on recipient type, gender, and age group
-            List<Product> giftOptions = giftt.fetchGiftOptionsFromDatabase(recipientType, gender, ageGroup);
-
-            if (giftOptions.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No gifts found for " + recipientType + " with gender " + gender + " and age group " + ageGroup);
-            } else {
-                StringBuilder giftsMessage = new StringBuilder("Available gifts for " + recipientType + ":\n\n");
-                for (Product gift : giftOptions) {
-                    giftsMessage.append(gift.getName())
-                            .append(" - ")
-                            .append(gift.getDescription())
-                            .append(" ($")
-                            .append(gift.getPrice())
-                            .append(")\n");
-                }
-                JOptionPane.showMessageDialog(null, giftsMessage.toString());
+        // Customize button colors
+        UIManager.put("OptionPane.okButton", new JButton(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Empty action
             }
+        }));
+        UIManager.put("OptionPane.cancelButton", new JButton(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Empty action
+            }
+        }));
+        String[] recipientOptions = {"Friend", "Father", "Sibling", "Mother", "Child"};
+String[] genderOptions = {"Male", "Female"};
+String[] ageGroupOptions = {"16-20", "21-25", "26-30"};
+
+// Select recipient type
+String recipientType = (String) JOptionPane.showInputDialog(
+        null,
+        "Select the type of recipient:",
+        "Find Gift",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        recipientOptions,
+        recipientOptions[0]
+);
+
+// Select gender
+String gender = (String) JOptionPane.showInputDialog(
+        null,
+        "Select the gender of the recipient:",
+        "Find Gift",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        genderOptions,
+        genderOptions[0]
+);
+
+// Select age group
+String ageGroup = (String) JOptionPane.showInputDialog(
+        null,
+        "Select the age group of the recipient:",
+        "Find Gift",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        ageGroupOptions,
+        ageGroupOptions[0]
+);
+
+// Validate the selection based on certain conditions
+if (recipientType != null && gender != null && ageGroup != null) {
+    // Check for invalid combinations
+    if ((recipientType.equals("Mother") && gender.equals("Male")) || 
+        (recipientType.equals("Father") && gender.equals("Female")) ||
+        (ageGroup.equals("16-20") && (recipientType.equals("Father") || recipientType.equals("Mother")))) {
+        
+        JOptionPane.showMessageDialog(null, "Invalid selection: Please choose a valid combination of recipient type, gender, and age group.");
+    } else {
+        GiftFinder giftt = new GiftFinder();
+        // Fetch gift options based on recipient type, gender, and age group
+        List<Product> giftOptions = giftt.fetchGiftOptionsFromDatabase(recipientType, gender, ageGroup);
+
+        if (giftOptions.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No gifts found for " + recipientType + " with gender " + gender + " and age group " + ageGroup);
         } else {
-            JOptionPane.showMessageDialog(null, "Selection canceled.");
+            StringBuilder giftsMessage = new StringBuilder("Available gifts for " + recipientType + ":\n\n");
+            for (Product gift : giftOptions) {
+                giftsMessage.append(gift.getName())
+                        .append(" - ")
+                        .append(gift.getDescription())
+                        .append(" ($")
+                        .append(gift.getPrice())
+                        .append(")\n");
+            }
+            JOptionPane.showMessageDialog(null, giftsMessage.toString());
+        }
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "Selection canceled.");
 }
 
-
-    }//GEN-LAST:event_jButton9ActionPerformed
+    }//GEN-LAST:event_findgiftActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // This would be in your event listener for the "Surprise Me" button
@@ -1044,11 +1076,11 @@ if (wishlistName != null && !wishlistName.trim().isEmpty()) {
     private javax.swing.JLabel customer;
     private javax.swing.JButton deleteaccount;
     private javax.swing.JButton faqs;
+    private javax.swing.JButton findgift;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

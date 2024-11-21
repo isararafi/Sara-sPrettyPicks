@@ -147,7 +147,7 @@
                                       <Component id="browseproducts" alignment="0" pref="134" max="32767" attributes="0"/>
                                       <Component id="viewcart" alignment="0" max="32767" attributes="0"/>
                                       <Component id="showwishlist" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jButton9" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="findgift" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jButton6" alignment="0" max="32767" attributes="0"/>
                                       <Component id="reviews" alignment="0" max="32767" attributes="0"/>
                                       <Component id="faqs" alignment="0" max="32767" attributes="0"/>
@@ -181,7 +181,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="showwishlist" min="-2" pref="29" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jButton9" min="-2" pref="29" max="-2" attributes="0"/>
+                      <Component id="findgift" min="-2" pref="29" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton6" min="-2" pref="29" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -347,7 +347,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showwishlistActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton9">
+            <Component class="javax.swing.JButton" name="findgift">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="cc" red="66" type="rgb"/>
@@ -363,7 +363,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton9ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="findgiftActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton6">
