@@ -8,7 +8,11 @@ package sara.sprettypicks;
 import sara.sprettypicks.InsertImageWithPath;  // Adjust the package name as necessary
 
 import com.sun.jdi.connect.spi.Connection;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 
 /**
  *
@@ -113,8 +118,8 @@ notificationList.setModel(notificationListModel);
         viewcart = new javax.swing.JButton();
         faqs = new javax.swing.JButton();
         checkout = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        createwishlist = new javax.swing.JButton();
+        showwishlist = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         reviews = new javax.swing.JButton();
@@ -205,23 +210,23 @@ notificationList.setModel(notificationListModel);
             }
         });
 
-        jButton10.setBackground(new java.awt.Color(102, 204, 255));
-        jButton10.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jButton10.setText("Create WishLists");
-        jButton10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        createwishlist.setBackground(new java.awt.Color(102, 204, 255));
+        createwishlist.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        createwishlist.setText("Create WishLists");
+        createwishlist.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        createwishlist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                createwishlistActionPerformed(evt);
             }
         });
 
-        jButton8.setBackground(new java.awt.Color(102, 204, 255));
-        jButton8.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jButton8.setText("Show Wishlists");
-        jButton8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        showwishlist.setBackground(new java.awt.Color(102, 204, 255));
+        showwishlist.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        showwishlist.setText("Show Wishlists");
+        showwishlist.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        showwishlist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                showwishlistActionPerformed(evt);
             }
         });
 
@@ -288,10 +293,10 @@ notificationList.setModel(notificationListModel);
                         .addGap(37, 37, 37)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(createwishlist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(browseproducts, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                                 .addComponent(viewcart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(showwishlist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(reviews, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -316,9 +321,9 @@ notificationList.setModel(notificationListModel);
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(createwishlist, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(showwishlist, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -332,7 +337,7 @@ notificationList.setModel(notificationListModel);
                 .addContainerGap(277, Short.MAX_VALUE))
         );
 
-        notificationList.setBackground(new java.awt.Color(255, 255, 102));
+        notificationList.setBackground(new java.awt.Color(255, 204, 204));
         notificationList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -527,197 +532,297 @@ notificationList.setModel(notificationListModel);
 
     }//GEN-LAST:event_checkoutActionPerformed
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+    private void createwishlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createwishlistActionPerformed
         Database db = Database.getInstance();
-        String wishlistName = JOptionPane.showInputDialog(this, "Enter the name for your wishlist:");
+String wishlistName = JOptionPane.showInputDialog(this, "Enter the name for your wishlist:");
 
 // Validate wishlist name
-        if (wishlistName != null && !wishlistName.trim().isEmpty()) {
-            String userEmail = SessionManager.getLoggedInUserEmail(); // Get logged-in user's email
+if (wishlistName != null && !wishlistName.trim().isEmpty()) {
+    String userEmail = SessionManager.getLoggedInUserEmail(); // Get logged-in user's email
+    String userName = SessionManager.getLoggedInUserName();
 
-            // Check if the wishlist can be created
-            boolean wishlistCreated = db.createWishlist(userEmail, wishlistName);
-            if (wishlistCreated) {
-                JOptionPane.showMessageDialog(this, "Wishlist created successfully!");
+    // Check if the wishlist can be created
+    boolean wishlistCreated = db.createWishlist(userName, wishlistName);
+    if (wishlistCreated) {
+        JOptionPane.showMessageDialog(this, "Wishlist created successfully!");
 
-                // Fetch products for selection
-                List<String> productList = db.getAllProducts();
-                MultiSelectDialog multiSelectDialog = new MultiSelectDialog(this, productList);
-                multiSelectDialog.setVisible(true); // Show the dialog
+        // Fetch products for selection
+        List<String> productList = db.getAllProducts();
 
-                // Process selected products
-                if (multiSelectDialog.isConfirmed()) {
-                    List<String> selectedProducts = multiSelectDialog.getSelectedProducts();
-                    StringBuilder addedProducts = new StringBuilder(); // For accumulating added product names
-                    StringBuilder errorProducts = new StringBuilder(); // For accumulating error messages
+        // MultiSelectDialog logic integrated here
+        JDialog dialog = new JDialog(this, "Select Products", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(400, 300); // Adjust size as needed
 
-                    if (!selectedProducts.isEmpty()) {
-                        for (String selectedProduct : selectedProducts) {
-                            boolean productAdded = db.addProductToWishlist(userEmail, wishlistName, selectedProduct);
-                            if (productAdded) {
-                                addedProducts.append(selectedProduct).append(", "); // Add to successful list
-                            } else {
-                                errorProducts.append(selectedProduct).append(", "); // Add to error list
-                            }
-                        }
+        // Panel to hold checkboxes in grid layout
+        JPanel productPanel = new JPanel();
+        int rows = (int) Math.ceil(productList.size() / 3.0); // Example: 3 columns
+        productPanel.setLayout(new GridLayout(rows, 3, 10, 10)); // Rows, columns, hgap, vgap
 
-                        // Remove trailing comma and space
-                        if (addedProducts.length() > 0) {
-                            addedProducts.setLength(addedProducts.length() - 2);
-                        }
-                        if (errorProducts.length() > 0) {
-                            errorProducts.setLength(errorProducts.length() - 2);
-                        }
-
-                        // Show a single message with all added products
-                        String message = "Products added to wishlist: " + addedProducts.toString();
-                        if (errorProducts.length() > 0) {
-                            message += "\nError adding products: " + errorProducts.toString();
-                        }
-                        JOptionPane.showMessageDialog(this, message);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "No products selected.");
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Wishlist already exists!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Wishlist name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+        // Create and add checkboxes
+        List<JCheckBox> checkBoxes = new ArrayList<>();
+        for (String product : productList) {
+            JCheckBox checkBox = new JCheckBox(product);
+            checkBoxes.add(checkBox);
+            productPanel.add(checkBox);
         }
 
+        // Add product panel to the dialog
+        JScrollPane scrollPane = new JScrollPane(productPanel); // Add scroll if items overflow
+        dialog.add(scrollPane, BorderLayout.CENTER);
 
-    }//GEN-LAST:event_jButton10ActionPerformed
+        // Confirm and Cancel buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.setBackground(new Color(144, 238, 144)); // Light green
+ // Change color of confirm button
+        confirmButton.setForeground(Color.BLACK);
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.RED); // Change color of cancel button
+        cancelButton.setForeground(Color.BLACK);
 
-        Database db = Database.getInstance();
-        String userEmail = SessionManager.getLoggedInUserEmail(); // Get the logged-in user's email
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(cancelButton);
 
-        // Step 1: Fetch the wishlists for the user
-        List<String> wishlistNames = db.getWishlistsByUser(userEmail);
+        // Add button panel to dialog
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Create a panel to hold the dropdown and action buttons
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); // Vertical layout
+        // Action listeners for buttons
+        final boolean[] confirmed = {false};
+        confirmButton.addActionListener(e -> {
+            confirmed[0] = true;
+            dialog.dispose();
+        });
+        cancelButton.addActionListener(e -> dialog.dispose());
 
-        // Step 2: Create a dropdown menu for wishlists
-        JComboBox<String> wishlistDropdown = new JComboBox<>(wishlistNames.toArray(new String[0]));
-        mainPanel.add(new JLabel("Select Wishlist:"));
-        mainPanel.add(wishlistDropdown);
+        // Show the dialog
+        dialog.setVisible(true);
 
-        // Step 3: Create buttons that operate on the selected wishlist
-        JButton viewItemsButton = new JButton("View Items");
-        JButton addItemButton = new JButton("Add Item");
-        JButton deleteItemButton = new JButton("Delete Item");
-        JButton deleteWishlistButton = new JButton("Delete Wishlist");
+        // Process selected products if confirmed
+        if (confirmed[0]) {
+            List<String> selectedProducts = new ArrayList<>();
+            for (JCheckBox checkBox : checkBoxes) {
+                if (checkBox.isSelected()) {
+                    selectedProducts.add(checkBox.getText());
+                }
+            }
 
-        mainPanel.add(viewItemsButton);
-        mainPanel.add(addItemButton);
-        mainPanel.add(deleteItemButton);
-        mainPanel.add(deleteWishlistButton);
+            StringBuilder addedProducts = new StringBuilder(); // For accumulating added product names
+            StringBuilder errorProducts = new StringBuilder(); // For accumulating error messages
 
-        // Step 4: Action to show items
-        viewItemsButton.addActionListener(e -> {
-            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-            System.out.println("Selected Wishlist: " + selectedWishlist); // Debug line
+            if (!selectedProducts.isEmpty()) {
+                for (String selectedProduct : selectedProducts) {
+                    boolean productAdded = db.addProductToWishlist(userName, wishlistName, selectedProduct);
+                    if (productAdded) {
+                        addedProducts.append(selectedProduct).append(", "); // Add to successful list
+                    } else {
+                        errorProducts.append(selectedProduct).append(", "); // Add to error list
+                    }
+                }
 
-            List<String> items = db.getItemsInWishlist(userEmail, selectedWishlist);
-            System.out.println("Items Retrieved: " + items); // Debug line
+                // Remove trailing comma and space
+                if (addedProducts.length() > 0) {
+                    addedProducts.setLength(addedProducts.length() - 2);
+                }
+                if (errorProducts.length() > 0) {
+                    errorProducts.setLength(errorProducts.length() - 2);
+                }
 
-            // Display items in a JOptionPane
-            StringBuilder itemList = new StringBuilder("Items in " + selectedWishlist + ":\n");
-            if (items.isEmpty()) {
-                itemList.append("No items found in this wishlist.");
+                // Show a single message with all added products
+                String message = "Products added to wishlist: " + addedProducts.toString();
+                if (errorProducts.length() > 0) {
+                    message += "\nError adding products: " + errorProducts.toString();
+                }
+                JOptionPane.showMessageDialog(this, message);
             } else {
-                for (String item : items) {
-                    itemList.append(item).append("\n");
-                }
+                JOptionPane.showMessageDialog(this, "No products selected.");
             }
-            JOptionPane.showMessageDialog(null, itemList.toString());
-        });
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Wishlist already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(this, "Wishlist name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+}
 
-        // Action to delete the wishlist
-        deleteWishlistButton.addActionListener(e -> {
-            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-            int confirmed = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this wishlist?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-            if (confirmed == JOptionPane.YES_OPTION) {
-                boolean deleted = db.deleteWishlist(userEmail, selectedWishlist);
-                if (deleted) {
-                    JOptionPane.showMessageDialog(null, "Wishlist deleted successfully!");
-                    // Refresh the dropdown
-                    wishlistDropdown.setModel(new DefaultComboBoxModel<>(db.getWishlistsByUser(userEmail).toArray(new String[0])));
+    }//GEN-LAST:event_createwishlistActionPerformed
+
+    private void showwishlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showwishlistActionPerformed
+
+    Database db = Database.getInstance();
+    String userName = SessionManager.getLoggedInUserName(); // Get the logged-in user's email
+
+    // Step 1: Fetch the wishlists for the user
+    List<String> wishlistNames = db.getWishlistsByUser(userName);
+
+    // Create a panel to hold the dropdown and action buttons
+    JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new GridLayout(6, 1, 10, 10)); // Organized in a grid layout with spacing
+
+    // Step 2: Create a dropdown menu for wishlists
+    JComboBox<String> wishlistDropdown = new JComboBox<>(wishlistNames.toArray(new String[0]));
+    mainPanel.add(new JLabel("Select Wishlist:"));
+    mainPanel.add(wishlistDropdown);
+
+    // Step 3: Create buttons that operate on the selected wishlist
+    JButton viewItemsButton = new JButton("View Items");
+    JButton addItemButton = new JButton("Add Item");
+    JButton deleteItemButton = new JButton("Delete Item");
+    JButton deleteWishlistButton = new JButton("Delete Wishlist");
+
+    // Set button background colors to light orange
+    Color lightOrange = new Color(255, 200, 150);
+    viewItemsButton.setBackground(lightOrange);
+    addItemButton.setBackground(lightOrange);
+    deleteItemButton.setBackground(lightOrange);
+    deleteWishlistButton.setBackground(lightOrange);
+
+    // Add buttons to the main panel
+    mainPanel.add(viewItemsButton);
+    mainPanel.add(addItemButton);
+    mainPanel.add(deleteItemButton);
+    mainPanel.add(deleteWishlistButton);
+
+    // Step 4: Action to show items
+    viewItemsButton.addActionListener(ev -> {
+        String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+        List<String> items = db.getItemsInWishlist(userName, selectedWishlist);
+
+        // Display items in a JOptionPane
+        StringBuilder itemList = new StringBuilder("Items in " + selectedWishlist + ":\n");
+        if (items.isEmpty()) {
+            itemList.append("No items found in this wishlist.");
+        } else {
+            for (String item : items) {
+                itemList.append(item).append("\n");
+            }
+        }
+        JOptionPane.showMessageDialog(null, itemList.toString());
+    });
+
+    // Action to delete the wishlist
+    deleteWishlistButton.addActionListener(ev -> {
+        String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+        int confirmed = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this wishlist?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        if (confirmed == JOptionPane.YES_OPTION) {
+            boolean deleted = db.deleteWishlist(userName, selectedWishlist);
+            if (deleted) {
+                JOptionPane.showMessageDialog(null, "Wishlist deleted successfully!");
+                // Refresh the dropdown
+                wishlistDropdown.setModel(new DefaultComboBoxModel<>(db.getWishlistsByUser(userName).toArray(new String[0])));
+            } else {
+                JOptionPane.showMessageDialog(null, "Error deleting wishlist.");
+            }
+        }
+    });
+
+    // Action to add items to the wishlist
+    addItemButton.addActionListener(ev -> {
+    String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+    List<String> productList = db.getAllProducts(); // Fetch all products for selection
+
+    // Create a JPanel with GridLayout to display products in a grid
+    JPanel gridPanel = new JPanel();
+    gridPanel.setLayout(new GridLayout(0, 4, 10, 10)); // 4 columns, dynamic rows, with spacing
+
+    // Add each product as a button or label to the grid
+    for (String product : productList) {
+        JCheckBox productCheckbox = new JCheckBox(product); // Allow selection
+        gridPanel.add(productCheckbox);
+    }
+
+    // Add the grid panel to a scroll pane for large lists
+    JScrollPane scrollPane = new JScrollPane(gridPanel);
+    scrollPane.setPreferredSize(new Dimension(500, 300)); // Set preferred size
+
+    // Display the panel in a dialog
+    int option = JOptionPane.showConfirmDialog(
+        null, scrollPane, "Select Products to Add", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+    );
+
+    if (option == JOptionPane.OK_OPTION) {
+        // Collect selected products
+        List<String> selectedProducts = new ArrayList<>();
+        for (Component comp : gridPanel.getComponents()) {
+            if (comp instanceof JCheckBox checkbox && checkbox.isSelected()) {
+                selectedProducts.add(checkbox.getText());
+            }
+        }
+
+        if (!selectedProducts.isEmpty()) {
+            StringBuilder addedItems = new StringBuilder("Added to " + selectedWishlist + ":\n");
+            for (String selectedProduct : selectedProducts) {
+                boolean productAdded = db.addProductToWishlist(userName, selectedWishlist, selectedProduct);
+                if (productAdded) {
+                    addedItems.append(selectedProduct).append("\n");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error deleting wishlist.");
+                    JOptionPane.showMessageDialog(null, "Error adding product '" + selectedProduct + "' to wishlist.");
                 }
             }
-        });
+            JOptionPane.showMessageDialog(null, addedItems.toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "No products selected.");
+        }
+    }
+});
 
-        // Action to add items to the wishlist
-        addItemButton.addActionListener(e -> {
-            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-            // Step 1: Fetch all products for selection
-            List<String> productList = db.getAllProducts(); // Assuming you have this method in your Database class
+    // Action to delete items from the wishlist
+    deleteItemButton.addActionListener(ev -> {
+    String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+    List<String> itemsInWishlist = db.getItemsInWishlist(userName, selectedWishlist); // Fetch items in the selected wishlist
 
-            // Step 2: Show a dialog to allow multiple selections of products
-            MultiSelectDialog multiSelectDialog = new MultiSelectDialog(this, productList);
-            multiSelectDialog.setVisible(true); // Show the dialog
+    // Create a JPanel with GridLayout to display items in a grid
+    JPanel gridPanel = new JPanel();
+    gridPanel.setLayout(new GridLayout(0, 4, 3, 3)); // Smaller gap (3 pixels)
+ // 4 columns, dynamic rows, with spacing
 
-            // Step 3: Process selected products after dialog is closed
-            if (multiSelectDialog.isConfirmed()) {
-                List<String> selectedProducts = multiSelectDialog.getSelectedProducts();
-                if (!selectedProducts.isEmpty()) {
-                    StringBuilder addedItems = new StringBuilder("Added to " + selectedWishlist + ":\n");
-                    for (String selectedProduct : selectedProducts) {
-                        boolean productAdded = db.addProductToWishlist(userEmail, selectedWishlist, selectedProduct);
-                        if (productAdded) {
-                            addedItems.append(selectedProduct).append("\n");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error adding product '" + selectedProduct + "' to wishlist.");
-                        }
-                    }
-                    JOptionPane.showMessageDialog(null, addedItems.toString());
+    // Add each item as a checkbox to the grid
+    for (String item : itemsInWishlist) {
+        JCheckBox itemCheckbox = new JCheckBox(item); // Allow selection
+        gridPanel.add(itemCheckbox);
+    }
+
+    // Add the grid panel to a scroll pane for large lists
+    JScrollPane scrollPane = new JScrollPane(gridPanel);
+    scrollPane.setPreferredSize(new Dimension(500, 300)); // Set preferred size
+
+    // Display the panel in a dialog
+    int option = JOptionPane.showConfirmDialog(
+        null, scrollPane, "Select Items to Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+    );
+
+    if (option == JOptionPane.OK_OPTION) {
+        // Collect selected items
+        List<String> selectedItems = new ArrayList<>();
+        for (Component comp : gridPanel.getComponents()) {
+            if (comp instanceof JCheckBox checkbox && checkbox.isSelected()) {
+                selectedItems.add(checkbox.getText());
+            }
+        }
+
+        if (!selectedItems.isEmpty()) {
+            StringBuilder removedItems = new StringBuilder("Removed from " + selectedWishlist + ":\n");
+            for (String selectedItem : selectedItems) {
+                boolean itemDeleted = db.deleteItemFromWishlist(userName, selectedWishlist, selectedItem);
+                if (itemDeleted) {
+                    removedItems.append(selectedItem).append("\n");
                 } else {
-                    JOptionPane.showMessageDialog(null, "No products selected.");
+                    JOptionPane.showMessageDialog(null, "Error deleting item '" + selectedItem + "' from wishlist.");
                 }
             }
-        });
+            JOptionPane.showMessageDialog(null, removedItems.toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "No items selected.");
+        }
+    }
+});
 
-        // Action to delete items from the wishlist
-        deleteItemButton.addActionListener(e -> {
-            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-            // Step 1: Fetch items in the selected wishlist
-            List<String> itemsInWishlist = db.getItemsInWishlist(userEmail, selectedWishlist); // Fetch items in the current wishlist
 
-            // Step 2: Show a dialog to allow multiple selections of items to delete
-            MultiSelectDialog multiSelectDialog = new MultiSelectDialog(this, itemsInWishlist);
-            multiSelectDialog.setVisible(true); // Show the dialog
+    // Show the panel in a dialog
+    JOptionPane.showMessageDialog(null, mainPanel, "Manage Your Wishlists", JOptionPane.PLAIN_MESSAGE);
 
-            // Step 3: Process selected items after dialog is closed
-            if (multiSelectDialog.isConfirmed()) {
-                List<String> selectedItems = multiSelectDialog.getSelectedProducts(); // Assuming this returns the selected items
-                if (!selectedItems.isEmpty()) {
-                    StringBuilder removedItems = new StringBuilder("Removed from " + selectedWishlist + ":\n");
-                    for (String selectedItem : selectedItems) {
-                        boolean itemDeleted = db.deleteItemFromWishlist(userEmail, selectedWishlist, selectedItem); // Your method for deletion
-                        if (itemDeleted) {
-                            removedItems.append(selectedItem).append("\n");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error deleting item '" + selectedItem + "' from wishlist.");
-                        }
-                    }
-                    // Show removed items
-                    JOptionPane.showMessageDialog(null, removedItems.toString());
-                } else {
-                    JOptionPane.showMessageDialog(null, "No items selected.");
-                }
-            }
-        });
-
-        // Show the panel in a dialog
-        JOptionPane.showMessageDialog(null, mainPanel, "Manage Your Wishlists", JOptionPane.PLAIN_MESSAGE);
-
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_showwishlistActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
@@ -779,7 +884,7 @@ notificationList.setModel(notificationListModel);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Selection canceled.");
-        }
+}
 
 
     }//GEN-LAST:event_jButton9ActionPerformed
@@ -935,15 +1040,14 @@ notificationList.setModel(notificationListModel);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseproducts;
     private javax.swing.JButton checkout;
+    private javax.swing.JButton createwishlist;
     private javax.swing.JLabel customer;
     private javax.swing.JButton deleteaccount;
     private javax.swing.JButton faqs;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -961,6 +1065,7 @@ notificationList.setModel(notificationListModel);
     private javax.swing.JTextField jTextField1;
     private javax.swing.JList<String> notificationList;
     private javax.swing.JButton reviews;
+    private javax.swing.JButton showwishlist;
     private javax.swing.JButton viewcart;
     // End of variables declaration//GEN-END:variables
 }

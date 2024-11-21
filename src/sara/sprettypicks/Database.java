@@ -544,14 +544,14 @@ public boolean savePayment(String userName, double totalBill, double paymentAmou
  
 
 
-public boolean createWishlist(String userEmail, String wishlistName) {
+public boolean createWishlist(String username, String wishlistName) {
     // Check if the wishlist already exists
-    String checkWishlistQuery = "SELECT COUNT(*) FROM wishlists WHERE user_email = ? AND wishlist_name = ?";
+    String checkWishlistQuery = "SELECT COUNT(*) FROM wishlists WHERE user_name = ? AND wishlist_name = ?";
     
     try (Connection conn = connect();
          PreparedStatement checkStmt = conn.prepareStatement(checkWishlistQuery)) {
          
-        checkStmt.setString(1, userEmail);
+        checkStmt.setString(1, username);
         checkStmt.setString(2, wishlistName);
         
         try (ResultSet rs = checkStmt.executeQuery()) {
@@ -565,12 +565,12 @@ public boolean createWishlist(String userEmail, String wishlistName) {
     }
 
     // Proceed to create the wishlist
-    String insertWishlistQuery = "INSERT INTO wishlists (user_email, wishlist_name) VALUES (?, ?)";
+    String insertWishlistQuery = "INSERT INTO wishlists (user_name, wishlist_name) VALUES (?, ?)";
 
     try (Connection conn = connect();
          PreparedStatement insertStmt = conn.prepareStatement(insertWishlistQuery)) {
          
-        insertStmt.setString(1, userEmail);
+        insertStmt.setString(1, username);
         insertStmt.setString(2, wishlistName);
         insertStmt.executeUpdate();
         return true; // Wishlist created successfully
@@ -580,37 +580,56 @@ public boolean createWishlist(String userEmail, String wishlistName) {
     }
 }
 
- public  boolean addProductToWishlist(String userEmail, String wishlistName, String productName) {
-        String productIdQuery = "SELECT product_id FROM products WHERE name = ?";
-        String productInsertQuery = "INSERT INTO wishlist_items (wishlist_id, product_id) " +
-                                     "VALUES ((SELECT id FROM wishlists WHERE user_email = ? AND wishlist_name = ?), ?)";
+ public  boolean addProductToWishlist(String userName, String wishlistName, String productName) {
+       
+    String productIdQuery = "SELECT product_id FROM products WHERE name = ?";
+    String wishlistIdQuery = "SELECT id FROM wishlists WHERE user_name = ? AND wishlist_name = ?";
+    String productInsertQuery = "INSERT INTO wishlist_items (wishlist_id, product_id) VALUES (?, ?)";
 
-        try (Connection conn = this.connect()) {
-            // Get the product ID based on the selected product name
-            int productId = 0;
-            try (PreparedStatement productIdStmt = conn.prepareStatement(productIdQuery)) {
-                productIdStmt.setString(1, productName);
-                try (ResultSet productIdRs = productIdStmt.executeQuery()) {
-                    if (productIdRs.next()) {
-                        productId = productIdRs.getInt("product_id");
-                    } else {
-                        return false; // Product not found
-                    }
+    try (Connection conn = this.connect()) {
+        conn.setAutoCommit(false); // Start transaction
+
+        // Get the product ID
+        int productId = 0;
+        try (PreparedStatement productIdStmt = conn.prepareStatement(productIdQuery)) {
+            productIdStmt.setString(1, productName);
+            try (ResultSet productIdRs = productIdStmt.executeQuery()) {
+                if (productIdRs.next()) {
+                    productId = productIdRs.getInt("product_id");
+                } else {
+                    return false; // Product not found
                 }
             }
-
-            // Insert the product into the wishlist_items table
-            try (PreparedStatement productPstmt = conn.prepareStatement(productInsertQuery)) {
-                productPstmt.setString(1, userEmail);
-                productPstmt.setString(2, wishlistName);
-                productPstmt.setInt(3, productId);
-                productPstmt.executeUpdate();
-            }
-            return true; // Product added successfully
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false; // Error adding product to wishlist
         }
+
+        // Get the wishlist ID
+        int wishlistId = 0;
+        try (PreparedStatement wishlistIdStmt = conn.prepareStatement(wishlistIdQuery)) {
+            wishlistIdStmt.setString(1, userName);
+            wishlistIdStmt.setString(2, wishlistName);
+            try (ResultSet wishlistIdRs = wishlistIdStmt.executeQuery()) {
+                if (wishlistIdRs.next()) {
+                    wishlistId = wishlistIdRs.getInt("id");
+                } else {
+                    return false; // Wishlist not found
+                }
+            }
+        }
+
+        // Insert the product into the wishlist_items table
+        try (PreparedStatement productPstmt = conn.prepareStatement(productInsertQuery)) {
+            productPstmt.setInt(1, wishlistId);
+            productPstmt.setInt(2, productId);
+            productPstmt.executeUpdate();
+        }
+
+        conn.commit(); // Commit transaction
+        return true; // Product added successfully
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; // Error adding product to wishlist
+    }
+
  }
  
   public  List<String> getAllProducts() {
@@ -638,7 +657,7 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
                    "FROM wishlist_items wi " +
                    "JOIN products p ON wi.product_id = p.product_id " +
                    "JOIN wishlists w ON wi.wishlist_id = w.id " +
-                   "WHERE w.user_email = ? AND w.wishlist_name = ?;";
+                   "WHERE w.user_name = ? AND w.wishlist_name = ?;";
 
     try (Connection conn = connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -658,7 +677,7 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
   
   
   public boolean deleteWishlist(String userEmail, String wishlistName) {
-        String query = "DELETE FROM wishlists WHERE user_email = ? AND wishlist_name = ?";
+        String query = "DELETE FROM wishlists WHERE user_name = ? AND wishlist_name = ?";
         
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -680,11 +699,11 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
     }
   
   
- public boolean deleteItemFromWishlist(String userEmail, String wishlistName, String productName) {
+ public boolean deleteItemFromWishlist(String userName, String wishlistName, String productName) {
     String query = "DELETE wi " +
                    "FROM wishlist_items wi " +
                    "JOIN wishlists w ON wi.wishlist_id = w.id " +
-                   "WHERE w.user_email = ? AND w.wishlist_name = ? AND wi.product_id = ( " +
+                   "WHERE w.user_name = ? AND w.wishlist_name = ? AND wi.product_id = ( " +
                    "    SELECT p.product_id FROM products p WHERE p.name = ? " +
                    ");";
 
@@ -693,7 +712,7 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
 
     // Prepare statement and set parameters
     try (PreparedStatement pstmt = this.connect().prepareStatement(query)) {
-        pstmt.setString(1, userEmail);      // Set user email
+        pstmt.setString(1, userName);      // Set user email
         pstmt.setString(2, wishlistName);    // Set wishlist name
         pstmt.setString(3, productName);     // Set product name
 
@@ -716,7 +735,7 @@ public List<String> getItemsInWishlist(String userEmail, String wishlistName) {
   
   public List<String> getWishlistsByUser(String userEmail) {
     List<String> wishlists = new ArrayList<>();
-    String query = "SELECT wishlist_name FROM wishlists WHERE user_email = ?"; // Adjust table and column names accordingly
+    String query = "SELECT wishlist_name FROM wishlists WHERE user_name = ?"; // Adjust table and column names accordingly
 
     try (Connection conn = connect();
          PreparedStatement pstmt = conn.prepareStatement(query)) {
