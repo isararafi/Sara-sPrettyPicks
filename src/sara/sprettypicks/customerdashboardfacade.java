@@ -255,7 +255,7 @@ notificationList.setModel(notificationListModel);
 
         reviews.setBackground(new java.awt.Color(102, 204, 255));
         reviews.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        reviews.setText("give review");
+        reviews.setText("Give Review");
         reviews.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         reviews.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,7 +265,7 @@ notificationList.setModel(notificationListModel);
 
         jButton4.setBackground(new java.awt.Color(102, 204, 255));
         jButton4.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jButton4.setText("cancel order");
+        jButton4.setText("Cancel Order");
         jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -275,7 +275,7 @@ notificationList.setModel(notificationListModel);
 
         deleteaccount.setBackground(new java.awt.Color(102, 204, 255));
         deleteaccount.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
-        deleteaccount.setText("Delete account");
+        deleteaccount.setText("Delete Account");
         deleteaccount.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         deleteaccount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
