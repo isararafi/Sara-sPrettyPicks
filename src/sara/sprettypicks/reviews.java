@@ -142,12 +142,12 @@ public class reviews extends javax.swing.JFrame {
     }
 
     // Create an instance of SessionManager to get the logged-in user's email
-    SessionManager sessionManager = new SessionManager();
-    String customerEmail = sessionManager.getLoggedInUserEmail();
+    
+    String customerName=SessionManager.getLoggedInUserName();
 
     // Check if customerEmail is not null or empty
-    if (customerEmail == null || customerEmail.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Error: Customer email is not available.");
+    if (customerName == null || customerName.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Error: Customer name is not available.");
         return; // Exit if email is not available
     }
 
@@ -164,7 +164,7 @@ public class reviews extends javax.swing.JFrame {
     }
 
     // Create a Reviewclass object
-    Reviewclass review = new Reviewclass(selectedProductId, customerEmail, reviewText);
+    Reviewclass review = new Reviewclass(selectedProductId, customerName, reviewText);
 
     // Submit the review
     submitReview(review);
@@ -173,12 +173,12 @@ public class reviews extends javax.swing.JFrame {
 // Method to submit the review
 public void submitReview(Reviewclass review) {
     // SQL query to insert the review into the database
-    String query = "INSERT INTO reviews (product_id, customer_email, review_text) VALUES (?, ?, ?)";
+    String query = "INSERT INTO reviews (product_id, customer_username, review_text) VALUES (?, ?, ?)";
     
 
     try (PreparedStatement pstmt = db.connect().prepareStatement(query)) {
         pstmt.setInt(1, review.getProductId()); // Set product ID as int
-        pstmt.setString(2, review.getCustomerEmail()); // Set customer email
+        pstmt.setString(2, review.getCustomerUsername()); 
         pstmt.setString(3, review.getReviewText()); // Set review text
 
         // Execute the insert

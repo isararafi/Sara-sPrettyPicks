@@ -891,8 +891,9 @@ String ageGroup = (String) JOptionPane.showInputDialog(
 if (recipientType != null && gender != null && ageGroup != null) {
     // Check for invalid combinations
     if ((recipientType.equals("Mother") && gender.equals("Male")) || 
-        (recipientType.equals("Father") && gender.equals("Female")) ||
-        (ageGroup.equals("16-20") && (recipientType.equals("Father") || recipientType.equals("Mother")))) {
+    (recipientType.equals("Father") && gender.equals("Female")) ||
+    (ageGroup.equals("16-20") && recipientType.equals("Child")) ||
+    (ageGroup.equals("16-20") && (recipientType.equals("Father") || recipientType.equals("Mother"))))  {
         
         JOptionPane.showMessageDialog(null, "Invalid selection: Please choose a valid combination of recipient type, gender, and age group.");
     } else {

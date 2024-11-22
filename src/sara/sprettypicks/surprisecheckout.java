@@ -113,7 +113,7 @@ public class surprisecheckout {
 
             JOptionPane.showMessageDialog(null, cartDetails.toString(), "Discount Applied", JOptionPane.INFORMATION_MESSAGE);
             try {
-                handlePayment(totalBill, db, SessionManager.getLoggedInUserEmail());
+                handlePayment(totalBill, db, SessionManager.getLoggedInUserName());
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Payment failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

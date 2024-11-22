@@ -11,13 +11,13 @@ import sara.sprettypicks.Database;
  */
 public class Reviewclass {
     private int productId;
-    private String customerEmail;
+    private String customerUsername;
     private String reviewText;
 
     // Constructor
-    public Reviewclass(int productId, String customerEmail, String reviewText) {
+    public Reviewclass(int productId, String customerUsername, String reviewText) {
         this.productId = productId;
-        this.customerEmail = customerEmail;
+        this.customerUsername = customerUsername;
         this.reviewText = reviewText;
     }
 
@@ -26,8 +26,8 @@ public class Reviewclass {
         return productId;
     }
 
-    public String getCustomerEmail() {
-        return customerEmail;
+    public String getCustomerUsername() {
+        return customerUsername;
     }
 
     public String getReviewText() {
