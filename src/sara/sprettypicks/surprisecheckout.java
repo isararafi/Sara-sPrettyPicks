@@ -30,9 +30,8 @@ public class surprisecheckout {
     }
 
     // Method to handle the checkout process
-   public void checkout() {
-    //String email = SessionManager.getLoggedInUserEmail(); // Method to get current logged-in user's email
-    String Username=SessionManager.getLoggedInUserName();
+  public void checkout() {
+    String Username = SessionManager.getLoggedInUserName();
 
     try {
         // Fetch all items in the user's cart from the database
@@ -71,7 +70,7 @@ public class surprisecheckout {
         } else {
             cartDetails.append("\nTotal Bill: $").append(String.format("%.2f", totalBill));
             JOptionPane.showMessageDialog(null, cartDetails.toString(), "Checkout", JOptionPane.INFORMATION_MESSAGE);
-            
+
             // Step 1: Prompt for shipping address
             String shippingAddress = JOptionPane.showInputDialog("Please enter your shipping address:");
             if (shippingAddress == null || shippingAddress.trim().isEmpty()) {
@@ -79,22 +78,43 @@ public class surprisecheckout {
                 return;
             }
 
-            // Step 2: Insert Order into the orders table, including the shipping address
-            orders ob = new orders();
-            int orderId = ob.storeOrderInDatabase(Username, totalBill, shippingAddress); // Modify this method to accept shipping address
+            // Step 2: Insert Order into the orders table
+            orders orderHandler = new orders();
+            int orderId = -1;
+
+            for (CartItem item : cartItems) {
+                // Store individual orders for each product in the cart
+                orderId = orderHandler.storeOrderInDatabase(Username,  totalBill, shippingAddress);
+                if (orderId == -1) {
+                    JOptionPane.showMessageDialog(null, "Failed to place order for Product ID: " + item.getProductId(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
 
             // Step 3: Store cart items in the order_items table
-            ob.storeOrderItemsInDatabase(orderId, cartItems);
+            boolean itemsStored = orderHandler.storeOrderItemsInDatabase(orderId, cartItems);
 
-            // Step 4: Handle payment without discount
-            handlePayment(totalBill, db, Username);
+            if (!itemsStored) {
+                JOptionPane.showMessageDialog(null, "Failed to store order items in the database.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Step 4: Handle payment
+            try {
+                handlePayment(totalBill, db, Username);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Payment processing failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
-
-    } catch (HeadlessException | SQLException e) {
+    } catch (HeadlessException e) {
+        JOptionPane.showMessageDialog(null, "UI Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Unexpected Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
+
 
     public void applyDiscount(double totalBill, StringBuilder cartDetails) {
         // Log the state of variables before checking the condition

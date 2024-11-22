@@ -48,7 +48,10 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
+import javax.swing.JTable;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -128,6 +131,7 @@ notificationList.setModel(notificationListModel);
         reviews = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         deleteaccount = new javax.swing.JButton();
+        vieworders = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane6 = new javax.swing.JScrollPane();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -283,6 +287,16 @@ notificationList.setModel(notificationListModel);
             }
         });
 
+        vieworders.setBackground(new java.awt.Color(102, 204, 255));
+        vieworders.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        vieworders.setText("view orders");
+        vieworders.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        vieworders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewordersActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -306,7 +320,8 @@ notificationList.setModel(notificationListModel);
                                 .addComponent(faqs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(checkout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 67, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -337,7 +352,9 @@ notificationList.setModel(notificationListModel);
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(277, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         notificationList.setBackground(new java.awt.Color(255, 204, 204));
@@ -974,21 +991,21 @@ if (recipientType != null && gender != null && ageGroup != null) {
 
 // Step 3: Update the order status to "Cancelled"
         boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
-        if (isCancelled) {
+        if (isCancelled) 
             JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
 
             // Step 4: Optionally process refund if applicable
-            boolean refundSuccess = ob.processRefund(orderId);
-            if (refundSuccess) {
-                System.out.println("Refund processed successfully.");
-                JOptionPane.showMessageDialog(null, "Refund processed successfully.");
-            } else {
-                System.out.println("Refund failed or not applicable.");
-                JOptionPane.showMessageDialog(null, "Refund processing failed.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Failed to cancel the order. Please try again.");
-        }
+           // boolean refundSuccess = ob.processRefund(orderId);
+          //  if (refundSuccess) {
+//                System.out.println("Refund processed successfully.");
+//                JOptionPane.showMessageDialog(null, "Refund processed successfully.");
+//            } else {
+//                System.out.println("Refund failed or not applicable.");
+//                JOptionPane.showMessageDialog(null, "Refund processing failed.");
+//            }
+//       // } else {
+//            JOptionPane.showMessageDialog(null, "Failed to cancel the order. Please try again.");
+//        }
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -1026,6 +1043,77 @@ if (recipientType != null && gender != null && ageGroup != null) {
         }
     }
     }//GEN-LAST:event_deleteaccountActionPerformed
+
+    private void viewordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewordersActionPerformed
+        // TODO add your handling code here:
+                                                   
+    
+        // Get the current user's username
+      
+        
+        // Use the existing database connection
+     try (java.sql.Connection conn = Database.getInstance().connect()) {
+    String username = SessionManager.getLoggedInUserName();
+
+    // SQL query to fetch order details for the current user
+    String sql = "SELECT o.order_id, p.name, oi.quantity, oi.price, o.order_date " +
+                 "FROM orders o " +
+                 "JOIN order_items oi ON o.order_id = oi.order_id " +
+                 "JOIN products p ON oi.product_id = p.product_id " +
+                 "WHERE o.user_name = ?";
+
+    PreparedStatement statusPs = conn.prepareStatement(sql);
+    statusPs.setString(1, username);
+
+    // Execute the query
+    ResultSet rs = statusPs.executeQuery();
+
+    // Prepare table model to display data
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("Order ID");
+    model.addColumn("Product Name");
+    model.addColumn("Quantity");
+    model.addColumn("Price");
+    model.addColumn("Order Date");
+
+    // Populate the table model with data from the result set
+    while (rs.next()) {
+        model.addRow(new Object[] {
+            rs.getInt("order_id"),       // Order ID
+            rs.getString("name"),        // Product Name
+            rs.getInt("quantity"),       // Quantity
+            rs.getDouble("price"),       // Price per Unit
+            rs.getTimestamp("order_date") // Order Date
+        });
+    }
+
+    // Check if orders exist for the user
+    if (model.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(null, "No orders found.", "View Orders", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        // Create JTable and set the model
+        JTable ordersTable = new JTable(model);
+
+        // Adjust column widths
+        TableColumnModel columnModel = ordersTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);  // Order ID
+        columnModel.getColumn(1).setPreferredWidth(150); // Product Name
+        columnModel.getColumn(2).setPreferredWidth(100); // Quantity
+        columnModel.getColumn(3).setPreferredWidth(100); // Price
+        columnModel.getColumn(4).setPreferredWidth(150); // Order Date
+
+        // Display data in JTable
+        JOptionPane.showMessageDialog(null, new JScrollPane(ordersTable), "Your Orders", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Close resources
+    rs.close();
+    statusPs.close();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+    }//GEN-LAST:event_viewordersActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1100,5 +1188,6 @@ if (recipientType != null && gender != null && ageGroup != null) {
     private javax.swing.JButton reviews;
     private javax.swing.JButton showwishlist;
     private javax.swing.JButton viewcart;
+    private javax.swing.JButton vieworders;
     // End of variables declaration//GEN-END:variables
 }

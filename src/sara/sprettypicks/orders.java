@@ -51,15 +51,19 @@ public int storeOrderInDatabase(String userName, double totalBill, String shippi
 
 
 
-    public void storeOrderItemsInDatabase(int orderId, List<CartItem> cartItems) throws SQLException {
+   public boolean storeOrderItemsInDatabase(int orderId, List<CartItem> cartItems) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+
+    try {
         // Get the database connection
-        Connection conn = Database.getInstance().connect(); // Use connect() method
+        conn = Database.getInstance().connect();
 
         // SQL query to insert order items
         String query = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
-        
+
         // Prepare the statement
-        PreparedStatement ps = conn.prepareStatement(query);
+        ps = conn.prepareStatement(query);
 
         // Loop through each cart item and set parameters
         for (CartItem item : cartItems) {
@@ -69,10 +73,30 @@ public int storeOrderInDatabase(String userName, double totalBill, String shippi
             ps.setDouble(4, item.getPrice());
             ps.addBatch();  // Add to batch for batch execution
         }
-        
+
         // Execute all insertions in one go
-        ps.executeBatch();  
+        ps.executeBatch();
+
+        // If everything runs without exception, return true
+        return true;
+
+    } catch (SQLException e) {
+        System.err.println("Error storing order items: " + e.getMessage());
+        return false;  // Return false if there’s an error
+
+    } finally {
+        // Close resources to avoid memory leaks
+        try {
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Error closing resources: " + e.getMessage());
+        }
     }
+}
+
+
+
     
  public String getOrderStatus(int orderId) {
     String orderStatus = null; // Initialize as null
