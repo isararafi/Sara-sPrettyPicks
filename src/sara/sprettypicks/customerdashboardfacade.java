@@ -104,20 +104,20 @@ Image resizedImage = originalIcon.getImage().getScaledInstance(50, 60, Image.SCA
 ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
 // Set the resized image as the button's icon
-jButton2.setIcon(resizedIcon);
+accountinfo.setIcon(resizedIcon);
 
 // Adjust button size to fit the resized icon
 int iconWidth = resizedImage.getWidth(null);  // Get the width of the resized image
 int iconHeight = resizedImage.getHeight(null); // Get the height of the resized image
-jButton2.setPreferredSize(new Dimension(iconWidth + 10, iconHeight + 20)); // Add padding if needed
+accountinfo.setPreferredSize(new Dimension(iconWidth + 10, iconHeight + 20)); // Add padding if needed
 
 // Align the icon and text (optional)
-jButton2.setHorizontalTextPosition(SwingConstants.CENTER); // Center the text horizontally
-jButton2.setVerticalTextPosition(SwingConstants.BOTTOM);   // Place text below the icon
+accountinfo.setHorizontalTextPosition(SwingConstants.CENTER); // Center the text horizontally
+accountinfo.setVerticalTextPosition(SwingConstants.BOTTOM);   // Place text below the icon
 
 // Center the icon within the button
-jButton2.setHorizontalAlignment(SwingConstants.CENTER); 
-jButton2.setVerticalAlignment(SwingConstants.CENTER);
+accountinfo.setHorizontalAlignment(SwingConstants.CENTER); 
+accountinfo.setVerticalAlignment(SwingConstants.CENTER);
 
 }
 
@@ -171,7 +171,7 @@ notificationList.setModel(notificationListModel);
         jLabel1 = new javax.swing.JLabel();
         customer = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        accountinfo = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane4 = new javax.swing.JScrollPane();
 
@@ -451,12 +451,12 @@ notificationList.setModel(notificationListModel);
         jLabel3.setForeground(new java.awt.Color(255, 0, 204));
         jLabel3.setText("WELCOME");
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 0));
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\initialshopping\\account.png")); // NOI18N
-        jButton2.setText("jButton2");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        accountinfo.setBackground(new java.awt.Color(0, 0, 0));
+        accountinfo.setIcon(new javax.swing.ImageIcon("C:\\initialshopping\\account.png")); // NOI18N
+        accountinfo.setText("jButton2");
+        accountinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                accountinfoActionPerformed(evt);
             }
         });
 
@@ -478,7 +478,7 @@ notificationList.setModel(notificationListModel);
                         .addComponent(customer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(194, 194, 194)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(accountinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
@@ -497,7 +497,7 @@ notificationList.setModel(notificationListModel);
                             .addComponent(jLabel3)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(accountinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -1164,9 +1164,10 @@ if (recipientType != null && gender != null && ageGroup != null) {
 
     }//GEN-LAST:event_viewordersActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void accountinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountinfoActionPerformed
       
-   // Step 1: Retrieve the username from the session manager
+   
+          // Step 1: Retrieve the username from the session manager
     Database db = Database.getInstance();
     String username = SessionManager.getLoggedInUserName();
     
@@ -1209,7 +1210,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
     // Save button
     JButton saveButton = new JButton("Save");
     saveButton.setBackground(Color.ORANGE); // Set Save button color to orange
-    saveButton.setForeground(Color. BLACK); // Set text color to white for better contrast
+    saveButton.setForeground(Color.BLACK); // Set text color to black for better contrast
     saveButton.setFocusPainted(false); // Remove focus border
     panel.add(new JLabel()); // Empty label to align the save button properly
     panel.add(saveButton);
@@ -1219,21 +1220,28 @@ if (recipientType != null && gender != null && ageGroup != null) {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Step 4: Get the updated values from the text fields
-            String newUsername = usernameField.getText(); // Username can be updated
-            String newFirstName = firstNameField.getText();
-            String newLastName = lastNameField.getText();
-            String newPassword = new String(passwordField.getPassword());
+            String newUsername = usernameField.getText().trim(); // Username can be updated
+            String newFirstName = firstNameField.getText().trim();
+            String newLastName = lastNameField.getText().trim();
+            String newPassword = new String(passwordField.getPassword()).trim();
             
-            // Step 5: Update the customer info in the database
+            // Step 5: Validation before saving
+            if (newUsername.isEmpty() || newFirstName.isEmpty() || newLastName.isEmpty() || newPassword.isEmpty()) {
+                // Show error message if any field is empty
+                JOptionPane.showMessageDialog(accountDialog, "All fields are required. Please fill them in.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Step 6: Check if the new username is unique (except for the current username)
             boolean updateSuccessful = db.updateCustomerInfo(newUsername, newFirstName, newLastName, newPassword);
             
-            // Step 6: Close the dialog
+            // Step 7: Close the dialog
             if (updateSuccessful) {
                 // Show success message
                 JOptionPane.showMessageDialog(accountDialog, "Account updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 // Show error message
-                JOptionPane.showMessageDialog(accountDialog, "Error updating account. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(accountDialog, "Error updating account. Username may already exist or try again later.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
             // Close the dialog regardless of success/failure
@@ -1244,7 +1252,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
     // Add the panel to the dialog
     accountDialog.add(panel);
     accountDialog.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_accountinfoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1290,6 +1298,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton accountinfo;
     private javax.swing.JButton browseproducts;
     private javax.swing.JButton checkout;
     private javax.swing.JButton createwishlist;
@@ -1298,7 +1307,6 @@ if (recipientType != null && gender != null && ageGroup != null) {
     private javax.swing.JButton faqs;
     private javax.swing.JButton findgift;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;

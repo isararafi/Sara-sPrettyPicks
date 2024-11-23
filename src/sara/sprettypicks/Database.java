@@ -106,19 +106,19 @@ public class Database {
     }
 
     // Method for customer signup
-   public boolean signupCustomer(String name, String username, String email, String password) {
-    // SQL query updated to include the correct columns
-    String query = "INSERT INTO customers (first_name, cuser_name, email, password) VALUES (?, ?, ?, ?)";
+   public boolean signupCustomer(String firstName, String lastName, String username, String email, String password) {
+    // SQL query updated to include the correct columns and parameters
+    String query = "INSERT INTO customers (first_name, last_name, cuser_name, email, password) VALUES (?, ?, ?, ?, ?)";
 
-    // Try-with-resources to automatically close resources
     try (Connection conn = this.connect();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
-        stmt.setString(1, name);      // Set the first_name
-        stmt.setString(2, username); // Set the cuser_name
-        stmt.setString(3, email);    // Set the email
-        stmt.setString(4, password); // Ideally, hash the password before storing it
+        stmt.setString(1, firstName);  // Set the first_name
+        stmt.setString(2, lastName);   // Set the last_name
+        stmt.setString(3, username);   // Set the cuser_name
+        stmt.setString(4, email);      // Set the email
+        stmt.setString(5, password);  // Set the hashed password
 
         // Execute the update
         int rowsAffected = stmt.executeUpdate();
@@ -131,8 +131,8 @@ public class Database {
 
 
     // Method for admin signup
-   public boolean signupAdmin(String email, String password, String name, String username) {
-    // Updated SQL query for inserting admin, using the new column names
+   public boolean signupAdmin(String email, String password, String name,  String username) {
+    // SQL query updated to include the correct columns and parameters
     String query = "INSERT INTO admin (email, password, admin_name, auser_name) VALUES (?, ?, ?, ?)"; 
 
     // Try-with-resources to automatically close resources
@@ -140,10 +140,10 @@ public class Database {
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the query parameters
-        stmt.setString(1, email);     // Set the email
-        stmt.setString(2, password);  // Set the password
-        stmt.setString(3, name);      // Set the name (stored in admin_name)
-        stmt.setString(4, username);  // Set the username (stored in auser_name)
+        stmt.setString(1, email);             // Set the email
+        stmt.setString(2, password);  // Set the hashed password
+        stmt.setString(3, name);  // Concatenate first and last name
+        stmt.setString(4, username);          // Set the username
 
         // Execute the update
         int rowsAffected = stmt.executeUpdate();
@@ -153,7 +153,6 @@ public class Database {
         return false;
     }
 }
-
 
   public void addItemToCart(String username, int productId, int quantity, double price) {
     try {
@@ -1024,7 +1023,6 @@ public boolean deleteUserRelatedData() {
 
 }
 public boolean updateCustomerInfo(String username, String firstName, String lastName, String password) {
-    // Update the customer information in the database
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -1032,10 +1030,11 @@ public boolean updateCustomerInfo(String username, String firstName, String last
     try {
         conn = Database.getInstance().connect();
         
-        // Check if the new username already exists
-        String checkQuery = "SELECT COUNT(*) FROM customers WHERE cuser_name = ?";
+        // Check if the new username already exists, excluding the current user's username
+        String checkQuery = "SELECT COUNT(*) FROM customers WHERE cuser_name = ? AND cuser_name != ?";
         ps = conn.prepareStatement(checkQuery);
-        ps.setString(1, username);
+        ps.setString(1, username); // New username to check
+        ps.setString(2, username); // Current username to exclude from check
         rs = ps.executeQuery();
         
         if (rs.next() && rs.getInt(1) > 0) {
@@ -1054,9 +1053,15 @@ public boolean updateCustomerInfo(String username, String firstName, String last
         
         // Execute the update
         int rowsUpdated = ps.executeUpdate();
+        
+        if (rowsUpdated == 0) {
+            System.out.println("No rows updated. Check query or data.");
+        }
+        
         return rowsUpdated > 0; // Return true if at least one row was updated
     } catch (SQLException e) {
-        e.printStackTrace();
+        System.err.println("SQLException occurred while updating account info: " + e.getMessage());
+        e.printStackTrace(); // This will give you more details about where it failed
         return false; // Return false in case of an exception
     } finally {
         try {
@@ -1069,7 +1074,6 @@ public boolean updateCustomerInfo(String username, String firstName, String last
     }
 }
 
- 
 public boolean checkUsernameExists(String username) {
     // Query the database to check if the username exists
    

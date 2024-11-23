@@ -29,26 +29,26 @@ public class InsertImageWithPath extends JFrame {
     public static void main(String[] args) {
 
         // Insert Product Data
-//        insertProductImage(1, "tumbler", "bottle", "bottles", 13.99, 12, "C:\\SARA University Data\\FIFTH SEMESTER\\SCD LAB\\tumbler.jpg");
-//        insertProductImage(2, "blue silicon case", "phone cases", "a pretty case phone case mobile cover", 123.99, 12, "C:\\initialshopping\\phonecase2.jpg");
-//        insertProductImage(3, "shiny case", "phone cases", "a pretty case phone case mobile cover", 12.99, 12, "C:\\initialshopping\\phonecase1.jpg");
-//        insertProductImage(4, "wavy case", "phone cases", "a pretty case phone case mobile cover", 19.99, 22, "C:\\initialshopping\\phonecase3.jpg");
-//        insertProductImage(5, "purple case", "phone cases", "a pretty case phone case mobile cover", 19.99, 12, "C:\\initialshopping\\phonecase6.jpg");
-//        insertProductImage(6, "sea case", "phone cases", "a pretty case phone case mobile cover", 10.99, 12, "C:\\initialshopping\\phonecase9.jpg");
-//        insertProductImage(7, "purple cream", "skin care", "a soothing cream skin product", 11.99, 34, "C:\\initialshopping\\skin0.jpg");
-//        insertProductImage(8, "honey and lemon cream", "skin care", "a soothing cream skin product", 12.99, 34, "C:\\initialshopping\\skin1.jpg");
-//        insertProductImage(9, "neem wash", "skin care", "a soothing face wash skin product", 13.99, 20, "C:\\initialshopping\\skin3.jpg");
-//        insertProductImage(10, "pink face wash", "skin care", "a soothing face wash skin product", 17.00, 34, "C:\\initialshopping\\skin5.jpg");
-//        insertProductImage(11, "cetaphil wash", "skin care", "a soothing face wash skin product", 11.99, 10, "C:\\initialshopping\\skin6.jpg");
-//        insertProductImage(12, "red serum", "skin care", "a nourishing serum skin product", 23.99, 34, "C:\\initialshopping\\skin10.jpg");
-//        insertProductImage(13, "Pink scarf", "hijabs", "a full coverage hijab scarf", 90.22, 90, "C:\\initialshopping\\hijab1.jpg");
-//        insertProductImage(14, "Green royal", "hijabs", "a full coverage hijab scarf", 21.99, 10, "C:\\initialshopping\\hijab4.jpg");
-//        insertProductImage(15, "Grey scarf", "hijabs", "a soft hijab", 11.99, 45, "C:\\initialshopping\\hijab5.jpg");
-//        insertProductImage(34, "aloevera ", "skin care", "a soothing face wash skin product", 14.99, 34, "C:\\initialshopping\\skin14.jpg");
-//        insertProductImage(35, "clear serum ", "skin care", "a soothing face wash skin product", 14.99, 34, "C:\\initialshopping\\skin11.jpg");
-//         insertProductImage(17, "lavender case ", "phone case", "a pretty case phone case mobile cover", 19.99, 34, "C:\\initialshopping\\phonecase5.jpg");
-//          insertProductImage(18, "tumbler set of 3", "bottle", "bottles", 13.99, 12, "C:\\initialshopping\\tumbler1.jpg");
-//          insertProductImage(19, "named tumbler", "bottle", "bottles tumbler bottle", 13.99, 12, "C:\\initialshopping\\tumbler2.jpg");
+        insertProductImage(1, "tumbler", "bottle", "bottles", 13.99, 12, "C:\\SARA University Data\\FIFTH SEMESTER\\SCD LAB\\tumbler.jpg");
+        insertProductImage(2, "blue silicon case", "phone cases", "a pretty case phone case mobile cover", 123.99, 12, "C:\\initialshopping\\phonecase2.jpg");
+        insertProductImage(3, "shiny case", "phone cases", "a pretty case phone case mobile cover", 12.99, 12, "C:\\initialshopping\\phonecase1.jpg");
+        insertProductImage(4, "wavy case", "phone cases", "a pretty case phone case mobile cover", 19.99, 22, "C:\\initialshopping\\phonecase3.jpg");
+        insertProductImage(5, "purple case", "phone cases", "a pretty case phone case mobile cover", 19.99, 12, "C:\\initialshopping\\phonecase6.jpg");
+        insertProductImage(6, "sea case", "phone cases", "a pretty case phone case mobile cover", 10.99, 12, "C:\\initialshopping\\phonecase9.jpg");
+        insertProductImage(7, "purple cream", "skin care", "a soothing cream skin product", 11.99, 34, "C:\\initialshopping\\skin0.jpg");
+        insertProductImage(8, "honey and lemon cream", "skin care", "a soothing cream skin product", 12.99, 34, "C:\\initialshopping\\skin1.jpg");
+        insertProductImage(9, "neem wash", "skin care", "a soothing face wash skin product", 13.99, 20, "C:\\initialshopping\\skin3.jpg");
+        insertProductImage(10, "pink face wash", "skin care", "a soothing face wash skin product", 17.00, 34, "C:\\initialshopping\\skin5.jpg");
+        insertProductImage(11, "cetaphil wash", "skin care", "a soothing face wash skin product", 11.99, 10, "C:\\initialshopping\\skin6.jpg");
+        insertProductImage(12, "red serum", "skin care", "a nourishing serum skin product", 23.99, 34, "C:\\initialshopping\\skin10.jpg");
+        insertProductImage(13, "Pink scarf", "hijabs", "a full coverage hijab scarf", 90.22, 90, "C:\\initialshopping\\hijab1.jpg");
+        insertProductImage(14, "Green royal", "hijabs", "a full coverage hijab scarf", 21.99, 10, "C:\\initialshopping\\hijab4.jpg");
+        insertProductImage(15, "Grey scarf", "hijabs", "a soft hijab", 11.99, 45, "C:\\initialshopping\\hijab5.jpg");
+        insertProductImage(34, "aloevera ", "skin care", "a soothing face wash skin product", 14.99, 34, "C:\\initialshopping\\skin14.jpg");
+        insertProductImage(35, "clear serum ", "skin care", "a soothing face wash skin product", 14.99, 34, "C:\\initialshopping\\skin11.jpg");
+         insertProductImage(17, "lavender case ", "phone case", "a pretty case phone case mobile cover", 19.99, 34, "C:\\initialshopping\\phonecase5.jpg");
+          insertProductImage(18, "tumbler set of 3", "bottle", "bottles", 13.99, 12, "C:\\initialshopping\\tumbler1.jpg");
+          insertProductImage(19, "named tumbler", "bottle", "bottles tumbler bottle", 13.99, 12, "C:\\initialshopping\\tumbler2.jpg");
           
           
         // Create GUI with search functionality

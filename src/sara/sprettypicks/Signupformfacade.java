@@ -425,7 +425,7 @@ if (validFirstName && validLastName && validUsername && validEmail && validPassw
     if (role.equals("admin")) {
         signupSuccess = db.signupAdmin(email, password, firstName, username);
     } else {
-        signupSuccess = db.signupCustomer(firstName, username, email, password);  // Assuming first name and last name are required for customers
+        signupSuccess = db.signupCustomer(firstName,lastName, username, email, password);  // Assuming first name and last name are required for customers
     }
 
     if (signupSuccess) {
