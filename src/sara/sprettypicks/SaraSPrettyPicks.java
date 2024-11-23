@@ -9,7 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-   
+   //work on vieworderc custoemr functonality
 //admin 1,2,3,4 button done
     //applied singleton and observer,mvc
                     //************************************************************************88

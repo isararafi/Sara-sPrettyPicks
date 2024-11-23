@@ -1104,22 +1104,16 @@ if (recipientType != null && gender != null && ageGroup != null) {
     }//GEN-LAST:event_deleteaccountActionPerformed
 
     private void viewordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewordersActionPerformed
-        // TODO add your handling code here:
-                                                   
-    
-        // Get the current user's username
-      
-        
-        // Use the existing database connection
-     try (java.sql.Connection conn = Database.getInstance().connect()) {
+    try (java.sql.Connection conn = Database.getInstance().connect()) {
     String username = SessionManager.getLoggedInUserName();
 
-    // SQL query to fetch order details for the current user
-    String sql = "SELECT o.order_id, p.name, oi.quantity, oi.price, o.order_date " +
+    // SQL query to fetch order details for the current user, grouping by order_id and product name.
+    String sql = "SELECT o.order_id, p.name, oi.price, SUM(oi.quantity) AS total_quantity, o.order_date " +
                  "FROM orders o " +
                  "JOIN order_items oi ON o.order_id = oi.order_id " +
                  "JOIN products p ON oi.product_id = p.product_id " +
-                 "WHERE o.user_name = ?";
+                 "WHERE o.user_name = ? AND o.order_status = 'completed' " +
+                 "GROUP BY o.order_id, p.name, oi.price, o.order_date";
 
     PreparedStatement statusPs = conn.prepareStatement(sql);
     statusPs.setString(1, username);
@@ -1135,19 +1129,36 @@ if (recipientType != null && gender != null && ageGroup != null) {
     model.addColumn("Price");
     model.addColumn("Order Date");
 
+    // Flag to check if we added a row
+    boolean addedAtLeastOneRow = false;
+
     // Populate the table model with data from the result set
     while (rs.next()) {
+        // Retrieve data
+        int orderId = rs.getInt("order_id");
+        String productName = rs.getString("name");
+        int quantity = rs.getInt("total_quantity");  // Sum of quantities for each product
+        double price = rs.getDouble("price");
+        Timestamp orderDate = rs.getTimestamp("order_date");
+
+        // Print data for debugging
+        System.out.println("Order ID: " + orderId + ", Product: " + productName + 
+                           ", Quantity: " + quantity + ", Price: " + price + ", Order Date: " + orderDate);
+
+        // Add row to table model
         model.addRow(new Object[] {
-            rs.getInt("order_id"),       // Order ID
-            rs.getString("name"),        // Product Name
-            rs.getInt("quantity"),       // Quantity
-            rs.getDouble("price"),       // Price per Unit
-            rs.getTimestamp("order_date") // Order Date
+            orderId,       // Order ID
+            productName,   // Product Name
+            quantity,      // Total Quantity (summed)
+            price,         // Price per Unit
+            orderDate      // Order Date
         });
+
+        addedAtLeastOneRow = true;
     }
 
     // Check if orders exist for the user
-    if (model.getRowCount() == 0) {
+    if (!addedAtLeastOneRow) {
         JOptionPane.showMessageDialog(null, "No orders found.", "View Orders", JOptionPane.INFORMATION_MESSAGE);
     } else {
         // Create JTable and set the model

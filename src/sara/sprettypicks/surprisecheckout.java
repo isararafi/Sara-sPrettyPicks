@@ -1,6 +1,7 @@
 
 package sara.sprettypicks;
 import java.awt.HeadlessException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -145,40 +146,64 @@ public class surprisecheckout {
 
     // Method to handle payment processing
     public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
-        // Prompt the user to enter the payment amount, showing the total amount
-          
-        String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
+       // Prompt the user to enter the payment amount, showing the total amount
+String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
 
-        if (paymentInput == null || paymentInput.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Payment is required!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+if (paymentInput == null || paymentInput.trim().isEmpty()) {
+    JOptionPane.showMessageDialog(null, "Payment is required!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+double paymentAmount;
+try {
+    paymentAmount = Double.parseDouble(paymentInput);
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(null, "Invalid payment amount entered!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+// Proceed with payment handling
+if (paymentAmount >= totalBill) {
+    double change = paymentAmount - totalBill;
+    boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
+
+    if (paymentSaved) {
+        String message = "Payment successful!";
+        if (change > 0) {
+            message += " Your change is: $" + String.format("%.2f", change);
         }
+        JOptionPane.showMessageDialog(null, message, "Success", JOptionPane.INFORMATION_MESSAGE);
+        PreparedStatement ps = null;
+        // Now update the order status from "pending" to "completed"
+        try (java.sql.Connection conn = Database.getInstance().connect()) {
+            // SQL query to update the order status
+            String updateSql = "UPDATE orders SET order_status = 'completed' WHERE user_name = ? AND order_status = 'Pending'";
 
-        double paymentAmount;
-        try {
-            paymentAmount = Double.parseDouble(paymentInput);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid payment amount entered!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            PreparedStatement updatePs = conn.prepareStatement(updateSql);
+            updatePs.setString(1, userName);
 
-        // Proceed with payment handling
-        if (paymentAmount >= totalBill) {
-            double change = paymentAmount - totalBill;
-            boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
+            // Execute the update
+            int rowsUpdated = updatePs.executeUpdate();
 
-            if (paymentSaved) {
-                String message = "Payment successful!";
-                if (change > 0) {
-                    message += " Your change is: $" + String.format("%.2f", change);
-                }
-                JOptionPane.showMessageDialog(null, message, "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (rowsUpdated > 0) {
+                System.out.println("Order status updated to completed.");
             } else {
-                JOptionPane.showMessageDialog(null, "Failed to save payment details. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.println("No pending orders found to update.");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Payment unsuccessful! The amount is less than the total bill. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            // Close resources
+            updatePs.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error updating order status: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+    } else {
+        JOptionPane.showMessageDialog(null, "Failed to save payment details. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "Payment unsuccessful! The amount is less than the total bill. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+}
+
     }
 
     // Method to clear the discount and reset flags
