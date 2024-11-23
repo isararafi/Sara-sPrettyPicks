@@ -15,7 +15,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,8 +49,12 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JPasswordField;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -90,6 +96,29 @@ List<String> notifications = db.getAllNotifications();
 // Add the notifications to the DefaultListModel
 for (String notification : notifications) {
     notificationListModel.addElement(notification);
+     // Load the image
+ImageIcon originalIcon = new ImageIcon("C:\\initialshopping\\account.png");
+
+// Resize the image to the desired dimensions
+Image resizedImage = originalIcon.getImage().getScaledInstance(50, 60, Image.SCALE_SMOOTH);
+ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+// Set the resized image as the button's icon
+jButton2.setIcon(resizedIcon);
+
+// Adjust button size to fit the resized icon
+int iconWidth = resizedImage.getWidth(null);  // Get the width of the resized image
+int iconHeight = resizedImage.getHeight(null); // Get the height of the resized image
+jButton2.setPreferredSize(new Dimension(iconWidth + 10, iconHeight + 20)); // Add padding if needed
+
+// Align the icon and text (optional)
+jButton2.setHorizontalTextPosition(SwingConstants.CENTER); // Center the text horizontally
+jButton2.setVerticalTextPosition(SwingConstants.BOTTOM);   // Place text below the icon
+
+// Center the icon within the button
+jButton2.setHorizontalAlignment(SwingConstants.CENTER); 
+jButton2.setVerticalAlignment(SwingConstants.CENTER);
+
 }
 
 // Assuming `notificationList` is the JList that displays the notifications
@@ -142,6 +171,7 @@ notificationList.setModel(notificationListModel);
         jLabel1 = new javax.swing.JLabel();
         customer = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane4 = new javax.swing.JScrollPane();
 
@@ -421,6 +451,15 @@ notificationList.setModel(notificationListModel);
         jLabel3.setForeground(new java.awt.Color(255, 0, 204));
         jLabel3.setText("WELCOME");
 
+        jButton2.setBackground(new java.awt.Color(0, 0, 0));
+        jButton2.setIcon(new javax.swing.ImageIcon("C:\\initialshopping\\account.png")); // NOI18N
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -432,24 +471,34 @@ notificationList.setModel(notificationListModel);
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(customer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(194, 194, 194)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(customer)
-                    .addComponent(jLabel3))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(customer)
+                            .addComponent(jLabel3)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -482,7 +531,7 @@ notificationList.setModel(notificationListModel);
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1115,6 +1164,88 @@ if (recipientType != null && gender != null && ageGroup != null) {
 
     }//GEN-LAST:event_viewordersActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+      
+   // Step 1: Retrieve the username from the session manager
+    Database db = Database.getInstance();
+    String username = SessionManager.getLoggedInUserName();
+    
+    // Step 2: Fetch customer details from the database based on the username
+    String[] customerInfo = db.getCustomerInfoByUsername(username); // Fetch customer details as an array
+    
+    // Step 3: Create a dialog window to show and edit account info
+    JDialog accountDialog = new JDialog();
+    accountDialog.setTitle("View Account");
+    accountDialog.setSize(400, 300); // Adjusted size for better view
+    accountDialog.setLocationRelativeTo(null); // Center the dialog on the screen
+    
+    // Create a panel to hold the form
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(6, 2, 10, 10)); // Added some gap between rows and columns
+    
+    // Username (editable now)
+    panel.add(new JLabel("Username:"));
+    JTextField usernameField = new JTextField(username);
+    panel.add(usernameField);
+    
+    // First Name
+    panel.add(new JLabel("First Name:"));
+    JTextField firstNameField = new JTextField(customerInfo[1]); // first_name
+    firstNameField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
+    panel.add(firstNameField);
+    
+    // Last Name
+    panel.add(new JLabel("Last Name:"));
+    JTextField lastNameField = new JTextField(customerInfo[2]); // last_name
+    lastNameField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
+    panel.add(lastNameField);
+    
+    // Password
+    panel.add(new JLabel("Password:"));
+    JPasswordField passwordField = new JPasswordField(customerInfo[3]); // password
+    passwordField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
+    panel.add(passwordField);
+    
+    // Save button
+    JButton saveButton = new JButton("Save");
+    saveButton.setBackground(Color.ORANGE); // Set Save button color to orange
+    saveButton.setForeground(Color. BLACK); // Set text color to white for better contrast
+    saveButton.setFocusPainted(false); // Remove focus border
+    panel.add(new JLabel()); // Empty label to align the save button properly
+    panel.add(saveButton);
+    
+    // Save button action listener
+    saveButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Step 4: Get the updated values from the text fields
+            String newUsername = usernameField.getText(); // Username can be updated
+            String newFirstName = firstNameField.getText();
+            String newLastName = lastNameField.getText();
+            String newPassword = new String(passwordField.getPassword());
+            
+            // Step 5: Update the customer info in the database
+            boolean updateSuccessful = db.updateCustomerInfo(newUsername, newFirstName, newLastName, newPassword);
+            
+            // Step 6: Close the dialog
+            if (updateSuccessful) {
+                // Show success message
+                JOptionPane.showMessageDialog(accountDialog, "Account updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Show error message
+                JOptionPane.showMessageDialog(accountDialog, "Error updating account. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            // Close the dialog regardless of success/failure
+            accountDialog.dispose();
+        }
+    });
+    
+    // Add the panel to the dialog
+    accountDialog.add(panel);
+    accountDialog.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1167,6 +1298,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
     private javax.swing.JButton faqs;
     private javax.swing.JButton findgift;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;

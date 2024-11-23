@@ -188,9 +188,9 @@ button2.setIcon(smallIcon);
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(84, 84, 84)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(51, 51, 51)
@@ -200,7 +200,7 @@ button2.setIcon(smallIcon);
                                     .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(36, 36, 36)
+                                        .addGap(42, 42, 42)
                                         .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -262,24 +262,22 @@ button2.setIcon(smallIcon);
                         .addGap(24, 24, 24))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(passwordlabel)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(confirmpasswordlabel)
-                .addGap(41, 41, 41)
-                .addComponent(signup)
+                            .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(confirmpasswordlabel)
+                        .addGap(41, 41, 41)
+                        .addComponent(signup))
+                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -320,9 +318,11 @@ button2.setIcon(smallIcon);
     }// </editor-fold>//GEN-END:initComponents
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
- // Clear previous messages
+ // Database instance
 Database db = Database.getInstance();
-firstnamelabel.setText("<html>First Name *:</html>"); // Indicate required fields with *
+
+// Clear previous messages
+firstnamelabel.setText("<html>First Name *:</html>");
 lastnamelabel.setText("<html>Last Name *:</html>");
 usernamelabel.setText("<html>Username *:</html>");
 emaillabel.setText("<html>Email *:</html>");
@@ -345,82 +345,74 @@ boolean validEmail = false;
 boolean validPassword = false;
 boolean validConfirmPassword = false;
 
-// Check for empty fields and display a message for first name and last name
-if (firstName.isEmpty()) {
-    firstnamelabel.setText("<html><b style='color:red;'>First Name is a mandatory field. *</b></html>");
+// Validation checks for fields (firstName, lastName, username, email, password, confirmPassword)
+
+// Check first name
+if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+")) {
+    firstnamelabel.setText("<html><b style='color:red;'>First Name must contain only alphabets. *</b></html>");
 } else {
-    // First name validation: Only alphabets and spaces allowed
-    String alphabetRegex = "^[a-zA-Z]+(\\s[a-zA-Z]+)*$";
-    if (firstName.length() < 2 || firstName.length() > 255) {
-        firstnamelabel.setText("<html><b style='color:red;'>First Name must be between 2 and 255 characters. *</b></html>");
-    } else if (!firstName.matches(alphabetRegex)) {
-        firstnamelabel.setText("<html><b style='color:red;'>First Name must contain alphabets only. No numbers or special characters allowed. *</b></html>");
-    } else {
-        firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validFirstName = true;
-    }
+    firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+    validFirstName = true;
 }
 
-if (lastName.isEmpty()) {
-    lastnamelabel.setText("<html><b style='color:red;'>Last Name is a mandatory field. *</b></html>");
+// Check last name
+if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
+    lastnamelabel.setText("<html><b style='color:red;'>Last Name must contain only alphabets. *</b></html>");
 } else {
-    // Last name validation: Only alphabets and spaces allowed
-    String alphabetRegex = "^[a-zA-Z]+(\\s[a-zA-Z]+)*$";
-    if (lastName.length() < 2 || lastName.length() > 255) {
-        lastnamelabel.setText("<html><b style='color:red;'>Last Name must be between 2 and 255 characters. *</b></html>");
-    } else if (!lastName.matches(alphabetRegex)) {
-        lastnamelabel.setText("<html><b style='color:red;'>Last Name must contain alphabets only. No numbers or special characters allowed. *</b></html>");
-    } else {
-        lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validLastName = true;
-    }
+    lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+    validLastName = true;
 }
 
+// Check username uniqueness
 if (username.isEmpty()) {
     usernamelabel.setText("<html><b style='color:red;'>Username is a mandatory field. *</b></html>");
 } else {
-    // Username validation: Allows underscores and ensures at least 1 letter and 1 number.
     String alphanumericRegex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9_]+$";
     if (username.length() < 3 || username.length() > 255) {
         usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
     } else if (!username.matches(alphanumericRegex)) {
         usernamelabel.setText("<html><b style='color:red;'>Username must contain both letters and numbers. Only underscores are allowed as special characters. *</b></html>");
+    } else if (db.checkUsernameExists(username)) {  // Check if username exists
+        usernamelabel.setText("<html><b style='color:red;'>Username already exists. Please enter another username. *</b></html>");
     } else {
         usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
         validUsername = true;
     }
 }
 
+// Check email uniqueness
 if (email.isEmpty()) {
     emaillabel.setText("<html><b style='color:red;'>Email is a mandatory field. *</b></html>");
 } else {
-    // Email validation
     String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     if (!email.matches(emailRegex)) {
-        emaillabel.setText("<html><b style='color:red;'>Incorrect format. *</b></html>");
+        emaillabel.setText("<html><b style='color:red;'>Incorrect email format. *</b></html>");
+    } else if (db.checkEmailExists2(email)) {  // Check if email exists
+        emaillabel.setText("<html><b style='color:red;'>Email already exists. Please enter another email. *</b></html>");
     } else {
         emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
         validEmail = true;
     }
 }
 
+// Check password complexity
 if (password.isEmpty()) {
     passwordlabel.setText("<html><b style='color:red;'>Password is a mandatory field. *</b></html>");
 } else {
-    // Password validation
-    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$";
+    // Update regex to include underscore (_) as a valid special character
+    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
     if (!password.matches(passwordRegex)) {
-        passwordlabel.setText("<html><b style='color:red;'>Password must be at least 8 characters long, contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character. *</b></html>");
+        passwordlabel.setText("<html><b style='color:red;'>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (including _). Minimum length: 8 characters. *</b></html>");
     } else {
         passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
         validPassword = true;
     }
 }
 
-if (confirmPassword.isEmpty()) {
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm Password is a mandatory field. *</b></html>");
-} else if (!confirmPassword.equals(password)) {
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. Please enter again. *</b></html>");
+
+// Check confirm password
+if (confirmPassword.isEmpty() || !confirmPassword.equals(password)) {
+    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. *</b></html>");
 } else {
     confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
     validConfirmPassword = true;
@@ -428,42 +420,34 @@ if (confirmPassword.isEmpty()) {
 
 // Check if all fields are valid
 if (validFirstName && validLastName && validUsername && validEmail && validPassword && validConfirmPassword) {
-    // Check if the email already exists in the database
-    if (db.checkEmailExists(email)) {
-        JOptionPane.showMessageDialog(this, "User with the same email already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+    // Proceed with user signup
+    boolean signupSuccess;
+    if (role.equals("admin")) {
+        signupSuccess = db.signupAdmin(email, password, firstName, username);
     } else {
-        boolean signupSuccess;
-        
-        // Insert into the database based on role
-        if (role.equals("admin")) {
-            signupSuccess = db.signupAdmin(email, password, firstName,  username);
-        } else {
-            signupSuccess = db.signupCustomer(firstName,  username, email, password); // Assuming first name and last name are required for customers
-        }
+        signupSuccess = db.signupCustomer(firstName, username, email, password);  // Assuming first name and last name are required for customers
+    }
 
-        if (signupSuccess) {
-            JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            // Clear fields after successful signup
-            firstnametext.setText(""); 
-            lastnametext.setText(""); 
-            usernametext.setText(""); 
-            emailtext.setText(""); 
-            passwordtext.setText(""); 
-            confirmpassword.setText(""); 
+    if (signupSuccess) {
+        JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        // Clear fields after successful signup
+        firstnametext.setText(""); 
+        lastnametext.setText(""); 
+        usernametext.setText(""); 
+        emailtext.setText(""); 
+        passwordtext.setText(""); 
+        confirmpassword.setText(""); 
 
-            // Switch to login frame
-            loginformfacade loginFrame = new loginformfacade();
-            loginFrame.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        // Switch to login frame
+        loginformfacade loginFrame = new loginformfacade();
+        loginFrame.setVisible(true);
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
     }
 } else {
     JOptionPane.showMessageDialog(this, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
 }
-
-    
 
     }//GEN-LAST:event_signupActionPerformed
 

@@ -983,6 +983,128 @@ public boolean deleteUserRelatedData() {
     }
 }
 
+   public String[] getCustomerInfoByUsername(String username) {
+    // Fetch customer data from the database using the username
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String[] customerInfo = new String[4]; // [username, first_name, last_name, password]
+    
+    Database db = Database.getInstance();
+    try {
+        // Assume you have a method to get the database connection
+        conn = db.connect();
+        
+        // Prepare the SQL query to get customer details based on username
+        String query = "SELECT * FROM customers WHERE cuser_name = ?";
+        ps = conn.prepareStatement(query);
+        ps.setString(1, username);
+        rs = ps.executeQuery();
+        
+        // If a customer record is found, populate the customerInfo array
+        if (rs.next()) {
+            customerInfo[0] = rs.getString("cuser_name");  // username
+            customerInfo[1] = rs.getString("first_name"); // first_name
+            customerInfo[2] = rs.getString("last_name");  // last_name
+            customerInfo[3] = rs.getString("password");   // password
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    return customerInfo;
+
+}
+public boolean updateCustomerInfo(String username, String firstName, String lastName, String password) {
+    // Update the customer information in the database
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
+    try {
+        conn = Database.getInstance().connect();
+        
+        // Check if the new username already exists
+        String checkQuery = "SELECT COUNT(*) FROM customers WHERE cuser_name = ?";
+        ps = conn.prepareStatement(checkQuery);
+        ps.setString(1, username);
+        rs = ps.executeQuery();
+        
+        if (rs.next() && rs.getInt(1) > 0) {
+            // Username already exists, return false to indicate failure
+            return false;
+        }
+        
+        // SQL query to update customer info
+        String query = "UPDATE customers SET cuser_name = ?, first_name = ?, last_name = ?, password = ? WHERE cuser_name = ?";
+        ps = conn.prepareStatement(query);
+        ps.setString(1, username); // Update username
+        ps.setString(2, firstName);
+        ps.setString(3, lastName);
+        ps.setString(4, password);
+        ps.setString(5, username); // Original username (for identification)
+        
+        // Execute the update
+        int rowsUpdated = ps.executeUpdate();
+        return rowsUpdated > 0; // Return true if at least one row was updated
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; // Return false in case of an exception
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
  
+public boolean checkUsernameExists(String username) {
+    // Query the database to check if the username exists
+   
+    String query = "SELECT COUNT(*) FROM customers WHERE cuser_name = ?";
+    try (Connection conn = connect(); 
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next() && rs.getInt(1) > 0) {
+            return true; // Username exists
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; // Username doesn't exist
+}
+
+public boolean checkEmailExists2(String email) {
+    // Query the database to check if the email exists
+  
+    String query = "SELECT COUNT(*) FROM customers WHERE email = ?";
+    try (Connection conn = connect(); 
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next() && rs.getInt(1) > 0) {
+            return true; // Email exists
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; // Email doesn't exist
+}
+
+
 }
