@@ -48,6 +48,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -72,6 +73,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     private orders obj; // Create an instance of the Orders class
 
     public customerdashboardfacade(String userName) {
+        UIManager.put("Button.background", Color.ORANGE);
+UIManager.put("Button.foreground", Color.BLACK); // Set text color to black
+UIManager.put("Button.focus", Color.ORANGE); // Optional: Customize the focus color if needed
         this.userName = userName; // Set the user's email
         this.obj = new orders(); // Instantiate the Orders class
 
@@ -97,27 +101,33 @@ List<String> notifications = db.getAllNotifications();
 for (String notification : notifications) {
     notificationListModel.addElement(notification);
      // Load the image
+// Load the original image
 ImageIcon originalIcon = new ImageIcon("C:\\initialshopping\\account.png");
 
 // Resize the image to the desired dimensions
-Image resizedImage = originalIcon.getImage().getScaledInstance(50, 60, Image.SCALE_SMOOTH);
+Image resizedImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
 // Set the resized image as the button's icon
 accountinfo.setIcon(resizedIcon);
 
-// Adjust button size to fit the resized icon
+// Adjust button size to fit the resized icon with some padding for a cleaner look
 int iconWidth = resizedImage.getWidth(null);  // Get the width of the resized image
 int iconHeight = resizedImage.getHeight(null); // Get the height of the resized image
-accountinfo.setPreferredSize(new Dimension(iconWidth + 10, iconHeight + 20)); // Add padding if needed
+accountinfo.setPreferredSize(new Dimension(iconWidth + 20, iconHeight + 30)); // Add more padding for clean spacing
 
-// Align the icon and text (optional)
+// Align the icon and text within the button
 accountinfo.setHorizontalTextPosition(SwingConstants.CENTER); // Center the text horizontally
 accountinfo.setVerticalTextPosition(SwingConstants.BOTTOM);   // Place text below the icon
 
-// Center the icon within the button
+// Center the icon and text within the button
 accountinfo.setHorizontalAlignment(SwingConstants.CENTER); 
 accountinfo.setVerticalAlignment(SwingConstants.CENTER);
+
+// Optional: Set the button's border and background for improved appearance
+accountinfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adds space around the button's contents
+accountinfo.setBackground(Color.WHITE); // Set a background color if necessary
+
 
 }
 
@@ -1145,7 +1155,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
 
         // Adjust column widths
         TableColumnModel columnModel = ordersTable.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(50);  // Order ID
+        columnModel.getColumn(0).setPreferredWidth(100);  // Order ID
         columnModel.getColumn(1).setPreferredWidth(150); // Product Name
         columnModel.getColumn(2).setPreferredWidth(100); // Quantity
         columnModel.getColumn(3).setPreferredWidth(100); // Price
@@ -1186,7 +1196,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
     
     // Username (editable now)
     panel.add(new JLabel("Username:"));
-    JTextField usernameField = new JTextField(username);
+    JTextField usernameField = new JTextField(customerInfo[0]);
     panel.add(usernameField);
     
     // First Name
