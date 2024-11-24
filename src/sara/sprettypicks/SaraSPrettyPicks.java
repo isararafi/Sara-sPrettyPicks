@@ -12,7 +12,7 @@ public class SaraSPrettyPicks {
    
 //admin 1,2,3,4 button done
     //applied singleton and observer,mvc
-                    //************************************************************************88
+                    //************************************************************************
                     /*Single Point of Access: The GUI frames serve as a single point of 
                     access for different functionalities (like browsing products, placing orders, 
                     viewing history), simplifying how the user interacts with the system.*/

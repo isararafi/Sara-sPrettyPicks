@@ -68,12 +68,12 @@
                           </Group>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lastnamelabel" min="-2" pref="676" max="-2" attributes="0"/>
-                              <Component id="usernamelabel" min="-2" pref="445" max="-2" attributes="0"/>
                               <Component id="usernametext" min="-2" pref="198" max="-2" attributes="0"/>
                               <Component id="firstnametext" alignment="0" min="-2" pref="199" max="-2" attributes="0"/>
                               <Component id="lastnametext" alignment="0" min="-2" pref="198" max="-2" attributes="0"/>
                               <Component id="firstnamelabel" alignment="0" min="-2" pref="686" max="-2" attributes="0"/>
+                              <Component id="usernamelabel" alignment="0" min="-2" pref="445" max="-2" attributes="0"/>
+                              <Component id="lastnamelabel" alignment="0" min="-2" pref="676" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -93,10 +93,6 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="emailtext" min="-2" pref="199" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <Component id="passwordtext" min="-2" pref="199" max="-2" attributes="0"/>
@@ -112,6 +108,10 @@
                                       </Group>
                                       <Component id="confirmpasswordlabel" alignment="0" min="-2" pref="346" max="-2" attributes="0"/>
                                   </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="emailtext" min="-2" pref="199" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -147,16 +147,16 @@
                               <Component id="firstnametext" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lastnamelabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="firstnamelabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lastnametext" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="firstnamelabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="lastnamelabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <Component id="emailtext" min="-2" pref="28" max="-2" attributes="0"/>
