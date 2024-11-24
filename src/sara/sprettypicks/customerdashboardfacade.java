@@ -168,7 +168,7 @@ notificationList.setModel(notificationListModel);
         findgift = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         reviews = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        cancelorder = new javax.swing.JButton();
         deleteaccount = new javax.swing.JButton();
         vieworders = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -307,13 +307,13 @@ notificationList.setModel(notificationListModel);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(102, 204, 255));
-        jButton4.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jButton4.setText("Cancel Order");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        cancelorder.setBackground(new java.awt.Color(102, 204, 255));
+        cancelorder.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        cancelorder.setText("Cancel Order");
+        cancelorder.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cancelorder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                cancelorderActionPerformed(evt);
             }
         });
 
@@ -359,7 +359,7 @@ notificationList.setModel(notificationListModel);
                                 .addComponent(reviews, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(faqs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(checkout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cancelorder, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 67, Short.MAX_VALUE)))
@@ -389,7 +389,7 @@ notificationList.setModel(notificationListModel);
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(reviews, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelorder, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -1020,34 +1020,53 @@ if (recipientType != null && gender != null && ageGroup != null) {
         ob.setVisible(true);
     }//GEN-LAST:event_reviewsActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        orders ob = new orders();
-        int orderId=ob.getOrderIdByUsername(userName);
-        // Make sure this is assigned correctly
-        String orderStatus = ob.getOrderStatus(orderId); // Fetch the status of the order
+    private void cancelorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelorderActionPerformed
+     // Create an order object
+orders ob = new orders();  // Class name should start with a capital letter
+
+// Fetch the order ID using the username
+int orderId = ob.getOrderIdByUsername(userName);
+
+// Fetch the order status
+String orderStatus = ob.getOrderStatus(orderId);
 
 // Check if orderStatus is null
-        if (orderStatus == null) {
-            JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
-            return; // Exit if order status is not found
-        }
+if (orderStatus == null) {
+    JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
+    return; // Exit if order status is not found
+}
 
-// Step 1: Check if the order can be canceled
-        if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
-            JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
-            return;
-        }
+// Create an instance of ShowCartItems
+showcartitems obj = new showcartitems();  // Class name should start with a capital letter
 
-// Step 2: Confirm cancellation action
-        int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
-        if (confirmCancel != JOptionPane.YES_OPTION) {
-            return; // User chose not to cancel the order
-        }
+// Step 1: Fetch and display order details
+String orderDetails = obj.getOrderDetails(orderId); // No need to pass conn, assuming connection is handled internally
 
-// Step 3: Update the order status to "Cancelled"
-        boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
-        if (isCancelled) 
-            JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
+// Display order details in a message box
+JOptionPane.showMessageDialog(null, "Order Details: \n" + orderDetails, "Order Information", JOptionPane.INFORMATION_MESSAGE);
+
+// Step 2: Check if the order can be canceled
+if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
+    JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
+    return;
+}
+
+// Step 3: Confirm cancellation action
+int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
+if (confirmCancel != JOptionPane.YES_OPTION) {
+    return; // User chose not to cancel the order
+}
+
+// Step 4: Update the order status to "Cancelled"
+boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
+if (isCancelled) {
+    JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
+} else {
+    JOptionPane.showMessageDialog(null, "Error canceling order. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+
+
 
             // Step 4: Optionally process refund if applicable
            // boolean refundSuccess = ob.processRefund(orderId);
@@ -1062,7 +1081,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
 //            JOptionPane.showMessageDialog(null, "Failed to cancel the order. Please try again.");
 //        }
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_cancelorderActionPerformed
 
     private void deleteaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteaccountActionPerformed
        // Confirm if the user is sure about deleting the account
@@ -1317,6 +1336,7 @@ if (recipientType != null && gender != null && ageGroup != null) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accountinfo;
     private javax.swing.JButton browseproducts;
+    private javax.swing.JButton cancelorder;
     private javax.swing.JButton checkout;
     private javax.swing.JButton createwishlist;
     private javax.swing.JLabel customer;
@@ -1324,7 +1344,6 @@ if (recipientType != null && gender != null && ageGroup != null) {
     private javax.swing.JButton faqs;
     private javax.swing.JButton findgift;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;

@@ -77,19 +77,24 @@ public int storeOrderInDatabase(String userName, double totalBill, String shippi
 
 
 public boolean storeOrderItemsInDatabase(int orderId, List<CartItem> cartItems) {
+    // Queries
     String checkQuery = "SELECT quantity FROM order_items WHERE order_id = ? AND product_id = ?";
-    String updateQuery = "UPDATE order_items SET quantity = quantity + ? WHERE order_id = ? AND product_id = ?";
-    String insertQuery = "INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)";
+    String updateQuery = "UPDATE order_items SET quantity = quantity + ?, price = ? WHERE order_id = ? AND product_id = ?";
+    String insertQuery = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
 
     try (Connection conn = Database.getInstance().connect()) {
         if (conn == null) {
             throw new SQLException("Failed to connect to the database.");
         }
 
+        // Iterate through the cart items to process them
         for (CartItem item : cartItems) {
             boolean exists = false;
 
-            // Check if the order item already exists
+            // Fetch the price of the product
+            double price = item.getPrice(); // Assuming getPrice() is available in CartItem
+
+            // Check if the product already exists in the order
             try (PreparedStatement checkPs = conn.prepareStatement(checkQuery)) {
                 checkPs.setInt(1, orderId);
                 checkPs.setInt(2, item.getProductId());
@@ -101,23 +106,25 @@ public boolean storeOrderItemsInDatabase(int orderId, List<CartItem> cartItems) 
                 }
             }
 
+            // If the product exists, update the quantity and price
             if (exists) {
-                // Update the existing quantity
                 try (PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
-                    updatePs.setInt(1, item.getQuantity());
-                    updatePs.setInt(2, orderId);
-                    updatePs.setInt(3, item.getProductId());
+                    updatePs.setInt(1, item.getQuantity()); // Add the quantity
+                    updatePs.setDouble(2, price); // Update the price
+                    updatePs.setInt(3, orderId);
+                    updatePs.setInt(4, item.getProductId());
 
-                    updatePs.executeUpdate();
+                    updatePs.executeUpdate(); // Execute the update query
                 }
             } else {
-                // Insert a new order item
+                // Insert a new product with its quantity and price
                 try (PreparedStatement insertPs = conn.prepareStatement(insertQuery)) {
                     insertPs.setInt(1, orderId);
                     insertPs.setInt(2, item.getProductId());
                     insertPs.setInt(3, item.getQuantity());
+                    insertPs.setDouble(4, price); // Insert the price
 
-                    insertPs.executeUpdate();
+                    insertPs.executeUpdate(); // Execute the insert query
                 }
             }
         }

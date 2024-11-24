@@ -4,9 +4,10 @@
  */
 package sara.sprettypicks;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import javax.swing.JOptionPane;
-
+import java.sql.*;
 /**
  *
  * @author sarar
@@ -96,4 +97,66 @@ public class showcartitems {
             }
         }
     }
+    
+    
+    public String getOrderDetails(int orderId) {
+    StringBuilder details = new StringBuilder();
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        // Assuming Database.getInstance() gets the connection
+        conn = Database.getInstance().connect();
+
+        // SQL query to fetch order details and product name from the products table
+        String orderQuery = "SELECT p.name AS product_name, oi.quantity, oi.price " +
+                             "FROM order_items oi " +
+                             "INNER JOIN products p ON oi.product_id = p.product_id " +
+                             "WHERE oi.order_id = ?";
+
+        ps = conn.prepareStatement(orderQuery);
+        ps.setInt(1, orderId); // Set the orderId parameter
+
+        // Execute the query
+        rs = ps.executeQuery();
+
+        // Check if the result set contains any rows
+        if (!rs.next()) {
+            return "No items found for this order.";
+        }
+
+        details.append("Order ID: " + orderId + "\n");
+        details.append("Items in your order (Product Name | Quantity | Price | Total):\n");
+
+        // Loop through the result set and append the order details horizontally
+        do {
+            String productName = rs.getString("product_name");
+            int quantity = rs.getInt("quantity");
+            double price = rs.getDouble("price");
+            double total = price * quantity;
+
+            details.append(productName + " | ");
+            details.append("Quantity: " + quantity + " | ");
+            details.append("Price: $" + price + " | ");
+            details.append("Total: $" + total + " | ");
+
+        } while (rs.next()); // Continue until all items are retrieved
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        details.append("Error fetching order details: " + e.getMessage());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close(); // Close the connection
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    return details.toString();
+}
+
 }
