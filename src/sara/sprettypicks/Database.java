@@ -1109,6 +1109,31 @@ public boolean checkEmailExists2(String email) {
     }
     return false; // Email doesn't exist
 }
+public boolean insertOrderItem(int orderId, CartItem item) {
+    Database db = Database.getInstance(); // Singleton instance of the Database class
+    String query = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+    
+    try (Connection conn = db.connect();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        // Set the parameters for the SQL query
+        stmt.setInt(1, orderId);               // Order ID
+        stmt.setInt(2, item.getProductId());   // Product ID
+        stmt.setInt(3, item.getQuantity());    // Quantity
+        stmt.setDouble(4, item.getPrice());    // Price (corrected index)
+
+        // Execute the query
+        int rowsInserted = stmt.executeUpdate();
+
+        // Check if the insert was successful
+        return rowsInserted > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; // Return false if an error occurs
+    }
+}
+
 
 
 }

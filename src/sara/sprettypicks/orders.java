@@ -1,97 +1,180 @@
 package sara.sprettypicks;
 
 
-
 import java.util.List;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement; // This is necessary for Statement.RETURN_GENERATED_KEYS
+import java.sql.Statement;
+import java.sql.SQLIntegrityConstraintViolationException;
+ // This is necessary for Statement.RETURN_GENERATED_KEYS
 
 
 public class orders {
 public int storeOrderInDatabase(String userName, double totalBill, String shippingAddress) {
     int orderId = -1; // Default to -1 to indicate not found
 
+    // SQL query to check if a pending order exists for the given username
+    String checkQuery = "SELECT order_id FROM orders WHERE user_name = ? AND order_status = 'Pending'";
+
     // SQL query to insert a new order
-    String query = "INSERT INTO orders (user_name, total_amount, shipping_address, order_status) VALUES (?, ?, ?, ?)";
+    String insertQuery = "INSERT INTO orders (user_name, total_amount, shipping_address, order_status) VALUES (?, ?, ?, ?)";
+
+    // SQL query to update the total amount and shipping address of an existing order (if needed)
+    String updateQuery = "UPDATE orders SET total_amount = ?, shipping_address = ? WHERE order_id = ?";
 
     try (Connection conn = Database.getInstance().connect()) {
         if (conn == null) {
             throw new SQLException("Failed to connect to the database.");
         }
 
-        // Prepare the statement with the correct query to retrieve generated keys
-        PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, userName);
-        ps.setDouble(2, totalBill);
-        ps.setString(3, shippingAddress);
-        ps.setString(4, "Pending"); // Set the initial order status
+        // Step 1: Check if there is an existing pending order for this user
+        try (PreparedStatement checkPs = conn.prepareStatement(checkQuery)) {
+            checkPs.setString(1, userName);
+            try (ResultSet rs = checkPs.executeQuery()) {
+                if (rs.next()) {
+                    // An existing pending order found, update the existing order
+                    orderId = rs.getInt("order_id");
 
-        // Execute the insertion
-        int affectedRows = ps.executeUpdate();
-        if (affectedRows > 0) {
-            // Retrieve the generated order ID
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    orderId = generatedKeys.getInt(1); // Get the order ID
+                    // Update the order with the new total bill and shipping address
+                    try (PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
+                        updatePs.setDouble(1, totalBill);
+                        updatePs.setString(2, shippingAddress);
+                        updatePs.setInt(3, orderId);
+                        updatePs.executeUpdate();
+                    }
+                } else {
+                    // No existing pending order, insert a new order
+                    try (PreparedStatement insertPs = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                        insertPs.setString(1, userName);
+                        insertPs.setDouble(2, totalBill);
+                        insertPs.setString(3, shippingAddress);
+                        insertPs.setString(4, "Pending"); // Set the order status to 'Pending'
+
+                        int affectedRows = insertPs.executeUpdate();
+                        if (affectedRows > 0) {
+                            // Retrieve the generated order ID
+                            try (ResultSet generatedKeys = insertPs.getGeneratedKeys()) {
+                                if (generatedKeys.next()) {
+                                    orderId = generatedKeys.getInt(1); // Get the order ID
+                                }
+                            }
+                        } else {
+                            System.out.println("Order insertion failed, no rows affected.");
+                        }
+                    }
                 }
             }
-        } else {
-            System.out.println("Order insertion failed, no rows affected.");
         }
     } catch (SQLException e) {
         e.printStackTrace(); // Print stack trace for debugging
     }
 
-    return orderId; // Return the order ID
+    return orderId; // Return the order ID (either from existing or newly created order)
 }
 
 
+public boolean storeOrderItemsInDatabase(int orderId, List<CartItem> cartItems) {
+    String checkQuery = "SELECT quantity FROM order_items WHERE order_id = ? AND product_id = ?";
+    String updateQuery = "UPDATE order_items SET quantity = quantity + ? WHERE order_id = ? AND product_id = ?";
+    String insertQuery = "INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)";
 
-   public boolean storeOrderItemsInDatabase(int orderId, List<CartItem> cartItems) {
-    Connection conn = null;
-    PreparedStatement ps = null;
+    try (Connection conn = Database.getInstance().connect()) {
+        if (conn == null) {
+            throw new SQLException("Failed to connect to the database.");
+        }
 
-    try {
-        // Get the database connection
-        conn = Database.getInstance().connect();
-
-        // SQL query to insert order items
-        String query = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
-
-        // Prepare the statement
-        ps = conn.prepareStatement(query);
-
-        // Loop through each cart item and set parameters
         for (CartItem item : cartItems) {
-            ps.setInt(1, orderId);
-            ps.setInt(2, item.getProductId());
-            ps.setInt(3, item.getQuantity());
-            ps.setDouble(4, item.getPrice());
-            ps.addBatch();  // Add to batch for batch execution
+            boolean exists = false;
+
+            // Check if the order item already exists
+            try (PreparedStatement checkPs = conn.prepareStatement(checkQuery)) {
+                checkPs.setInt(1, orderId);
+                checkPs.setInt(2, item.getProductId());
+
+                try (ResultSet rs = checkPs.executeQuery()) {
+                    if (rs.next()) {
+                        exists = true;
+                    }
+                }
+            }
+
+            if (exists) {
+                // Update the existing quantity
+                try (PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
+                    updatePs.setInt(1, item.getQuantity());
+                    updatePs.setInt(2, orderId);
+                    updatePs.setInt(3, item.getProductId());
+
+                    updatePs.executeUpdate();
+                }
+            } else {
+                // Insert a new order item
+                try (PreparedStatement insertPs = conn.prepareStatement(insertQuery)) {
+                    insertPs.setInt(1, orderId);
+                    insertPs.setInt(2, item.getProductId());
+                    insertPs.setInt(3, item.getQuantity());
+
+                    insertPs.executeUpdate();
+                }
+            }
         }
 
-        // Execute all insertions in one go
-        ps.executeBatch();
-
-        // If everything runs without exception, return true
-        return true;
-
+        return true; // All items processed successfully
     } catch (SQLException e) {
-        System.err.println("Error storing order items: " + e.getMessage());
-        return false;  // Return false if there’s an error
+        e.printStackTrace(); // Log the SQL error
+        return false; // Return false to indicate failure
+    }
+}
 
-    } finally {
-        // Close resources to avoid memory leaks
-        try {
-            if (ps != null) ps.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            System.err.println("Error closing resources: " + e.getMessage());
+
+   public void addOrderItem(int orderId, int productId, int quantity) {
+    String checkQuery = "SELECT quantity FROM order_items WHERE order_id = ? AND product_id = ?";
+    String updateQuery = "UPDATE order_items SET quantity = quantity + ? WHERE order_id = ? AND product_id = ?";
+    String insertQuery = "INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)";
+
+    try (Connection conn = Database.getInstance().connect()) {
+        if (conn == null) {
+            throw new SQLException("Failed to connect to the database.");
         }
+
+        boolean exists = false;
+
+        // Check if the order item already exists
+        try (PreparedStatement checkPs = conn.prepareStatement(checkQuery)) {
+            checkPs.setInt(1, orderId);
+            checkPs.setInt(2, productId);
+
+            try (ResultSet rs = checkPs.executeQuery()) {
+                if (rs.next()) {
+                    exists = true;
+                }
+            }
+        }
+
+        if (exists) {
+            // Update the existing quantity
+            try (PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
+                updatePs.setInt(1, quantity);
+                updatePs.setInt(2, orderId);
+                updatePs.setInt(3, productId);
+
+                updatePs.executeUpdate();
+            }
+        } else {
+            // Insert a new order item
+            try (PreparedStatement insertPs = conn.prepareStatement(insertQuery)) {
+                insertPs.setInt(1, orderId);
+                insertPs.setInt(2, productId);
+                insertPs.setInt(3, quantity);
+
+                insertPs.executeUpdate();
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 }
 

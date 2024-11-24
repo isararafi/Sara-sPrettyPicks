@@ -1,5 +1,6 @@
 
 package sara.sprettypicks;
+
 import java.awt.HeadlessException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -79,22 +80,16 @@ public class surprisecheckout {
                 return;
             }
 
-            // Step 2: Insert Order into the orders table
+            // Step 2: Insert or update order in the orders table
             orders orderHandler = new orders();
-            int orderId = -1;
-
-            for (CartItem item : cartItems) {
-                // Store individual orders for each product in the cart
-                orderId = orderHandler.storeOrderInDatabase(Username,  totalBill, shippingAddress);
-                if (orderId == -1) {
-                    JOptionPane.showMessageDialog(null, "Failed to place order for Product ID: " + item.getProductId(), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+            int orderId = orderHandler.storeOrderInDatabase(Username, totalBill, shippingAddress);
+            if (orderId == -1) {
+                JOptionPane.showMessageDialog(null, "Failed to place order.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             // Step 3: Store cart items in the order_items table
             boolean itemsStored = orderHandler.storeOrderItemsInDatabase(orderId, cartItems);
-
             if (!itemsStored) {
                 JOptionPane.showMessageDialog(null, "Failed to store order items in the database.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -145,66 +140,92 @@ public class surprisecheckout {
     }
 
     // Method to handle payment processing
-    public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
-       // Prompt the user to enter the payment amount, showing the total amount
-String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
+   public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
+    // Prompt the user to enter the payment amount, showing the total amount
+    String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
 
-if (paymentInput == null || paymentInput.trim().isEmpty()) {
-    JOptionPane.showMessageDialog(null, "Payment is required!", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+    if (paymentInput == null || paymentInput.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Payment is required!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-double paymentAmount;
-try {
-    paymentAmount = Double.parseDouble(paymentInput);
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(null, "Invalid payment amount entered!", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+    double paymentAmount;
+    try {
+        paymentAmount = Double.parseDouble(paymentInput);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Invalid payment amount entered!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-// Proceed with payment handling
-if (paymentAmount >= totalBill) {
-    double change = paymentAmount - totalBill;
-    boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
+    // Proceed with payment handling
+    if (paymentAmount >= totalBill) {
+        double change = paymentAmount - totalBill;
+        boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
 
-    if (paymentSaved) {
-        String message = "Payment successful!";
-        if (change > 0) {
-            message += " Your change is: $" + String.format("%.2f", change);
-        }
-        JOptionPane.showMessageDialog(null, message, "Success", JOptionPane.INFORMATION_MESSAGE);
-        PreparedStatement ps = null;
-        // Now update the order status from "pending" to "completed"
-        try (java.sql.Connection conn = Database.getInstance().connect()) {
-            // SQL query to update the order status
-            String updateSql = "UPDATE orders SET order_status = 'completed' WHERE user_name = ? AND order_status = 'Pending'";
+        if (paymentSaved) {
+            String message = "Payment successful!";
+            if (change > 0) {
+                message += " Your change is: $" + String.format("%.2f", change);
+            }
+            JOptionPane.showMessageDialog(null, message, "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            PreparedStatement updatePs = conn.prepareStatement(updateSql);
-            updatePs.setString(1, userName);
+            // Begin transaction to update the order status
+            java.sql.Connection conn = null;
+            PreparedStatement updatePs = null;
+            try {
+                conn = Database.getInstance().connect();
+                if (conn == null) {
+                    throw new SQLException("Failed to connect to the database.");
+                }
 
-            // Execute the update
-            int rowsUpdated = updatePs.executeUpdate();
+                // Start a transaction
+                conn.setAutoCommit(false);
 
-            if (rowsUpdated > 0) {
-                System.out.println("Order status updated to completed.");
-            } else {
-                System.out.println("No pending orders found to update.");
+                // SQL query to update the order status from "Pending" to "Completed"
+                String updateSql = "UPDATE orders SET order_status = 'Completed' WHERE user_name = ? AND order_status = 'Pending'";
+
+                updatePs = conn.prepareStatement(updateSql);
+                updatePs.setString(1, userName);
+
+                // Execute the update
+                int rowsUpdated = updatePs.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Order status updated to completed.");
+                } else {
+                    System.out.println("No pending orders found to update.");
+                }
+
+                // Commit the transaction
+                conn.commit();
+
+            } catch (SQLException e) {
+                // Rollback transaction if there is an error
+                if (conn != null) {
+                    conn.rollback();
+                }
+                JOptionPane.showMessageDialog(null, "Error updating order status: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                // Close resources
+                if (updatePs != null) {
+                    updatePs.close();
+                }
+                if (conn != null) {
+                    conn.setAutoCommit(true);  // Reset to auto-commit mode
+                    conn.close();
+                }
             }
 
-            // Close resources
-            updatePs.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error updating order status: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to save payment details. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     } else {
-        JOptionPane.showMessageDialog(null, "Failed to save payment details. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Payment unsuccessful! The amount is less than the total bill. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-} else {
-    JOptionPane.showMessageDialog(null, "Payment unsuccessful! The amount is less than the total bill. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
 }
 
-    }
+    
+
 
     // Method to clear the discount and reset flags
     static void clearDiscount() {
