@@ -462,16 +462,16 @@ public int getItemQuantityInCart(String email, int productId) {
     return quantity;
 }
 
-public boolean checkIfUserExists(String email) {
+public boolean checkIfUserExists(String username) {
     // SQL query to find a user by email or username
-    String query = "SELECT COUNT(*) FROM customers WHERE email = ? ";
+    String query = "SELECT COUNT(*) FROM customers WHERE cuser_name = ? ";
     
     // Try-with-resources to handle database connection and statement automatically
     try (Connection conn = connect(); // Method to get your database connection
          PreparedStatement stmt = conn.prepareStatement(query)) {
         
         // Set the email or username in the query
-        stmt.setString(1, email);  // For email
+        stmt.setString(1, username);  // For email
         
 
         // Execute the query and get the result
@@ -489,22 +489,34 @@ public boolean checkIfUserExists(String email) {
     return false;
 }
 
-public boolean resetPassword(String email, String newPassword) {
-    // SQL query to update the password for the user with the given email or username
-    String query = "UPDATE customers SET password = ? WHERE email = ? ";
+public boolean resetPassword(String username, String newPassword) {
+    // Password validation constraints: includes underscore as valid special character
+     String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
     
+    // Check if password matches the required regex
+    if (!newPassword.matches(passwordRegex)) {
+        System.out.println("Password must be at least 8 characters long and contain: ");
+        System.out.println("- At least one uppercase letter");
+        System.out.println("- At least one lowercase letter");
+        System.out.println("- At least one number");
+        System.out.println("- At least one special character (e.g., @$!%*?&_ or _)");  // Clear message
+        return false;  // Return false if password does not meet criteria
+    }
+
+    // SQL query to update the password for the user with the given username
+    String query = "UPDATE customers SET password = ? WHERE cuser_name = ?";
+
     // Try-with-resources to handle database connection and statement automatically
     try (Connection conn = connect(); // Method to get your database connection
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
-        // Set the new password and the email/username in the query
+        // Set the new password and the username in the query
         stmt.setString(1, newPassword);       // The new password (parameter 1)
-        stmt.setString(2, email);   // The email (parameter 2)
-      
+        stmt.setString(2, username);             // The username (parameter 2)
 
         // Execute the update query
-        int rowsAffected = stmt.executeUpdate(); 
-        
+        int rowsAffected = stmt.executeUpdate();
+
         // If rowsAffected is greater than 0, that means the password was updated
         return rowsAffected > 0;
 

@@ -31,15 +31,19 @@ import javax.swing.ImageIcon;
  */
 public class loginformfacade extends javax.swing.JFrame {
 
-    
+   
     public loginformfacade() {
         initComponents();
          ImageIcon eyeIcon = new ImageIcon("C:\\initialshopping\\eye.png"); // Load the image
 Image scaledImage = eyeIcon.getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH); // Scale to a smaller size (16x16)
 ImageIcon smallIcon = new ImageIcon(scaledImage); // Create a new ImageIcon with the scaled image
 button.setIcon(smallIcon); // Set the smaller icon on the button
+   
 
     }
+     
+
+  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -286,7 +290,7 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
     }//GEN-LAST:event_adminradioActionPerformed
 
     private void signupbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbuttonActionPerformed
-   
+this.dispose();
       // Check if no category is selected
     if (!customerradio.isSelected() && !adminradio.isSelected()) {
         // Show a message dialog if no category is selected
@@ -387,16 +391,17 @@ if (customerradio.isSelected()) {
     private void resetpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetpasswordActionPerformed
         // Get the user’s email or username (assuming you have a JTextField for this)
  Database db = Database.getInstance();
-String email = JOptionPane.showInputDialog("Enter your email:");
+ 
+String username = JOptionPane.showInputDialog("Enter your username:");
 
 // If the user cancels or doesn't provide an input, return early
-if (email == null || email.trim().isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Email or Username is required", "Error", JOptionPane.ERROR_MESSAGE);
+if (username == null || username.trim().isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Username is required", "Error", JOptionPane.ERROR_MESSAGE);
     return;
 }
 
 // Verify if the user exists (optional, depends on your implementation)
-boolean userExists = db.checkIfUserExists(email);
+boolean userExists = db.checkIfUserExists(username);
 if (!userExists) {
     JOptionPane.showMessageDialog(this, "User not found", "Error", JOptionPane.ERROR_MESSAGE);
     return;
@@ -413,19 +418,9 @@ try {
         been passed an illegal or inappropriate argument.*/
         throw new IllegalArgumentException("Password cannot be empty");
     }
-
-    // Validate password constraints
-    if (newPassword.length() < 8) {
-        throw new IllegalArgumentException("Password must be at least 8 characters long");
-    }
-
-    // Check for special characters
-    if (!newPassword.matches("[a-zA-Z0-9]*")) {
-        throw new IllegalArgumentException("Password must not contain special characters");
-    }
-
+String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
     // Update the password in the database
-    boolean isPasswordReset = db.resetPassword(email, newPassword);
+    boolean isPasswordReset = db.resetPassword(username, newPassword);
 
     // Notify the user if the password reset was successful
     if (isPasswordReset) {
