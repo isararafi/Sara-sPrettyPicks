@@ -283,33 +283,29 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
     }//GEN-LAST:event_adminradioActionPerformed
 
     private void signupbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbuttonActionPerformed
+// Inside your login frame's signup button action
+// Check if no category is selected
+if (!customerradio.isSelected() && !adminradio.isSelected()) {
+    // Show a message dialog if no category is selected
+    JOptionPane.showMessageDialog(this, "Please select a category (Customer or Admin).", "Selection Required", JOptionPane.WARNING_MESSAGE);
+    return; // Exit the method if no category is selected
+}
+
+// Define a variable to hold the role
+String role;
+
+// Check which radio button is selected
+if (adminradio.isSelected()) {
+    role = "admin";
+} else {
+    role = "customer";
+}
+
+// Proceed to open the signup form if a category is selected
+Signupformfacade signup = new Signupformfacade(role);
+signup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Ensure only the signup frame closes when done
+signup.setVisible(true);
 this.dispose();
-      // Check if no category is selected
-    if (!customerradio.isSelected() && !adminradio.isSelected()) {
-        // Show a message dialog if no category is selected
-        JOptionPane.showMessageDialog(this, "Please select a category (Customer or Admin).", "Selection Required", JOptionPane.WARNING_MESSAGE);
-        return; // Exit the method if no category is selected
-    }
-    // Inside your login frame's signup button action
-
-    String role;
-    
-    // Check which radio button is selected
-    if (adminradio.isSelected()) {
-        role = "admin";
-    } else {
-        role = "customer";
-    }
-
-    // Pass the role to the signup frame
-    
-
-
-    // Proceed to open the signup form if a category is selected
-    Signupformfacade signup = new Signupformfacade(role);
-    signup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set to dispose only BrowseProducts frame
-    signup.setVisible(true);
-
 
     }//GEN-LAST:event_signupbuttonActionPerformed
 

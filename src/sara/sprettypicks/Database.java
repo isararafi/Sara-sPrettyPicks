@@ -29,9 +29,6 @@ import javax.swing.JOptionPane;
 
 
 public class Database {
-//static Database db = new Database();
-    // Database connection details
-    // Private static instance
     private static Database db;
     
     // Database connection details
@@ -41,7 +38,7 @@ public class Database {
 
     // Private constructor to prevent instantiation
     private Database() {
-        // Optionally initialize connection-related setup here
+        
     }
 
     // Static method to get the single instance of the class

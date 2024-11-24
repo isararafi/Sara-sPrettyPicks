@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
-
 package sara.sprettypicks;
+
 import sara.sprettypicks.InsertImageWithPath;  // Adjust the package name as necessary
 
 import com.sun.jdi.connect.spi.Connection;
@@ -74,75 +73,72 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     public customerdashboardfacade(String userName) {
         UIManager.put("Button.background", Color.ORANGE);
-UIManager.put("Button.foreground", Color.BLACK); // Set text color to black
-UIManager.put("Button.focus", Color.ORANGE); // Optional: Customize the focus color if needed
+        UIManager.put("Button.foreground", Color.BLACK); // Set text color to black
+        UIManager.put("Button.focus", Color.ORANGE); // Optional: Customize the focus color if needed
         this.userName = userName; // Set the user's email
         this.obj = new orders(); // Instantiate the Orders class
 
         // Retrieve the order ID based on the user's email
-       // this.orderId = obj.getOrderIdByUsername(userName);
-
+        // this.orderId = obj.getOrderIdByUsername(userName);
         // Debugging output
         //System.out.println("Order ID for user " + userName + ": " + orderId);
-
         // Initialize components in the dashboard
         initComponents();
-        setUserNameInTextField(); 
-        
+        setUserNameInTextField();
+//*****************************************************************************************
         // Inside the customer dashboard, you should have something like this:
-
 // DefaultListModel to hold the notifications
-DefaultListModel<String> notificationListModel = new DefaultListModel<>();
-Database db=Database.getInstance();
+        DefaultListModel<String> notificationListModel = new DefaultListModel<>();
+        Database db = Database.getInstance();
 // Fetch all notifications from the database
-List<String> notifications = db.getAllNotifications();
+        List<String> notifications = db.getAllNotifications();
 
 // Add the notifications to the DefaultListModel
-for (String notification : notifications) {
-    notificationListModel.addElement(notification);
-     // Load the image
+        for (String notification : notifications) {
+            notificationListModel.addElement(notification);
+            //****************************************************************************
+            // Load the image
 // Load the original image
-ImageIcon originalIcon = new ImageIcon("C:\\initialshopping\\account.png");
+            ImageIcon originalIcon = new ImageIcon("C:\\initialshopping\\account.png");
 
 // Resize the image to the desired dimensions
-Image resizedImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-ImageIcon resizedIcon = new ImageIcon(resizedImage);
+            Image resizedImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
 // Set the resized image as the button's icon
-accountinfo.setIcon(resizedIcon);
+            accountinfo.setIcon(resizedIcon);
 
 // Adjust button size to fit the resized icon with some padding for a cleaner look
-int iconWidth = resizedImage.getWidth(null);  // Get the width of the resized image
-int iconHeight = resizedImage.getHeight(null); // Get the height of the resized image
-accountinfo.setPreferredSize(new Dimension(iconWidth + 20, iconHeight + 30)); // Add more padding for clean spacing
+            int iconWidth = resizedImage.getWidth(null);  // Get the width of the resized image
+            int iconHeight = resizedImage.getHeight(null); // Get the height of the resized image
+            accountinfo.setPreferredSize(new Dimension(iconWidth + 20, iconHeight + 30)); // Add more padding for clean spacing
 
 // Align the icon and text within the button
-accountinfo.setHorizontalTextPosition(SwingConstants.CENTER); // Center the text horizontally
-accountinfo.setVerticalTextPosition(SwingConstants.BOTTOM);   // Place text below the icon
+            accountinfo.setHorizontalTextPosition(SwingConstants.CENTER); // Center the text horizontally
+            accountinfo.setVerticalTextPosition(SwingConstants.BOTTOM);   // Place text below the icon
 
 // Center the icon and text within the button
-accountinfo.setHorizontalAlignment(SwingConstants.CENTER); 
-accountinfo.setVerticalAlignment(SwingConstants.CENTER);
+            accountinfo.setHorizontalAlignment(SwingConstants.CENTER);
+            accountinfo.setVerticalAlignment(SwingConstants.CENTER);
 
 // Optional: Set the button's border and background for improved appearance
-accountinfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adds space around the button's contents
-accountinfo.setBackground(Color.WHITE); // Set a background color if necessary
+            accountinfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adds space around the button's contents
+            accountinfo.setBackground(Color.WHITE); // Set a background color if necessary
 
-
-}
+        }
 
 // Assuming `notificationList` is the JList that displays the notifications
-notificationList.setModel(notificationListModel);
+        notificationList.setModel(notificationListModel);
 
     }
+
     private void setUserNameInTextField() {
-    String username = SessionManager.getLoggedInUserName(); // Assuming you have a method to get the logged-in username.
-    
-    // Set the username in jTextField2
-    //jTextField2.setText(username);
-    customer.setText(username);
-}
-   
+        String username = SessionManager.getLoggedInUserName(); // Assuming you have a method to get the logged-in username.
+
+        // Set the username in jTextField2
+        //jTextField2.setText(username);
+        customer.setText(username);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -566,27 +562,26 @@ notificationList.setModel(notificationListModel);
     }//GEN-LAST:event_faqsActionPerformed
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
-    showcartitems ob=new showcartitems();
-    ob.cart();
+        showcartitems ob = new showcartitems();
+        ob.cart();
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
-    
+
         // Create an instance of InsertImageWithPath
-    InsertImageWithPath productsPage = new InsertImageWithPath();
+        InsertImageWithPath productsPage = new InsertImageWithPath();
 
-    // Make sure to update the cart item count before displaying the products page
-    productsPage.showcartvalue();   // Updates the cart label with the latest item count
+        // Make sure to update the cart item count before displaying the products page
+        productsPage.showcartvalue();   // Updates the cart label with the latest item count
 
-    // Call the method to display products, passing an empty string to show all products
-    JFrame browseProductsFrame = productsPage.createSearchableProductDisplay();
+        // Call the method to display products, passing an empty string to show all products
+        JFrame browseProductsFrame = productsPage.createSearchableProductDisplay();
 
-    // Set the close operation for the Browse Products frame
-    browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Set the close operation for the Browse Products frame
+        browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-    // Optionally, you can add a listener for closing events (if needed)
-    // this.dispose(); // Uncomment this only if you want to close the current frame
-
+        // Optionally, you can add a listener for closing events (if needed)
+        // this.dispose(); // Uncomment this only if you want to close the current frame
 
     }//GEN-LAST:event_browseproductsActionPerformed
 
@@ -609,305 +604,301 @@ notificationList.setModel(notificationListModel);
 
     private void createwishlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createwishlistActionPerformed
         Database db = Database.getInstance();
-String wishlistName = JOptionPane.showInputDialog(this, "Enter the name for your wishlist:");
+        String wishlistName = JOptionPane.showInputDialog(this, "Enter the name for your wishlist:");
 
 // Validate wishlist name
-if (wishlistName != null && !wishlistName.trim().isEmpty()) {
-    String userEmail = SessionManager.getLoggedInUserEmail(); // Get logged-in user's email
-    String userName = SessionManager.getLoggedInUserName();
+        if (wishlistName != null && !wishlistName.trim().isEmpty()) {
+            String userEmail = SessionManager.getLoggedInUserEmail(); // Get logged-in user's email
+            String userName = SessionManager.getLoggedInUserName();
 
-    // Check if the wishlist can be created
-    boolean wishlistCreated = db.createWishlist(userName, wishlistName);
-    if (wishlistCreated) {
-        JOptionPane.showMessageDialog(this, "Wishlist created successfully!");
+            // Check if the wishlist can be created
+            boolean wishlistCreated = db.createWishlist(userName, wishlistName);
+            if (wishlistCreated) {
+                JOptionPane.showMessageDialog(this, "Wishlist created successfully!");
 
-        // Fetch products for selection
-        List<String> productList = db.getAllProducts();
+                // Fetch products for selection
+                List<String> productList = db.getAllProducts();
 
-        // MultiSelectDialog logic integrated here
-        JDialog dialog = new JDialog(this, "Select Products", true);
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(400, 300); // Adjust size as needed
+                // MultiSelectDialog logic integrated here
+                JDialog dialog = new JDialog(this, "Select Products", true);
+                dialog.setLayout(new BorderLayout());
+                dialog.setSize(400, 300); // Adjust size as needed
 
-        // Panel to hold checkboxes in grid layout
-        JPanel productPanel = new JPanel();
-        int rows = (int) Math.ceil(productList.size() / 3.0); // Example: 3 columns
-        productPanel.setLayout(new GridLayout(rows, 3, 10, 10)); // Rows, columns, hgap, vgap
+                // Panel to hold checkboxes in grid layout
+                JPanel productPanel = new JPanel();
+                int rows = (int) Math.ceil(productList.size() / 3.0); // Example: 3 columns
+                productPanel.setLayout(new GridLayout(rows, 3, 10, 10)); // Rows, columns, hgap, vgap
 
-        // Create and add checkboxes
-        List<JCheckBox> checkBoxes = new ArrayList<>();
-        for (String product : productList) {
-            JCheckBox checkBox = new JCheckBox(product);
-            checkBoxes.add(checkBox);
-            productPanel.add(checkBox);
-        }
-
-        // Add product panel to the dialog
-        JScrollPane scrollPane = new JScrollPane(productPanel); // Add scroll if items overflow
-        dialog.add(scrollPane, BorderLayout.CENTER);
-
-        // Confirm and Cancel buttons
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton confirmButton = new JButton("Confirm");
-        confirmButton.setBackground(new Color(144, 238, 144)); // Light green
- // Change color of confirm button
-        confirmButton.setForeground(Color.BLACK);
-
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBackground(Color.RED); // Change color of cancel button
-        cancelButton.setForeground(Color.BLACK);
-
-        buttonPanel.add(confirmButton);
-        buttonPanel.add(cancelButton);
-
-        // Add button panel to dialog
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
-
-        // Action listeners for buttons
-        final boolean[] confirmed = {false};
-        confirmButton.addActionListener(e -> {
-            confirmed[0] = true;
-            dialog.dispose();
-        });
-        cancelButton.addActionListener(e -> dialog.dispose());
-
-        // Show the dialog
-        dialog.setVisible(true);
-
-        // Process selected products if confirmed
-        if (confirmed[0]) {
-            List<String> selectedProducts = new ArrayList<>();
-            for (JCheckBox checkBox : checkBoxes) {
-                if (checkBox.isSelected()) {
-                    selectedProducts.add(checkBox.getText());
+                // Create and add checkboxes
+                List<JCheckBox> checkBoxes = new ArrayList<>();
+                for (String product : productList) {
+                    JCheckBox checkBox = new JCheckBox(product);
+                    checkBoxes.add(checkBox);
+                    productPanel.add(checkBox);
                 }
-            }
 
-            StringBuilder addedProducts = new StringBuilder(); // For accumulating added product names
-            StringBuilder errorProducts = new StringBuilder(); // For accumulating error messages
+                // Add product panel to the dialog
+                JScrollPane scrollPane = new JScrollPane(productPanel); // Add scroll if items overflow
+                dialog.add(scrollPane, BorderLayout.CENTER);
 
-            if (!selectedProducts.isEmpty()) {
-                for (String selectedProduct : selectedProducts) {
-                    boolean productAdded = db.addProductToWishlist(userName, wishlistName, selectedProduct);
-                    if (productAdded) {
-                        addedProducts.append(selectedProduct).append(", "); // Add to successful list
+                // Confirm and Cancel buttons
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                JButton confirmButton = new JButton("Confirm");
+                confirmButton.setBackground(new Color(144, 238, 144)); // Light green
+                // Change color of confirm button
+                confirmButton.setForeground(Color.BLACK);
+
+                JButton cancelButton = new JButton("Cancel");
+                cancelButton.setBackground(Color.RED); // Change color of cancel button
+                cancelButton.setForeground(Color.BLACK);
+
+                buttonPanel.add(confirmButton);
+                buttonPanel.add(cancelButton);
+
+                // Add button panel to dialog
+                dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                // Action listeners for buttons
+                final boolean[] confirmed = {false};
+                confirmButton.addActionListener(e -> {
+                    confirmed[0] = true;
+                    dialog.dispose();
+                });
+                cancelButton.addActionListener(e -> dialog.dispose());
+
+                // Show the dialog
+                dialog.setVisible(true);
+
+                // Process selected products if confirmed
+                if (confirmed[0]) {
+                    List<String> selectedProducts = new ArrayList<>();
+                    for (JCheckBox checkBox : checkBoxes) {
+                        if (checkBox.isSelected()) {
+                            selectedProducts.add(checkBox.getText());
+                        }
+                    }
+
+                    StringBuilder addedProducts = new StringBuilder(); // For accumulating added product names
+                    StringBuilder errorProducts = new StringBuilder(); // For accumulating error messages
+
+                    if (!selectedProducts.isEmpty()) {
+                        for (String selectedProduct : selectedProducts) {
+                            boolean productAdded = db.addProductToWishlist(userName, wishlistName, selectedProduct);
+                            if (productAdded) {
+                                addedProducts.append(selectedProduct).append(", "); // Add to successful list
+                            } else {
+                                errorProducts.append(selectedProduct).append(", "); // Add to error list
+                            }
+                        }
+
+                        // Remove trailing comma and space
+                        if (addedProducts.length() > 0) {
+                            addedProducts.setLength(addedProducts.length() - 2);
+                        }
+                        if (errorProducts.length() > 0) {
+                            errorProducts.setLength(errorProducts.length() - 2);
+                        }
+
+                        // Show a single message with all added products
+                        String message = "Products added to wishlist: " + addedProducts.toString();
+                        if (errorProducts.length() > 0) {
+                            message += "\nError adding products: " + errorProducts.toString();
+                        }
+                        JOptionPane.showMessageDialog(this, message);
                     } else {
-                        errorProducts.append(selectedProduct).append(", "); // Add to error list
+                        JOptionPane.showMessageDialog(this, "No products selected.");
                     }
                 }
-
-                // Remove trailing comma and space
-                if (addedProducts.length() > 0) {
-                    addedProducts.setLength(addedProducts.length() - 2);
-                }
-                if (errorProducts.length() > 0) {
-                    errorProducts.setLength(errorProducts.length() - 2);
-                }
-
-                // Show a single message with all added products
-                String message = "Products added to wishlist: " + addedProducts.toString();
-                if (errorProducts.length() > 0) {
-                    message += "\nError adding products: " + errorProducts.toString();
-                }
-                JOptionPane.showMessageDialog(this, message);
             } else {
-                JOptionPane.showMessageDialog(this, "No products selected.");
+                JOptionPane.showMessageDialog(this, "Wishlist already exists!", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Wishlist name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Wishlist already exists!", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-} else {
-    JOptionPane.showMessageDialog(this, "Wishlist name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
-}
 
     }//GEN-LAST:event_createwishlistActionPerformed
 
     private void showwishlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showwishlistActionPerformed
 
-    Database db = Database.getInstance();
-    String userName = SessionManager.getLoggedInUserName(); // Get the logged-in user's email
+        Database db = Database.getInstance();
+        String userName = SessionManager.getLoggedInUserName(); // Get the logged-in user's email
 
-    // Step 1: Fetch the wishlists for the user
-    List<String> wishlistNames = db.getWishlistsByUser(userName);
+        // Step 1: Fetch the wishlists for the user
+        List<String> wishlistNames = db.getWishlistsByUser(userName);
 
-    // Create a panel to hold the dropdown and action buttons
-    JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new GridLayout(6, 1, 10, 10)); // Organized in a grid layout with spacing
+        // Create a panel to hold the dropdown and action buttons
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(6, 1, 10, 10)); // Organized in a grid layout with spacing
 
-    // Step 2: Create a dropdown menu for wishlists
-    JComboBox<String> wishlistDropdown = new JComboBox<>(wishlistNames.toArray(new String[0]));
-    mainPanel.add(new JLabel("Select Wishlist:"));
-    mainPanel.add(wishlistDropdown);
+        // Step 2: Create a dropdown menu for wishlists
+        JComboBox<String> wishlistDropdown = new JComboBox<>(wishlistNames.toArray(new String[0]));
+        mainPanel.add(new JLabel("Select Wishlist:"));
+        mainPanel.add(wishlistDropdown);
 
-    // Step 3: Create buttons that operate on the selected wishlist
-    JButton viewItemsButton = new JButton("View Items");
-    JButton addItemButton = new JButton("Add Item");
-    JButton deleteItemButton = new JButton("Delete Item");
-    JButton deleteWishlistButton = new JButton("Delete Wishlist");
+        // Step 3: Create buttons that operate on the selected wishlist
+        JButton viewItemsButton = new JButton("View Items");
+        JButton addItemButton = new JButton("Add Item");
+        JButton deleteItemButton = new JButton("Delete Item");
+        JButton deleteWishlistButton = new JButton("Delete Wishlist");
 
-    // Set button background colors to light orange
-    Color lightOrange = new Color(255, 200, 150);
-    viewItemsButton.setBackground(lightOrange);
-    addItemButton.setBackground(lightOrange);
-    deleteItemButton.setBackground(lightOrange);
-    deleteWishlistButton.setBackground(lightOrange);
+        // Set button background colors to light orange
+        Color lightOrange = new Color(255, 200, 150);
+        viewItemsButton.setBackground(lightOrange);
+        addItemButton.setBackground(lightOrange);
+        deleteItemButton.setBackground(lightOrange);
+        deleteWishlistButton.setBackground(lightOrange);
 
-    // Add buttons to the main panel
-    mainPanel.add(viewItemsButton);
-    mainPanel.add(addItemButton);
-    mainPanel.add(deleteItemButton);
-    mainPanel.add(deleteWishlistButton);
+        // Add buttons to the main panel
+        mainPanel.add(viewItemsButton);
+        mainPanel.add(addItemButton);
+        mainPanel.add(deleteItemButton);
+        mainPanel.add(deleteWishlistButton);
 
-    // Step 4: Action to show items
-    viewItemsButton.addActionListener(ev -> {
-        String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-        List<String> items = db.getItemsInWishlist(userName, selectedWishlist);
+        // Step 4: Action to show items
+        viewItemsButton.addActionListener(ev -> {
+            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+            List<String> items = db.getItemsInWishlist(userName, selectedWishlist);
 
-        // Display items in a JOptionPane
-        StringBuilder itemList = new StringBuilder("Items in " + selectedWishlist + ":\n");
-        if (items.isEmpty()) {
-            itemList.append("No items found in this wishlist.");
-        } else {
-            for (String item : items) {
-                itemList.append(item).append("\n");
-            }
-        }
-        JOptionPane.showMessageDialog(null, itemList.toString());
-    });
-
-    // Action to delete the wishlist
-    deleteWishlistButton.addActionListener(ev -> {
-        String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-        int confirmed = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this wishlist?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-        if (confirmed == JOptionPane.YES_OPTION) {
-            boolean deleted = db.deleteWishlist(userName, selectedWishlist);
-            if (deleted) {
-                JOptionPane.showMessageDialog(null, "Wishlist deleted successfully!");
-                // Refresh the dropdown
-                wishlistDropdown.setModel(new DefaultComboBoxModel<>(db.getWishlistsByUser(userName).toArray(new String[0])));
+            // Display items in a JOptionPane
+            StringBuilder itemList = new StringBuilder("Items in " + selectedWishlist + ":\n");
+            if (items.isEmpty()) {
+                itemList.append("No items found in this wishlist.");
             } else {
-                JOptionPane.showMessageDialog(null, "Error deleting wishlist.");
-            }
-        }
-    });
-
-    // Action to add items to the wishlist
-    addItemButton.addActionListener(ev -> {
-    String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-    List<String> productList = db.getAllProducts(); // Fetch all products for selection
-
-    // Create a JPanel with GridLayout to display products in a grid
-    JPanel gridPanel = new JPanel();
-    gridPanel.setLayout(new GridLayout(0, 4, 10, 10)); // 4 columns, dynamic rows, with spacing
-
-    // Add each product as a button or label to the grid
-    for (String product : productList) {
-        JCheckBox productCheckbox = new JCheckBox(product); // Allow selection
-        gridPanel.add(productCheckbox);
-    }
-
-    // Add the grid panel to a scroll pane for large lists
-    JScrollPane scrollPane = new JScrollPane(gridPanel);
-    scrollPane.setPreferredSize(new Dimension(500, 300)); // Set preferred size
-
-    // Display the panel in a dialog
-    int option = JOptionPane.showConfirmDialog(
-        null, scrollPane, "Select Products to Add", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
-    );
-
-    if (option == JOptionPane.OK_OPTION) {
-        // Collect selected products
-        List<String> selectedProducts = new ArrayList<>();
-        for (Component comp : gridPanel.getComponents()) {
-            if (comp instanceof JCheckBox checkbox && checkbox.isSelected()) {
-                selectedProducts.add(checkbox.getText());
-            }
-        }
-
-        if (!selectedProducts.isEmpty()) {
-            StringBuilder addedItems = new StringBuilder("Added to " + selectedWishlist + ":\n");
-            for (String selectedProduct : selectedProducts) {
-                boolean productAdded = db.addProductToWishlist(userName, selectedWishlist, selectedProduct);
-                if (productAdded) {
-                    addedItems.append(selectedProduct).append("\n");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error adding product '" + selectedProduct + "' to wishlist.");
+                for (String item : items) {
+                    itemList.append(item).append("\n");
                 }
             }
-            JOptionPane.showMessageDialog(null, addedItems.toString());
-        } else {
-            JOptionPane.showMessageDialog(null, "No products selected.");
-        }
-    }
-});
+            JOptionPane.showMessageDialog(null, itemList.toString());
+        });
 
-    // Action to delete items from the wishlist
-    deleteItemButton.addActionListener(ev -> {
-    String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
-    List<String> itemsInWishlist = db.getItemsInWishlist(userName, selectedWishlist); // Fetch items in the selected wishlist
-
-    // Create a JPanel with GridLayout to display items in a grid
-    JPanel gridPanel = new JPanel();
-    gridPanel.setLayout(new GridLayout(0, 4, 3, 3)); // Smaller gap (3 pixels)
- // 4 columns, dynamic rows, with spacing
-
-    // Add each item as a checkbox to the grid
-    for (String item : itemsInWishlist) {
-        JCheckBox itemCheckbox = new JCheckBox(item); // Allow selection
-        gridPanel.add(itemCheckbox);
-    }
-
-    // Add the grid panel to a scroll pane for large lists
-    JScrollPane scrollPane = new JScrollPane(gridPanel);
-    scrollPane.setPreferredSize(new Dimension(500, 300)); // Set preferred size
-
-    // Display the panel in a dialog
-    int option = JOptionPane.showConfirmDialog(
-        null, scrollPane, "Select Items to Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
-    );
-
-    if (option == JOptionPane.OK_OPTION) {
-        // Collect selected items
-        List<String> selectedItems = new ArrayList<>();
-        for (Component comp : gridPanel.getComponents()) {
-            if (comp instanceof JCheckBox checkbox && checkbox.isSelected()) {
-                selectedItems.add(checkbox.getText());
-            }
-        }
-
-        if (!selectedItems.isEmpty()) {
-            StringBuilder removedItems = new StringBuilder("Removed from " + selectedWishlist + ":\n");
-            for (String selectedItem : selectedItems) {
-                boolean itemDeleted = db.deleteItemFromWishlist(userName, selectedWishlist, selectedItem);
-                if (itemDeleted) {
-                    removedItems.append(selectedItem).append("\n");
+        // Action to delete the wishlist
+        deleteWishlistButton.addActionListener(ev -> {
+            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+            int confirmed = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this wishlist?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+            if (confirmed == JOptionPane.YES_OPTION) {
+                boolean deleted = db.deleteWishlist(userName, selectedWishlist);
+                if (deleted) {
+                    JOptionPane.showMessageDialog(null, "Wishlist deleted successfully!");
+                    // Refresh the dropdown
+                    wishlistDropdown.setModel(new DefaultComboBoxModel<>(db.getWishlistsByUser(userName).toArray(new String[0])));
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error deleting item '" + selectedItem + "' from wishlist.");
+                    JOptionPane.showMessageDialog(null, "Error deleting wishlist.");
                 }
             }
-            JOptionPane.showMessageDialog(null, removedItems.toString());
-        } else {
-            JOptionPane.showMessageDialog(null, "No items selected.");
-        }
-    }
-});
+        });
 
+        // Action to add items to the wishlist
+        addItemButton.addActionListener(ev -> {
+            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+            List<String> productList = db.getAllProducts(); // Fetch all products for selection
 
-    // Show the panel in a dialog
-    JOptionPane.showMessageDialog(null, mainPanel, "Manage Your Wishlists", JOptionPane.PLAIN_MESSAGE);
+            // Create a JPanel with GridLayout to display products in a grid
+            JPanel gridPanel = new JPanel();
+            gridPanel.setLayout(new GridLayout(0, 4, 10, 10)); // 4 columns, dynamic rows, with spacing
+
+            // Add each product as a button or label to the grid
+            for (String product : productList) {
+                JCheckBox productCheckbox = new JCheckBox(product); // Allow selection
+                gridPanel.add(productCheckbox);
+            }
+
+            // Add the grid panel to a scroll pane for large lists
+            JScrollPane scrollPane = new JScrollPane(gridPanel);
+            scrollPane.setPreferredSize(new Dimension(500, 300)); // Set preferred size
+
+            // Display the panel in a dialog
+            int option = JOptionPane.showConfirmDialog(
+                    null, scrollPane, "Select Products to Add", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (option == JOptionPane.OK_OPTION) {
+                // Collect selected products
+                List<String> selectedProducts = new ArrayList<>();
+                for (Component comp : gridPanel.getComponents()) {
+                    if (comp instanceof JCheckBox checkbox && checkbox.isSelected()) {
+                        selectedProducts.add(checkbox.getText());
+                    }
+                }
+
+                if (!selectedProducts.isEmpty()) {
+                    StringBuilder addedItems = new StringBuilder("Added to " + selectedWishlist + ":\n");
+                    for (String selectedProduct : selectedProducts) {
+                        boolean productAdded = db.addProductToWishlist(userName, selectedWishlist, selectedProduct);
+                        if (productAdded) {
+                            addedItems.append(selectedProduct).append("\n");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error adding product '" + selectedProduct + "' to wishlist.");
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, addedItems.toString());
+                } else {
+                    JOptionPane.showMessageDialog(null, "No products selected.");
+                }
+            }
+        });
+
+        // Action to delete items from the wishlist
+        deleteItemButton.addActionListener(ev -> {
+            String selectedWishlist = (String) wishlistDropdown.getSelectedItem();
+            List<String> itemsInWishlist = db.getItemsInWishlist(userName, selectedWishlist); // Fetch items in the selected wishlist
+
+            // Create a JPanel with GridLayout to display items in a grid
+            JPanel gridPanel = new JPanel();
+            gridPanel.setLayout(new GridLayout(0, 4, 3, 3)); // Smaller gap (3 pixels)
+            // 4 columns, dynamic rows, with spacing
+
+            // Add each item as a checkbox to the grid
+            for (String item : itemsInWishlist) {
+                JCheckBox itemCheckbox = new JCheckBox(item); // Allow selection
+                gridPanel.add(itemCheckbox);
+            }
+
+            // Add the grid panel to a scroll pane for large lists
+            JScrollPane scrollPane = new JScrollPane(gridPanel);
+            scrollPane.setPreferredSize(new Dimension(500, 300)); // Set preferred size
+
+            // Display the panel in a dialog
+            int option = JOptionPane.showConfirmDialog(
+                    null, scrollPane, "Select Items to Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (option == JOptionPane.OK_OPTION) {
+                // Collect selected items
+                List<String> selectedItems = new ArrayList<>();
+                for (Component comp : gridPanel.getComponents()) {
+                    if (comp instanceof JCheckBox checkbox && checkbox.isSelected()) {
+                        selectedItems.add(checkbox.getText());
+                    }
+                }
+
+                if (!selectedItems.isEmpty()) {
+                    StringBuilder removedItems = new StringBuilder("Removed from " + selectedWishlist + ":\n");
+                    for (String selectedItem : selectedItems) {
+                        boolean itemDeleted = db.deleteItemFromWishlist(userName, selectedWishlist, selectedItem);
+                        if (itemDeleted) {
+                            removedItems.append(selectedItem).append("\n");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error deleting item '" + selectedItem + "' from wishlist.");
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, removedItems.toString());
+                } else {
+                    JOptionPane.showMessageDialog(null, "No items selected.");
+                }
+            }
+        });
+
+        // Show the panel in a dialog
+        JOptionPane.showMessageDialog(null, mainPanel, "Manage Your Wishlists", JOptionPane.PLAIN_MESSAGE);
 
     }//GEN-LAST:event_showwishlistActionPerformed
 
     private void findgiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findgiftActionPerformed
 
-        
-        
-        
-          UIManager.put("OptionPane.okButtonText", "OK");
+        UIManager.put("OptionPane.okButtonText", "OK");
         UIManager.put("OptionPane.cancelButtonText", "Cancel");
         UIManager.put("Button.background", new Color(255, 165, 0)); // Lighter orange
- // Default button background
+        // Default button background
 
         // Customize button colors
         UIManager.put("OptionPane.okButton", new JButton(new AbstractAction() {
@@ -923,74 +914,74 @@ if (wishlistName != null && !wishlistName.trim().isEmpty()) {
             }
         }));
         String[] recipientOptions = {"Friend", "Father", "Sibling", "Mother", "Child"};
-String[] genderOptions = {"Male", "Female"};
-String[] ageGroupOptions = {"16-20", "21-25", "26-30"};
+        String[] genderOptions = {"Male", "Female"};
+        String[] ageGroupOptions = {"16-20", "21-25", "26-30"};
 
 // Select recipient type
-String recipientType = (String) JOptionPane.showInputDialog(
-        null,
-        "Select the type of recipient:",
-        "Find Gift",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        recipientOptions,
-        recipientOptions[0]
-);
+        String recipientType = (String) JOptionPane.showInputDialog(
+                null,
+                "Select the type of recipient:",
+                "Find Gift",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                recipientOptions,
+                recipientOptions[0]
+        );
 
 // Select gender
-String gender = (String) JOptionPane.showInputDialog(
-        null,
-        "Select the gender of the recipient:",
-        "Find Gift",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        genderOptions,
-        genderOptions[0]
-);
+        String gender = (String) JOptionPane.showInputDialog(
+                null,
+                "Select the gender of the recipient:",
+                "Find Gift",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                genderOptions,
+                genderOptions[0]
+        );
 
 // Select age group
-String ageGroup = (String) JOptionPane.showInputDialog(
-        null,
-        "Select the age group of the recipient:",
-        "Find Gift",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        ageGroupOptions,
-        ageGroupOptions[0]
-);
+        String ageGroup = (String) JOptionPane.showInputDialog(
+                null,
+                "Select the age group of the recipient:",
+                "Find Gift",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                ageGroupOptions,
+                ageGroupOptions[0]
+        );
 
 // Validate the selection based on certain conditions
-if (recipientType != null && gender != null && ageGroup != null) {
-    // Check for invalid combinations
-    if ((recipientType.equals("Mother") && gender.equals("Male")) || 
-    (recipientType.equals("Father") && gender.equals("Female")) ||
-    (ageGroup.equals("16-20") && recipientType.equals("Child")) ||
-    (ageGroup.equals("16-20") && (recipientType.equals("Father") || recipientType.equals("Mother"))))  {
-        
-        JOptionPane.showMessageDialog(null, "Invalid selection: Please choose a valid combination of recipient type, gender, and age group.");
-    } else {
-        GiftFinder giftt = new GiftFinder();
-        // Fetch gift options based on recipient type, gender, and age group
-        List<Product> giftOptions = giftt.fetchGiftOptionsFromDatabase(recipientType, gender, ageGroup);
+        if (recipientType != null && gender != null && ageGroup != null) {
+            // Check for invalid combinations
+            if ((recipientType.equals("Mother") && gender.equals("Male"))
+                    || (recipientType.equals("Father") && gender.equals("Female"))
+                    || (ageGroup.equals("16-20") && recipientType.equals("Child"))
+                    || (ageGroup.equals("16-20") && (recipientType.equals("Father") || recipientType.equals("Mother")))) {
 
-        if (giftOptions.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No gifts found for " + recipientType + " with gender " + gender + " and age group " + ageGroup);
-        } else {
-            StringBuilder giftsMessage = new StringBuilder("Available gifts for " + recipientType + ":\n\n");
-            for (Product gift : giftOptions) {
-                giftsMessage.append(gift.getName())
-                        .append(" - ")
-                        .append(gift.getDescription())
-                        .append(" ($")
-                        .append(gift.getPrice())
-                        .append(")\n");
+                JOptionPane.showMessageDialog(null, "Invalid selection: Please choose a valid combination of recipient type, gender, and age group.");
+            } else {
+                GiftFinder giftt = new GiftFinder();
+                // Fetch gift options based on recipient type, gender, and age group
+                List<Product> giftOptions = giftt.fetchGiftOptionsFromDatabase(recipientType, gender, ageGroup);
+
+                if (giftOptions.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No gifts found for " + recipientType + " with gender " + gender + " and age group " + ageGroup);
+                } else {
+                    StringBuilder giftsMessage = new StringBuilder("Available gifts for " + recipientType + ":\n\n");
+                    for (Product gift : giftOptions) {
+                        giftsMessage.append(gift.getName())
+                                .append(" - ")
+                                .append(gift.getDescription())
+                                .append(" ($")
+                                .append(gift.getPrice())
+                                .append(")\n");
+                    }
+                    JOptionPane.showMessageDialog(null, giftsMessage.toString());
+                }
             }
-            JOptionPane.showMessageDialog(null, giftsMessage.toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Selection canceled.");
         }
-    }
-} else {
-    JOptionPane.showMessageDialog(null, "Selection canceled.");
-}
 
     }//GEN-LAST:event_findgiftActionPerformed
 
@@ -1021,56 +1012,53 @@ if (recipientType != null && gender != null && ageGroup != null) {
     }//GEN-LAST:event_reviewsActionPerformed
 
     private void cancelorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelorderActionPerformed
-     // Create an order object
-orders ob = new orders();  // Class name should start with a capital letter
+        // Create an order object
+        orders ob = new orders();  // Class name should start with a capital letter
 
 // Fetch the order ID using the username
-int orderId = ob.getOrderIdByUsername(userName);
+        int orderId = ob.getOrderIdByUsername(userName);
 
 // Fetch the order status
-String orderStatus = ob.getOrderStatus(orderId);
+        String orderStatus = ob.getOrderStatus(orderId);
 
 // Check if orderStatus is null
-if (orderStatus == null) {
-    JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
-    return; // Exit if order status is not found
-}
+        if (orderStatus == null) {
+            JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Exit if order status is not found
+        }
 
 // Create an instance of ShowCartItems
-showcartitems obj = new showcartitems();  // Class name should start with a capital letter
+        showcartitems obj = new showcartitems();  // Class name should start with a capital letter
 
 // Step 1: Fetch and display order details
-String orderDetails = obj.getOrderDetails(orderId); // No need to pass conn, assuming connection is handled internally
+        String orderDetails = obj.getOrderDetails(orderId); // No need to pass conn, assuming connection is handled internally
 
 // Display order details in a message box
-JOptionPane.showMessageDialog(null, "Order Details: \n" + orderDetails, "Order Information", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Order Details: \n" + orderDetails, "Order Information", JOptionPane.INFORMATION_MESSAGE);
 
 // Step 2: Check if the order can be canceled
-if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
-    JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
-    return;
-}
+        if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
+            JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
+            return;
+        }
 
 // Step 3: Confirm cancellation action
-int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
-if (confirmCancel != JOptionPane.YES_OPTION) {
-    return; // User chose not to cancel the order
-}
+        int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
+        if (confirmCancel != JOptionPane.YES_OPTION) {
+            return; // User chose not to cancel the order
+        }
 
 // Step 4: Update the order status to "Cancelled"
-boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
-if (isCancelled) {
-    JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
-} else {
-    JOptionPane.showMessageDialog(null, "Error canceling order. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-}
+        boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
+        if (isCancelled) {
+            JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error canceling order. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
-
-
-
-            // Step 4: Optionally process refund if applicable
-           // boolean refundSuccess = ob.processRefund(orderId);
-          //  if (refundSuccess) {
+        // Step 4: Optionally process refund if applicable
+        // boolean refundSuccess = ob.processRefund(orderId);
+        //  if (refundSuccess) {
 //                System.out.println("Refund processed successfully.");
 //                JOptionPane.showMessageDialog(null, "Refund processed successfully.");
 //            } else {
@@ -1084,210 +1072,209 @@ if (isCancelled) {
     }//GEN-LAST:event_cancelorderActionPerformed
 
     private void deleteaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteaccountActionPerformed
-       // Confirm if the user is sure about deleting the account
-    int confirmation = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete your account?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        // Confirm if the user is sure about deleting the account
+        int confirmation = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete your account?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-    if (confirmation == JOptionPane.YES_OPTION) {
-        // Perform account deletion
-        Database db = Database.getInstance();
+        if (confirmation == JOptionPane.YES_OPTION) {
+            // Perform account deletion
+            Database db = Database.getInstance();
 
-        // First, delete related data (cart, orders, order_items)
-        boolean isRelatedDataDeleted = db.deleteUserRelatedData();
+            // First, delete related data (cart, orders, order_items)
+            boolean isRelatedDataDeleted = db.deleteUserRelatedData();
 
-        if (isRelatedDataDeleted) {
-            // Now delete the user account
-            boolean isDeleted = db.deleteAccountFromDatabase();
+            if (isRelatedDataDeleted) {
+                // Now delete the user account
+                boolean isDeleted = db.deleteAccountFromDatabase();
 
-            if (isDeleted) {
-                // Account deletion was successful
-                JOptionPane.showMessageDialog(this, "Your account has been successfully deleted.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                
-                // Close the current frame (customer dashboard)
-                this.dispose();
+                if (isDeleted) {
+                    // Account deletion was successful
+                    JOptionPane.showMessageDialog(this, "Your account has been successfully deleted.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                // Redirect the user to the login page
-                loginformfacade loginPage = new loginformfacade();  // Replace with your actual Login page class
-                loginPage.setVisible(true);
+                    // Close the current frame (customer dashboard)
+                    this.dispose();
+
+                    // Redirect the user to the login page
+                    loginformfacade loginPage = new loginformfacade();  // Replace with your actual Login page class
+                    loginPage.setVisible(true);
+                } else {
+                    // Account deletion failed
+                    JOptionPane.showMessageDialog(this, "An error occurred while deleting your account. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                // Account deletion failed
-                JOptionPane.showMessageDialog(this, "An error occurred while deleting your account. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "An error occurred while deleting your related data. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "An error occurred while deleting your related data. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
     }//GEN-LAST:event_deleteaccountActionPerformed
 
     private void viewordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewordersActionPerformed
-    try (java.sql.Connection conn = Database.getInstance().connect()) {
-    String username = SessionManager.getLoggedInUserName();
+        try (java.sql.Connection conn = Database.getInstance().connect()) {
+            String username = SessionManager.getLoggedInUserName();
 
-    // SQL query to fetch order details for the current user, grouping by order_id and product name.
-    String sql = "SELECT o.order_id, p.name, oi.price, SUM(oi.quantity) AS total_quantity, o.order_date " +
-                 "FROM orders o " +
-                 "JOIN order_items oi ON o.order_id = oi.order_id " +
-                 "JOIN products p ON oi.product_id = p.product_id " +
-                 "WHERE o.user_name = ? AND o.order_status = 'completed' " +
-                 "GROUP BY o.order_id, p.name, oi.price, o.order_date";
+            // SQL query to fetch order details for the current user, grouping by order_id and product name.
+            String sql = "SELECT o.order_id, p.name, oi.price, SUM(oi.quantity) AS total_quantity, o.order_date "
+                    + "FROM orders o "
+                    + "JOIN order_items oi ON o.order_id = oi.order_id "
+                    + "JOIN products p ON oi.product_id = p.product_id "
+                    + "WHERE o.user_name = ? AND o.order_status = 'completed' "
+                    + "GROUP BY o.order_id, p.name, oi.price, o.order_date";
 
-    PreparedStatement statusPs = conn.prepareStatement(sql);
-    statusPs.setString(1, username);
+            PreparedStatement statusPs = conn.prepareStatement(sql);
+            statusPs.setString(1, username);
 
-    // Execute the query
-    ResultSet rs = statusPs.executeQuery();
+            // Execute the query
+            ResultSet rs = statusPs.executeQuery();
 
-    // Prepare table model to display data
-    DefaultTableModel model = new DefaultTableModel();
-    model.addColumn("Order ID");
-    model.addColumn("Product Name");
-    model.addColumn("Quantity");
-    model.addColumn("Price");
-    model.addColumn("Order Date");
+            // Prepare table model to display data
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Order ID");
+            model.addColumn("Product Name");
+            model.addColumn("Quantity");
+            model.addColumn("Price");
+            model.addColumn("Order Date");
 
-    // Flag to check if we added a row
-    boolean addedAtLeastOneRow = false;
+            // Flag to check if we added a row
+            boolean addedAtLeastOneRow = false;
 
-    // Populate the table model with data from the result set
-    while (rs.next()) {
-        // Retrieve data
-        int orderId = rs.getInt("order_id");
-        String productName = rs.getString("name");
-        int quantity = rs.getInt("total_quantity");  // Sum of quantities for each product
-        double price = rs.getDouble("price");
-        Timestamp orderDate = rs.getTimestamp("order_date");
+            // Populate the table model with data from the result set
+            while (rs.next()) {
+                // Retrieve data
+                int orderId = rs.getInt("order_id");
+                String productName = rs.getString("name");
+                int quantity = rs.getInt("total_quantity");  // Sum of quantities for each product
+                double price = rs.getDouble("price");
+                Timestamp orderDate = rs.getTimestamp("order_date");
 
-        // Print data for debugging
-        System.out.println("Order ID: " + orderId + ", Product: " + productName + 
-                           ", Quantity: " + quantity + ", Price: " + price + ", Order Date: " + orderDate);
+                // Print data for debugging
+                System.out.println("Order ID: " + orderId + ", Product: " + productName
+                        + ", Quantity: " + quantity + ", Price: " + price + ", Order Date: " + orderDate);
 
-        // Add row to table model
-        model.addRow(new Object[] {
-            orderId,       // Order ID
-            productName,   // Product Name
-            quantity,      // Total Quantity (summed)
-            price,         // Price per Unit
-            orderDate      // Order Date
-        });
+                // Add row to table model
+                model.addRow(new Object[]{
+                    orderId, // Order ID
+                    productName, // Product Name
+                    quantity, // Total Quantity (summed)
+                    price, // Price per Unit
+                    orderDate // Order Date
+                });
 
-        addedAtLeastOneRow = true;
-    }
+                addedAtLeastOneRow = true;
+            }
 
-    // Check if orders exist for the user
-    if (!addedAtLeastOneRow) {
-        JOptionPane.showMessageDialog(null, "No orders found.", "View Orders", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        // Create JTable and set the model
-        JTable ordersTable = new JTable(model);
+            // Check if orders exist for the user
+            if (!addedAtLeastOneRow) {
+                JOptionPane.showMessageDialog(null, "No orders found.", "View Orders", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Create JTable and set the model
+                JTable ordersTable = new JTable(model);
 
-        // Adjust column widths
-        TableColumnModel columnModel = ordersTable.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(100);  // Order ID
-        columnModel.getColumn(1).setPreferredWidth(150); // Product Name
-        columnModel.getColumn(2).setPreferredWidth(100); // Quantity
-        columnModel.getColumn(3).setPreferredWidth(100); // Price
-        columnModel.getColumn(4).setPreferredWidth(150); // Order Date
+                // Adjust column widths
+                TableColumnModel columnModel = ordersTable.getColumnModel();
+                columnModel.getColumn(0).setPreferredWidth(100);  // Order ID
+                columnModel.getColumn(1).setPreferredWidth(150); // Product Name
+                columnModel.getColumn(2).setPreferredWidth(100); // Quantity
+                columnModel.getColumn(3).setPreferredWidth(100); // Price
+                columnModel.getColumn(4).setPreferredWidth(150); // Order Date
 
-        // Display data in JTable
-        JOptionPane.showMessageDialog(null, new JScrollPane(ordersTable), "Your Orders", JOptionPane.INFORMATION_MESSAGE);
-    }
+                // Display data in JTable
+                JOptionPane.showMessageDialog(null, new JScrollPane(ordersTable), "Your Orders", JOptionPane.INFORMATION_MESSAGE);
+            }
 
-    // Close resources
-    rs.close();
-    statusPs.close();
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-}
+            // Close resources
+            rs.close();
+            statusPs.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
     }//GEN-LAST:event_viewordersActionPerformed
 
     private void accountinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountinfoActionPerformed
-      
-   
-          // Step 1: Retrieve the username from the session manager
-    Database db = Database.getInstance();
-    String username = SessionManager.getLoggedInUserName();
-    
-    // Step 2: Fetch customer details from the database based on the username
-    String[] customerInfo = db.getCustomerInfoByUsername(username); // Fetch customer details as an array
-    
-    // Step 3: Create a dialog window to show and edit account info
-    JDialog accountDialog = new JDialog();
-    accountDialog.setTitle("View Account");
-    accountDialog.setSize(400, 300); // Adjusted size for better view
-    accountDialog.setLocationRelativeTo(null); // Center the dialog on the screen
-    
-    // Create a panel to hold the form
-    JPanel panel = new JPanel();
-    panel.setLayout(new GridLayout(6, 2, 10, 10)); // Added some gap between rows and columns
-    
-    // Username (editable now)
-    panel.add(new JLabel("Username:"));
-    JTextField usernameField = new JTextField(customerInfo[0]);
-    panel.add(usernameField);
-    
-    // First Name
-    panel.add(new JLabel("First Name:"));
-    JTextField firstNameField = new JTextField(customerInfo[1]); // first_name
-    firstNameField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
-    panel.add(firstNameField);
-    
-    // Last Name
-    panel.add(new JLabel("Last Name:"));
-    JTextField lastNameField = new JTextField(customerInfo[2]); // last_name
-    lastNameField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
-    panel.add(lastNameField);
-    
-    // Password
-    panel.add(new JLabel("Password:"));
-    JPasswordField passwordField = new JPasswordField(customerInfo[3]); // password
-    passwordField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
-    panel.add(passwordField);
-    
-    // Save button
-    JButton saveButton = new JButton("Save");
-    saveButton.setBackground(Color.ORANGE); // Set Save button color to orange
-    saveButton.setForeground(Color.BLACK); // Set text color to black for better contrast
-    saveButton.setFocusPainted(false); // Remove focus border
-    panel.add(new JLabel()); // Empty label to align the save button properly
-    panel.add(saveButton);
-    
-    // Save button action listener
-    saveButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Step 4: Get the updated values from the text fields
-            String newUsername = usernameField.getText().trim(); // Username can be updated
-            String newFirstName = firstNameField.getText().trim();
-            String newLastName = lastNameField.getText().trim();
-            String newPassword = new String(passwordField.getPassword()).trim();
-            
-            // Step 5: Validation before saving
-            if (newUsername.isEmpty() || newFirstName.isEmpty() || newLastName.isEmpty() || newPassword.isEmpty()) {
-                // Show error message if any field is empty
-                JOptionPane.showMessageDialog(accountDialog, "All fields are required. Please fill them in.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+
+        // Step 1: Retrieve the username from the session manager
+        Database db = Database.getInstance();
+        String username = SessionManager.getLoggedInUserName();
+
+        // Step 2: Fetch customer details from the database based on the username
+        String[] customerInfo = db.getCustomerInfoByUsername(username); // Fetch customer details as an array
+
+        // Step 3: Create a dialog window to show and edit account info
+        JDialog accountDialog = new JDialog();
+        accountDialog.setTitle("View Account");
+        accountDialog.setSize(400, 300); // Adjusted size for better view
+        accountDialog.setLocationRelativeTo(null); // Center the dialog on the screen
+
+        // Create a panel to hold the form
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 2, 10, 10)); // Added some gap between rows and columns
+
+        // Username (editable now)
+        panel.add(new JLabel("Username:"));
+        JTextField usernameField = new JTextField(customerInfo[0]);
+        panel.add(usernameField);
+
+        // First Name
+        panel.add(new JLabel("First Name:"));
+        JTextField firstNameField = new JTextField(customerInfo[1]); // first_name
+        firstNameField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
+        panel.add(firstNameField);
+
+        // Last Name
+        panel.add(new JLabel("Last Name:"));
+        JTextField lastNameField = new JTextField(customerInfo[2]); // last_name
+        lastNameField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
+        panel.add(lastNameField);
+
+        // Password
+        panel.add(new JLabel("Password:"));
+        JPasswordField passwordField = new JPasswordField(customerInfo[3]); // password
+        passwordField.setPreferredSize(new Dimension(150, 25)); // Reduce width and padding
+        panel.add(passwordField);
+
+        // Save button
+        JButton saveButton = new JButton("Save");
+        saveButton.setBackground(Color.ORANGE); // Set Save button color to orange
+        saveButton.setForeground(Color.BLACK); // Set text color to black for better contrast
+        saveButton.setFocusPainted(false); // Remove focus border
+        panel.add(new JLabel()); // Empty label to align the save button properly
+        panel.add(saveButton);
+
+        // Save button action listener
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Step 4: Get the updated values from the text fields
+                String newUsername = usernameField.getText().trim(); // Username can be updated
+                String newFirstName = firstNameField.getText().trim();
+                String newLastName = lastNameField.getText().trim();
+                String newPassword = new String(passwordField.getPassword()).trim();
+
+                // Step 5: Validation before saving
+                if (newUsername.isEmpty() || newFirstName.isEmpty() || newLastName.isEmpty() || newPassword.isEmpty()) {
+                    // Show error message if any field is empty
+                    JOptionPane.showMessageDialog(accountDialog, "All fields are required. Please fill them in.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Step 6: Check if the new username is unique (except for the current username)
+                boolean updateSuccessful = db.updateCustomerInfo(newUsername, newFirstName, newLastName, newPassword);
+
+                // Step 7: Close the dialog
+                if (updateSuccessful) {
+                    // Show success message
+                    JOptionPane.showMessageDialog(accountDialog, "Account updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Show error message
+                    JOptionPane.showMessageDialog(accountDialog, "Error updating account. Username may already exist or try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // Close the dialog regardless of success/failure
+                accountDialog.dispose();
             }
-            
-            // Step 6: Check if the new username is unique (except for the current username)
-            boolean updateSuccessful = db.updateCustomerInfo(newUsername, newFirstName, newLastName, newPassword);
-            
-            // Step 7: Close the dialog
-            if (updateSuccessful) {
-                // Show success message
-                JOptionPane.showMessageDialog(accountDialog, "Account updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                // Show error message
-                JOptionPane.showMessageDialog(accountDialog, "Error updating account. Username may already exist or try again later.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-            // Close the dialog regardless of success/failure
-            accountDialog.dispose();
-        }
-    });
-    
-    // Add the panel to the dialog
-    accountDialog.add(panel);
-    accountDialog.setVisible(true);
+        });
+
+        // Add the panel to the dialog
+        accountDialog.add(panel);
+        accountDialog.setVisible(true);
     }//GEN-LAST:event_accountinfoActionPerformed
 
     /**

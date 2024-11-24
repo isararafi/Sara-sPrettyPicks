@@ -16,7 +16,7 @@ public class SaraSPrettyPicks {
                     /*Single Point of Access: The GUI frames serve as a single point of 
                     access for different functionalities (like browsing products, placing orders, 
                     viewing history), simplifying how the user interacts with the system.*/
-                    //*****************************************************************************
+                    //****************************************************************************
                    /* Subject (Observable): The Admin acts as the subject, responsible for sending notifications. When the admin triggers a notification, the system notifies all registered observers (customers).
 
                      Observers: The Customer class implements the Observer interface.
