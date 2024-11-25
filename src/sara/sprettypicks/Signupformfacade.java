@@ -219,8 +219,8 @@ button2.setIcon(smallIcon);
                             .addComponent(firstnametext, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lastnametext, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(firstnamelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(usernamelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lastnamelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lastnamelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usernamelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -240,17 +240,17 @@ button2.setIcon(smallIcon);
                                         .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(61, 61, 61)
                                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(emaillabel, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(60, 60, 60)
                                         .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(emaillabel, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(30, 30, 30)
                                 .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,7 +268,8 @@ button2.setIcon(smallIcon);
                                 .addGap(124, 124, 124)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
-                                    .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(12, 12, 12)))
                         .addComponent(usernamelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -385,18 +386,23 @@ else {
 if (username.isEmpty()) {
     usernamelabel.setText("<html><b style='color:red;'>Username is a mandatory field. *</b></html>");
 } else {
-    String alphanumericRegex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9_]+$";
+    String alphanumericRegex = "^[a-zA-Z0-9_]+$"; // Allows starting with a number, underscore, or letter and includes valid characters
     if (username.length() < 3 || username.length() > 255) {
         usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
     } else if (!username.matches(alphanumericRegex)) {
-        usernamelabel.setText("<html><b style='color:red;'>Username must contain both letters and numbers. Only underscores are allowed as special characters. *</b></html>");
-    } else if (db.checkUsernameExists(username)) {  // Check if username exists
+        usernamelabel.setText("<html><b style='color:red;'>Username can only contain letters, numbers, and underscores. *</b></html>");
+    } else if (!username.matches(".*[a-zA-Z].*") || !username.matches(".*\\d.*")) {
+        // Additional check: must contain at least one letter and one number
+        usernamelabel.setText("<html><b style='color:red;'>Username must contain both letters and numbers. *</b></html>");
+    } else if (db.checkUsernameExists(username)) { // Check if username exists
         usernamelabel.setText("<html><b style='color:red;'>Username already exists. Please enter another username. *</b></html>");
     } else {
         usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
         validUsername = true;
     }
 }
+
+
 
 // Check email uniqueness
 if (email.isEmpty()) {

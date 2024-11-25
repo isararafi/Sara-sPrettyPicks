@@ -483,7 +483,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addComponent(accountinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,6 +515,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
@@ -1012,49 +1013,56 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_reviewsActionPerformed
 
     private void cancelorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelorderActionPerformed
-        // Create an order object
-        orders ob = new orders();  // Class name should start with a capital letter
+       // Create an Orders object
+orders ob = new orders();  // Class names should start with a capital letter
 
 // Fetch the order ID using the username
-        int orderId = ob.getOrderIdByUsername(userName);
+int orderId = ob.getOrderIdByUsername(userName);
+
+// Check if the order exists in the table
+if (orderId == 0) {  // Assuming 0 indicates no order found
+    JOptionPane.showMessageDialog(null, "No order found for the username: " + userName, "Error", JOptionPane.ERROR_MESSAGE);
+    return; // Exit as there is no order to delete
+}
 
 // Fetch the order status
-        String orderStatus = ob.getOrderStatus(orderId);
+String orderStatus = ob.getOrderStatus(orderId);
 
-// Check if orderStatus is null
-        if (orderStatus == null) {
-            JOptionPane.showMessageDialog(null, "Order status not found for Order ID: " + orderId, "Error", JOptionPane.ERROR_MESSAGE);
-            return; // Exit if order status is not found
-        }
+// Check if orderStatus is null or empty (not yet placed)
+if (orderStatus == null || orderStatus.isEmpty() || orderStatus.equals("Pending") || orderStatus.equals("Draft")) {
+    JOptionPane.showMessageDialog(null, "The order has not been placed yet and cannot be canceled.", "Error", JOptionPane.ERROR_MESSAGE);
+    return; // Exit as the order is not eligible for cancellation
+}
 
 // Create an instance of ShowCartItems
-        showcartitems obj = new showcartitems();  // Class name should start with a capital letter
+showcartitems obj = new showcartitems();  // Class names should start with a capital letter
 
 // Step 1: Fetch and display order details
-        String orderDetails = obj.getOrderDetails(orderId); // No need to pass conn, assuming connection is handled internally
+String orderDetails = obj.getOrderDetails(orderId); // No need to pass connection if handled internally
 
 // Display order details in a message box
-        JOptionPane.showMessageDialog(null, "Order Details: \n" + orderDetails, "Order Information", JOptionPane.INFORMATION_MESSAGE);
+JOptionPane.showMessageDialog(null, "Order Details: \n" + orderDetails, "Order Information", JOptionPane.INFORMATION_MESSAGE);
 
 // Step 2: Check if the order can be canceled
-        if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
-            JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
-            return;
-        }
+if (orderStatus.equals("Shipped") || orderStatus.equals("Delivered")) {
+    JOptionPane.showMessageDialog(null, "Order cannot be canceled as it has already been shipped or delivered.");
+    return;
+}
 
 // Step 3: Confirm cancellation action
-        int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
-        if (confirmCancel != JOptionPane.YES_OPTION) {
-            return; // User chose not to cancel the order
-        }
+int confirmCancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this order?", "Cancel Order", JOptionPane.YES_NO_OPTION);
+if (confirmCancel != JOptionPane.YES_OPTION) {
+    return; // User chose not to cancel the order
+}
 
 // Step 4: Update the order status to "Cancelled"
-        boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
-        if (isCancelled) {
-            JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
-        } else {
-            JOptionPane.showMessageDialog(null, "Error canceling order. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+boolean isCancelled = ob.updateOrderStatus(orderId, "Cancelled");
+if (isCancelled) {
+    JOptionPane.showMessageDialog(null, "Your order has been successfully canceled.");
+} else {
+    JOptionPane.showMessageDialog(null, "Error canceling order. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+}
+
 
         // Step 4: Optionally process refund if applicable
         // boolean refundSuccess = ob.processRefund(orderId);
