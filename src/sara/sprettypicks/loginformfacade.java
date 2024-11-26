@@ -284,6 +284,14 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
 
     private void signupbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupbuttonActionPerformed
 // Inside your login frame's signup button action
+
+// Check if both radio buttons are selected
+if (customerradio.isSelected() && adminradio.isSelected()) {
+    // Show a message dialog if both radio buttons are selected
+    JOptionPane.showMessageDialog(this, "Please select only one category (Customer or Admin).", "Selection Error", JOptionPane.WARNING_MESSAGE);
+    return; // Exit the method if both radio buttons are selected
+}
+
 // Check if no category is selected
 if (!customerradio.isSelected() && !adminradio.isSelected()) {
     // Show a message dialog if no category is selected
@@ -301,11 +309,12 @@ if (adminradio.isSelected()) {
     role = "customer";
 }
 
-// Proceed to open the signup form if a category is selected
+// Proceed to open the signup form if a valid category is selected
 Signupformfacade signup = new Signupformfacade(role);
 signup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Ensure only the signup frame closes when done
 signup.setVisible(true);
 this.dispose();
+
 
     }//GEN-LAST:event_signupbuttonActionPerformed
 
@@ -320,7 +329,19 @@ if (username.isEmpty() || password.isEmpty()) {
     return;
 }
 
-Database db = Database.getInstance();  // Singleton pattern -- reference variable
+// Check if both radio buttons are selected
+if (customerradio.isSelected() && adminradio.isSelected()) {
+    JOptionPane.showMessageDialog(this, "Please select only one user type.");
+    return;
+}
+
+// Check if no radio button is selected
+if (!customerradio.isSelected() && !adminradio.isSelected()) {
+    JOptionPane.showMessageDialog(this, "Please select a user type.");
+    return;
+}
+
+Database db = Database.getInstance(); // Singleton pattern -- reference variable
 
 // Check which radio button is selected
 if (customerradio.isSelected()) {
@@ -370,10 +391,7 @@ if (customerradio.isSelected()) {
     } else {
         JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.");
     }
-} else {
-    JOptionPane.showMessageDialog(this, "Please select a user type.");
 }
-
 
     }//GEN-LAST:event_loginbuttonActionPerformed
 
