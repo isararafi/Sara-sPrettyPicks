@@ -22,8 +22,8 @@ public class showcartitems {
         // Get database instance
         Database db = Database.getInstance(); // Singleton reference variable
 
-        // Get logged-in user's email
-        String userEmail = SessionManager.getLoggedInUserEmail(); // Use the method to get the user's email
+        // Get logged-in user's name
+       // String userEmail = SessionManager.getLoggedInUserEmail(); // Use the method to get the user's email
         String username = SessionManager.getLoggedInUserName(); // You can keep this if you want the first name
 
         // Fetch the cart items for the logged-in user

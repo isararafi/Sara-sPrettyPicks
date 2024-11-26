@@ -202,18 +202,18 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(58, 58, 58)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        browseproducts.setBackground(new java.awt.Color(102, 204, 255));
+        browseproducts.setBackground(new java.awt.Color(153, 204, 255));
         browseproducts.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         browseproducts.setText("Browse Products");
         browseproducts.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -223,7 +223,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        viewcart.setBackground(new java.awt.Color(102, 204, 255));
+        viewcart.setBackground(new java.awt.Color(153, 204, 255));
         viewcart.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         viewcart.setText("View Cart");
         viewcart.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -233,7 +233,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        faqs.setBackground(new java.awt.Color(102, 204, 255));
+        faqs.setBackground(new java.awt.Color(153, 204, 255));
         faqs.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         faqs.setText("FAQ's");
         faqs.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -243,7 +243,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        checkout.setBackground(new java.awt.Color(102, 204, 255));
+        checkout.setBackground(new java.awt.Color(153, 204, 255));
         checkout.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         checkout.setText("CheckOut");
         checkout.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -253,7 +253,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        createwishlist.setBackground(new java.awt.Color(102, 204, 255));
+        createwishlist.setBackground(new java.awt.Color(153, 204, 255));
         createwishlist.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         createwishlist.setText("Create WishLists");
         createwishlist.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -263,7 +263,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        showwishlist.setBackground(new java.awt.Color(102, 204, 255));
+        showwishlist.setBackground(new java.awt.Color(153, 204, 255));
         showwishlist.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         showwishlist.setText("Show Wishlists");
         showwishlist.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -273,7 +273,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        findgift.setBackground(new java.awt.Color(102, 204, 255));
+        findgift.setBackground(new java.awt.Color(153, 204, 255));
         findgift.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         findgift.setText("Find Gift???");
         findgift.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -283,7 +283,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setBackground(new java.awt.Color(102, 204, 255));
+        jButton6.setBackground(new java.awt.Color(153, 204, 255));
         jButton6.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         jButton6.setText("SURPRISE ME!!!");
         jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -293,7 +293,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        reviews.setBackground(new java.awt.Color(102, 204, 255));
+        reviews.setBackground(new java.awt.Color(153, 204, 255));
         reviews.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         reviews.setText("Give Review");
         reviews.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -303,7 +303,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        cancelorder.setBackground(new java.awt.Color(102, 204, 255));
+        cancelorder.setBackground(new java.awt.Color(153, 204, 255));
         cancelorder.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         cancelorder.setText("Cancel Order");
         cancelorder.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -313,7 +313,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        deleteaccount.setBackground(new java.awt.Color(102, 204, 255));
+        deleteaccount.setBackground(new java.awt.Color(153, 204, 255));
         deleteaccount.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
         deleteaccount.setText("Delete Account");
         deleteaccount.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -323,7 +323,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        vieworders.setBackground(new java.awt.Color(102, 204, 255));
+        vieworders.setBackground(new java.awt.Color(153, 204, 255));
         vieworders.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         vieworders.setText("view orders");
         vieworders.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -390,7 +390,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addContainerGap(286, Short.MAX_VALUE))
         );
 
         notificationList.setBackground(new java.awt.Color(255, 204, 204));
@@ -430,7 +430,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 585, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -520,9 +520,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

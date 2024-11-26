@@ -63,9 +63,9 @@ public class InsertImageWithPath extends JFrame {
             return;
         }
 
-        String userEmail = SessionManager.getLoggedInUserEmail();
+       
         String userName = SessionManager.getLoggedInUserName();
-        if (userEmail == null || userEmail.isEmpty()) {
+        if (userName == null || userName.isEmpty()) {
             System.out.println("User email is null or empty. Cannot fetch cart items.");
             return;
         }
