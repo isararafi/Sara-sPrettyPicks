@@ -4,6 +4,7 @@
  */
 package sara.sprettypicks;
 
+import java.awt.Color;
 import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 
 
@@ -33,6 +35,9 @@ public class loginformfacade extends javax.swing.JFrame {
 
    
     public loginformfacade() {
+         UIManager.put("Button.background", Color.ORANGE);
+        UIManager.put("Button.foreground", Color.BLACK); // Set text color to black
+        UIManager.put("Button.focus", Color.ORANGE);
         initComponents();
          ImageIcon eyeIcon = new ImageIcon("C:\\initialshopping\\eye.png"); // Load the image
 Image scaledImage = eyeIcon.getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH); // Scale to a smaller size (16x16)
