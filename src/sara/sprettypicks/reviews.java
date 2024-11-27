@@ -40,6 +40,12 @@ public class reviews extends javax.swing.JFrame {
         reviewTextArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         listofproducts = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        satisfied = new javax.swing.JRadioButton();
+        best = new javax.swing.JRadioButton();
+        good = new javax.swing.JRadioButton();
+        bad = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,13 +58,17 @@ public class reviews extends javax.swing.JFrame {
         reviewTextArea.setRows(5);
         jScrollPane1.setViewportView(reviewTextArea);
 
+        jButton1.setBackground(new java.awt.Color(255, 204, 0));
+        jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
         jButton1.setText("Submit");
+        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
+        listofproducts.setBackground(new java.awt.Color(153, 204, 255));
         listofproducts.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         listofproducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,41 +76,85 @@ public class reviews extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Mongolian Baiti", 1, 18)); // NOI18N
+        jLabel2.setText("How was your Experience?");
+
+        satisfied.setBackground(new java.awt.Color(204, 255, 204));
+        satisfied.setText("Satisfied");
+
+        best.setBackground(new java.awt.Color(204, 255, 204));
+        best.setText("Best");
+
+        good.setBackground(new java.awt.Color(204, 255, 204));
+        good.setText("Good");
+
+        bad.setBackground(new java.awt.Color(204, 255, 204));
+        bad.setText("Bad");
+
+        jLabel3.setFont(new java.awt.Font("Verdana", 2, 12)); // NOI18N
+        jLabel3.setText("Write your Feed back in the Text Box below.");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(listofproducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(161, 161, 161))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(254, 254, 254)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(97, 97, 97)
+                                        .addComponent(satisfied, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(38, 38, 38)
+                                        .addComponent(best, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(46, 46, 46))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(141, 141, 141)))
+                                .addComponent(good, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bad, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(listofproducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(301, 301, 301)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel1)
-                        .addGap(27, 27, 27)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(listofproducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(63, 63, 63)
-                .addComponent(jButton1)
-                .addContainerGap(73, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(listofproducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61)
+                .addComponent(jLabel2)
+                .addGap(46, 46, 46)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(satisfied)
+                    .addComponent(best)
+                    .addComponent(good)
+                    .addComponent(bad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -118,8 +172,7 @@ public class reviews extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//// Get the selected product name from the combo box
-// Get the selected product name from the combo box
+    // Get the selected product name from the combo box
     String selectedProduct = (String) listofproducts.getSelectedItem();
     System.out.println("Selected product before submission: " + selectedProduct);
 
@@ -141,14 +194,31 @@ public class reviews extends javax.swing.JFrame {
         return; // Exit if review text is empty
     }
 
-    // Create an instance of SessionManager to get the logged-in user's email
-    
-    String customerName=SessionManager.getLoggedInUserName();
+    // Get the selected experience from radio buttons
+    String selectedExperience = null;
+    if (satisfied.isSelected()) {
+        selectedExperience = "Satisfied";
+    } else if (best.isSelected()) {
+        selectedExperience = "Best";
+    } else if (good.isSelected()) {
+        selectedExperience = "Good";
+    } else if (bad.isSelected()) {
+        selectedExperience = "Bad";
+    }
 
-    // Check if customerEmail is not null or empty
+    // Ensure that an experience is selected
+    if (selectedExperience == null) {
+        JOptionPane.showMessageDialog(null, "Please select your experience.");
+        return; // Exit if no experience is selected
+    }
+
+    // Create an instance of SessionManager to get the logged-in user's name
+    String customerName = SessionManager.getLoggedInUserName();
+
+    // Check if customerName is not null or empty
     if (customerName == null || customerName.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Error: Customer name is not available.");
-        return; // Exit if email is not available
+        return; // Exit if name is not available
     }
 
     // Create an instance of ComboBoxRetrieveProduct
@@ -164,7 +234,7 @@ public class reviews extends javax.swing.JFrame {
     }
 
     // Create a Reviewclass object
-    Reviewclass review = new Reviewclass(selectedProductId, customerName, reviewText);
+    Reviewclass review = new Reviewclass(selectedProductId, customerName, reviewText, selectedExperience);
 
     // Submit the review
     submitReview(review);
@@ -173,13 +243,13 @@ public class reviews extends javax.swing.JFrame {
 // Method to submit the review
 public void submitReview(Reviewclass review) {
     // SQL query to insert the review into the database
-    String query = "INSERT INTO reviews (product_id, customer_username, review_text) VALUES (?, ?, ?)";
-    
+    String query = "INSERT INTO reviews (product_id, customer_username, review_text, experience) VALUES (?, ?, ?, ?)";
 
     try (PreparedStatement pstmt = db.connect().prepareStatement(query)) {
         pstmt.setInt(1, review.getProductId()); // Set product ID as int
-        pstmt.setString(2, review.getCustomerUsername()); 
+        pstmt.setString(2, review.getCustomerUsername()); // Set customer username
         pstmt.setString(3, review.getReviewText()); // Set review text
+        pstmt.setString(4, review.getExperience()); // Set experience
 
         // Execute the insert
         int rowsAffected = pstmt.executeUpdate();
@@ -237,12 +307,18 @@ public void submitReview(Reviewclass review) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton bad;
+    private javax.swing.JRadioButton best;
+    private javax.swing.JRadioButton good;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> listofproducts;
     private javax.swing.JTextArea reviewTextArea;
+    private javax.swing.JRadioButton satisfied;
     // End of variables declaration//GEN-END:variables
 
 }

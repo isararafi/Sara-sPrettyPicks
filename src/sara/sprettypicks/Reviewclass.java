@@ -13,27 +13,19 @@ public class Reviewclass {
     private int productId;
     private String customerUsername;
     private String reviewText;
+    private String experience;
 
-    // Constructor
-    public Reviewclass(int productId, String customerUsername, String reviewText) {
+    public Reviewclass(int productId, String customerUsername, String reviewText, String experience) {
         this.productId = productId;
         this.customerUsername = customerUsername;
         this.reviewText = reviewText;
+        this.experience = experience;
     }
 
-    // Getters
-    public int getProductId() {
-        return productId;
-    }
-
-    public String getCustomerUsername() {
-        return customerUsername;
-    }
-
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    // Method to submit a review
-    
+    // Existing getters
+    public int getProductId() { return productId; }
+    public String getCustomerUsername() { return customerUsername; }
+    public String getReviewText() { return reviewText; }
+    public String getExperience() { return experience; } // New getter
 }
+
