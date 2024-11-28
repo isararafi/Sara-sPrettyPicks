@@ -425,16 +425,17 @@ if (password.isEmpty()) {
     passwordlabel.setText("<html><b style='color:red;'>Password is a mandatory field. *</b></html>");
     validPassword = false;
 } else {
-    // Update regex to include underscore (_) as a valid special character
-    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
+    // Updated regex to allow all special characters
+    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W])[A-Za-z\\d\\W]{8,}$";
     if (!password.matches(passwordRegex)) {
-        passwordlabel.setText("<html><b style='color:red;'>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (including _). Minimum length: 8 characters. *</b></html>");
+        passwordlabel.setText("<html><b style='color:red;'>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character. Minimum length: 8 characters. *</b></html>");
         validPassword = false;
     } else {
         passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
         validPassword = true;
     }
 }
+
 
 // Validate confirm password
 if (confirmPassword.isEmpty()) {

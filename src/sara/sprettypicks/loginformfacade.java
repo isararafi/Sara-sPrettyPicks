@@ -430,7 +430,8 @@ try {
         been passed an illegal or inappropriate argument.*/
         throw new IllegalArgumentException("Password cannot be empty");
     }
-String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
+String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W])[A-Za-z\\d\\W]{8,}$";
+
     // Update the password in the database
     boolean isPasswordReset = db.resetPassword(username, newPassword);
 

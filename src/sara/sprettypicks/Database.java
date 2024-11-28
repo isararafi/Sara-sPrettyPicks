@@ -37,6 +37,7 @@ public class Database {
     private static final String DB_PASSWORD = "56528"; // Replace with your DB password
 
     // Private constructor to prevent instantiation
+    //SINGLETON PATTERN
     private Database() {
         
     }
@@ -488,7 +489,7 @@ public boolean checkIfUserExists(String username) {
 
 public boolean resetPassword(String username, String newPassword) {
     // Password validation constraints: includes underscore as valid special character
-     String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
+     String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W])[A-Za-z\\d\\W]{8,}$";
     
     // Check if password matches the required regex
     if (!newPassword.matches(passwordRegex)) {

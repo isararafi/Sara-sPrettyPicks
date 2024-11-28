@@ -11,11 +11,7 @@ package sara.sprettypicks;
 public class SaraSPrettyPicks {
 
     //admin 1,2,3,4 button done
-    //applied singleton and observer,mvc
-    //************************************************************************
-    /*Single Point of Access: The GUI frames serve as a single point of 
-                    access for different functionalities (like browsing products, placing orders, 
-                    viewing history), simplifying how the user interacts with the system.*/
+    //applied singleton and observer
     //****************************************************************************
     /* Subject (Observable): The Admin acts as the subject, responsible for sending notifications. When the admin triggers a notification, the system notifies all registered observers (customers).
 
