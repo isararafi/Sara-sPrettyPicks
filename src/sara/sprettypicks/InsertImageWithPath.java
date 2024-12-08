@@ -146,14 +146,19 @@ public class InsertImageWithPath extends JFrame {
         searchButton.setPreferredSize(new Dimension(100, 30));
 
         // Add action listener to the search button
-        searchButton.addActionListener(e -> {
-            String keyword = searchField.getText().trim();
-            if (keyword.isEmpty()) {
-                displayAllProducts(); // Display all products when search field is empty
-            } else {
-                displayProducts(keyword); // Display filtered products based on search keyword
-            }
-        });
+       searchButton.addActionListener(e -> {
+    String keyword = searchField.getText().trim();
+    if (keyword.isEmpty()) {
+        displayAllProducts(); // Display all products when the search field is empty
+    } else {
+        boolean found = displayProducts(keyword); // Returns true if products are found
+        if (!found) {
+            displayNotFoundMessage(); // Display the "product not found" message on the frame
+        }
+    }
+});
+
+
 
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
@@ -502,142 +507,135 @@ public class InsertImageWithPath extends JFrame {
 //}
     // Method to retrieve and display the product images based on category
     // Method to retrieve and display the product images based on category
-    public static void displayProducts(String keyword) {
-        try {
-            // Clear the main panel before displaying new products
-            mainPanel.removeAll();
+    public static boolean displayProducts(String keyword) {
+    boolean productFound = false; // Track if any product is found
+    try {
+        // Clear the main panel before displaying new products
+        mainPanel.removeAll();
 
-            // Get the database connection
-            Database db = Database.getInstance();
-            Connection conn = db.connect();
+        // Get the database connection
+        Database db = Database.getInstance();
+        Connection conn = db.connect();
 
-            // Query to retrieve products matching the keyword in category or description
-            String query = "SELECT product_id, image, price, quantity FROM products WHERE category LIKE ? OR description LIKE ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            String likeKeyword = "%" + keyword + "%"; // To allow for partial matches
-            stmt.setString(1, likeKeyword);
-            stmt.setString(2, likeKeyword);
+        // Query to retrieve products matching the keyword in category or description
+        String query = "SELECT product_id, image, price, quantity FROM products WHERE category LIKE ? OR description LIKE ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        String likeKeyword = "%" + keyword + "%"; // To allow for partial matches
+        stmt.setString(1, likeKeyword);
+        stmt.setString(2, likeKeyword);
 
-            // Execute the query
-            ResultSet rs = stmt.executeQuery();
+        // Execute the query
+        ResultSet rs = stmt.executeQuery();
 
-            // Loop through each product
-            while (rs.next()) {
-                int productId = rs.getInt("product_id");
-                Blob blob = rs.getBlob("image");
+        // Loop through each product
+        while (rs.next()) {
+            productFound = true; // Mark that at least one product is found
 
-                // Check if the blob is null
-                if (blob != null) {
-                    byte[] imageData = blob.getBytes(1, (int) blob.length());
-                    ImageIcon imageIcon = new ImageIcon(imageData);
+            int productId = rs.getInt("product_id");
+            Blob blob = rs.getBlob("image");
 
-                    double price = rs.getDouble("price");
-//                    int quantityAvailable = rs.getInt("quantity"); // Total quantity available
+            if (blob != null) {
+                byte[] imageData = blob.getBytes(1, (int) blob.length());
+                ImageIcon imageIcon = new ImageIcon(imageData);
 
-                    // Create a panel for each product
-                    JPanel productPanel = new JPanel();
-                    productPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
-                    productPanel.setLayout(new BorderLayout());
+                double price = rs.getDouble("price");
+                int quantityAvailable = rs.getInt("quantity");
 
-                    // Create and add image label
-                    JLabel imageLabel = new JLabel(imageIcon);
-                    productPanel.add(imageLabel, BorderLayout.CENTER);
+                // Create a panel for each product
+                JPanel productPanel = new JPanel();
+                productPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
+                productPanel.setLayout(new BorderLayout());
 
-                    // Create labels and buttons for price, quantity, and actions
-                    JLabel priceLabel = new JLabel("Price: $" + price);
-                    JLabel quantityLabel = new JLabel("Quantity: 0");
-                    int quantityAvailable = rs.getInt("quantity");
-                    // Button to increase quantity
-                    JButton increaseButton = new JButton("+");
-                    increaseButton.setBackground(new Color(255, 165, 0));
-                    increaseButton.setForeground(Color.BLACK);
-                    increaseButton.setBorderPainted(false);
-                    increaseButton.setFocusPainted(false);
-                    increaseButton.setFont(new Font("Arial", Font.BOLD, 12));
-                    increaseButton.setPreferredSize(new Dimension(30, 20));
-                    increaseButton.setMargin(new Insets(2, 5, 2, 5));
-                    increaseButton.addActionListener(e -> {
-                        int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
-                        if (currentQuantity < quantityAvailable) {
-                            currentQuantity++;
-                            quantityLabel.setText("Quantity: " + currentQuantity);
-                        }
-                    });
+                // Create and add image label
+                JLabel imageLabel = new JLabel(imageIcon);
+                productPanel.add(imageLabel, BorderLayout.CENTER);
 
-                    JButton decreaseButton = new JButton("-");
-                    decreaseButton.setBackground(new Color(255, 140, 0));
-                    decreaseButton.setForeground(Color.BLACK);
-                    decreaseButton.setBorderPainted(false);
-                    decreaseButton.setFocusPainted(false);
-                    decreaseButton.setFont(new Font("Arial", Font.BOLD, 12));
-                    decreaseButton.setPreferredSize(new Dimension(30, 20));
-                    decreaseButton.setMargin(new Insets(2, 5, 2, 5));
-                    decreaseButton.addActionListener(e -> {
-                        int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
-                        if (currentQuantity > 0) {
-                            currentQuantity--;
-                            quantityLabel.setText("Quantity: " + currentQuantity);
-                        }
-                    });
+                // Create labels and buttons for price, quantity, and actions
+                JLabel priceLabel = new JLabel("Price: $" + price);
+                JLabel quantityLabel = new JLabel("Quantity: 0");
 
-                    // Button to add to cart
-                    JButton addToCartButton = new JButton("Add to Cart");
-                    addToCartButton.setBackground(new Color(255, 165, 0));
-                    addToCartButton.setForeground(Color.BLACK);
-                    addToCartButton.setBorderPainted(false);
-                    addToCartButton.setFocusPainted(false);
-                    addToCartButton.setFont(new Font("Arial", Font.BOLD, 12));
-                    addToCartButton.setPreferredSize(new Dimension(100, 20));
-                    addToCartButton.setMargin(new Insets(5, 10, 5, 10));
-                    addToCartButton.addActionListener(e -> {
-                        int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+                JButton increaseButton = new JButton("+");
+                increaseButton.addActionListener(e -> {
+                    int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+                    if (currentQuantity < quantityAvailable) {
+                        currentQuantity++;
+                        quantityLabel.setText("Quantity: " + currentQuantity);
+                    }
+                });
 
-                        if (currentQuantity <= 0) {
-                            JOptionPane.showMessageDialog(null, "Invalid quantity. Please select a valid quantity.", "Error", JOptionPane.ERROR_MESSAGE);
+                JButton decreaseButton = new JButton("-");
+                decreaseButton.addActionListener(e -> {
+                    int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+                    if (currentQuantity > 0) {
+                        currentQuantity--;
+                        quantityLabel.setText("Quantity: " + currentQuantity);
+                    }
+                });
+
+                JButton addToCartButton = new JButton("Add to Cart");
+                addToCartButton.addActionListener(e -> {
+                    int currentQuantity = Integer.parseInt(quantityLabel.getText().split(": ")[1]);
+                    if (currentQuantity <= 0) {
+                        JOptionPane.showMessageDialog(null, "Invalid quantity. Please select a valid quantity.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        String useremail = SessionManager.getLoggedInUserEmail();
+                        String username = SessionManager.getLoggedInUserName();
+
+                        if (useremail != null && !useremail.isEmpty()) {
+                            db.addItemToCart(username, productId, currentQuantity, price);
+                            JOptionPane.showMessageDialog(null, "Product added to cart successfully! Quantity: " + currentQuantity);
+                            updateCartItemCount(cartLabel);
                         } else {
-                            String useremail = SessionManager.getLoggedInUserEmail();
-                            String username=SessionManager.getLoggedInUserName();
-
-                            if (useremail != null && !useremail.isEmpty()) {
-                                db.addItemToCart(username, productId, currentQuantity, price);
-                                JOptionPane.showMessageDialog(null, "Product added to cart successfully! Quantity: " + currentQuantity);
-
-                                // Update the cart label with the latest item count
-                                updateCartItemCount(cartLabel);
-                            } else {
-                                JOptionPane.showMessageDialog(null, "You need to log in to add products to your cart.", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
+                            JOptionPane.showMessageDialog(null, "You need to log in to add products to your cart.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-                    });
+                    }
+                });
 
-                    // Create a panel for the bottom section with price, quantity, and buttons
-                    JPanel bottomPanel = new JPanel();
-                    bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5)); // Center alignment with spacing
+                // Create a panel for the bottom section
+                JPanel bottomPanel = new JPanel(new FlowLayout());
+                bottomPanel.add(priceLabel);
+                bottomPanel.add(quantityLabel);
+                bottomPanel.add(increaseButton);
+                bottomPanel.add(decreaseButton);
+                bottomPanel.add(addToCartButton);
+                bottomPanel.setBackground(new Color(230, 230, 250));
 
-                    bottomPanel.add(priceLabel);
-                    bottomPanel.add(quantityLabel);
-                    bottomPanel.add(increaseButton);
-                    bottomPanel.add(decreaseButton);
-                    bottomPanel.add(addToCartButton);
+                productPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-                    bottomPanel.setBackground(new Color(230, 230, 250)); // Light purple background color
-
-                    // Add bottom panel to the product panel
-                    productPanel.add(bottomPanel, BorderLayout.SOUTH);
-
-                    // Add product panel to the main panel
-                    mainPanel.add(productPanel);
-                }
+                // Add product panel to the main panel
+                mainPanel.add(productPanel);
             }
-
-            // Refresh the main panel to display the updated products
-            mainPanel.revalidate();
-            mainPanel.repaint();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error displaying products: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        // Refresh the UI
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "An error occurred while searching for products.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    return productFound;
+}
+private static void displayNotFoundMessage() {
+    // Clear the main panel
+    mainPanel.removeAll();
+
+    // Create a label with the "product not found" message
+    JLabel notFoundLabel = new JLabel("Sorry, product not found!", JLabel.CENTER);
+    notFoundLabel.setFont(new Font("Arial", Font.BOLD, 16));
+    notFoundLabel.setForeground(Color.RED);
+
+    // Add the label to the main panel
+    mainPanel.setLayout(new BorderLayout());
+    mainPanel.add(notFoundLabel, BorderLayout.CENTER);
+
+    // Refresh the UI
+    mainPanel.revalidate();
+    mainPanel.repaint();
+}
+
+
+
 
 }
