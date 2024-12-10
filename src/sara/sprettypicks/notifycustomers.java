@@ -20,10 +20,10 @@ import java.util.List;
 
 
  
-class Customer implements Observer {
+class Customer2 implements Observer {
     private String name;
 
-    public Customer(String name) {
+    public Customer2(String name) {
         this.name = name;
     }
 
