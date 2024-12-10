@@ -264,6 +264,18 @@ public class InsertImageWithPath extends JFrame {
                     JPanel productPanel = new JPanel();
                     productPanel.setLayout(new BorderLayout());
                     productPanel.setBackground(new Color(230, 230, 250));
+                    
+                    
+                    
+                    
+                    //+++++++++++++++++++++++++++++++++++++++++++++++++
+                    
+                    // Add a gap between the image and the details/buttons
+//JPanel spacerPanel = new JPanel();
+//spacerPanel.setBackground(new Color(230, 230, 250)); // Match the background color
+//spacerPanel.setPreferredSize(new Dimension(0, 5)); // Add vertical space
+//productPanel.add(spacerPanel, BorderLayout.SOUTH);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                     // Create and add image label
                     JLabel imageLabel = new JLabel(imageIcon);

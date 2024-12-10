@@ -1,21 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sara.sprettypicks;
 
-/**
- *
- * @author sarar
- */
-import static com.mysql.cj.telemetry.TelemetryAttribute.DB_USER;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.*;
-import java.util.*;
-
-
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 public class Customer implements Observer {
     private String username;
@@ -47,6 +33,4 @@ public class Customer implements Observer {
     public String getUsername() {
         return username;
     }
-
 }
-
