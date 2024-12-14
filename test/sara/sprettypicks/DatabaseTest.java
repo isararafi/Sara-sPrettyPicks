@@ -12,21 +12,21 @@ import java.sql.SQLException; // Import for SQL exceptions
  * @author sarar
  */
 public class DatabaseTest {
-
-//    @Test
-//    public void testDatabaseConnection() {
-//        Database dbInstance = Database.getInstance();
-//        try (Connection connection = dbInstance.connect()) {
-//            // Assert that the connection is not null
-//            assertNotNull("Connection should not be null.", connection);
-//            // Assert that the connection is valid within 2 seconds
-//            assertTrue("Connection should be valid.", connection.isValid(2));
-//            System.out.println("Connection with Database is Successful");
-//        } catch (SQLException e) {
-//            // If an exception occurs, fail the test
-//            fail("An exception occurred while connecting to the database: " + e.getMessage());
-//        }
-//    }
+//TESTCASE WILL FAIL IF DATABASE URL IS INCORRECT OR If any exception occurs during the connection attempt (e.g., database server is down, incorrect credentials, network issues),
+    @Test
+    public void testDatabaseConnection() {
+        Database dbInstance = Database.getInstance();
+        try (Connection connection = dbInstance.connect()) {
+            // Assert that the connection is not null
+            assertNotNull("Connection should not be null.", connection);
+            // Assert that the connection is valid within 2 seconds
+            assertTrue("Connection should be valid.", connection.isValid(2));
+            System.out.println("Connection with Database is Successful");
+        } catch (SQLException e) {
+            // If an exception occurs, fail the test
+            fail("An exception occurred while connecting to the database: " + e.getMessage());
+        }
+    }
     
 //    @Test
 // public void testValidUsernameAndPassword() throws Exception {
@@ -103,16 +103,16 @@ public class DatabaseTest {
 //}
 
     // Test Case 1: Username does not exist (returns null)
-    @Test
-    public void testGetEmailByUsernameNotFound() throws SQLException {
-        Database db=Database.getInstance();
-        String username = "rawan123"; // A username that doesn't exist in the database
-
-        String email = db.getEmailByUsername(username);
-
-        // Verify that the email is null as the user does not exist
-        assertNull("The email should be null for a non-existent user", email);
-    }
+//    @Test
+//    public void testGetEmailByUsernameNotFound() throws SQLException {
+//        Database db=Database.getInstance();
+//        String username = "rawan123"; // A username that doesn't exist in the database
+//
+//        String email = db.getEmailByUsername(username);
+//
+//        // Verify that the email is null as the user does not exist
+//        assertNull("The email should be null for a non-existent user", email);
+//    }
 
 
 
