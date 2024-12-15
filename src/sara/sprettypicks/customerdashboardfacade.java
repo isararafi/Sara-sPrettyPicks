@@ -10,8 +10,10 @@ import com.sun.jdi.connect.spi.Connection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -46,6 +48,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -55,6 +58,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -535,8 +540,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 + "Answer: Click on the 'Sign Up' button and fill in your details.\n\n"
                 + "2. How can I reset my password?\n"
                 + "Answer: Click on 'Forgot Password' on the login page and follow the instructions.\n\n"
-                + "3. What payment methods are accepted?\n"
-                + "Answer: We accept credit cards, debit cards, and PayPal.\n\n"
+                + "3. Can we cancel our Order?\n"
+                + "Answer: Yes you can cancel order within certain time limit.\n\n"
                 + "4. How do I track my order?\n"
                 + "Answer: After placing an order, you'll receive a tracking link via email.\n\n"
                 + "5. Can I return an item?\n"
@@ -554,22 +559,90 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
+     // Create and set up the loading dialog
+    JDialog loadingDialog = new JDialog();
+    loadingDialog.setUndecorated(true); // Remove the default title bar
 
-        // Create an instance of InsertImageWithPath
-        InsertImageWithPath productsPage = new InsertImageWithPath();
+    // Set background panel with custom styling
+    JPanel contentPanel = new JPanel();
+    contentPanel.setBackground(new Color(30, 144, 255)); // Set background color (Dodger Blue)
+    contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add a black border
 
-        // Make sure to update the cart item count before displaying the products page
-        productsPage.showcartvalue();   // Updates the cart label with the latest item count
+    // Add a label with custom font and color
+    JLabel loadingLabel = new JLabel("Loading products, please wait...", SwingConstants.CENTER);
+    loadingLabel.setForeground(Color.WHITE); // Set text color
+    loadingLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set custom font
 
-        // Call the method to display products, passing an empty string to show all products
-        JFrame browseProductsFrame = productsPage.createSearchableProductDisplay();
+    // Load and scale the image
+    ImageIcon originalIcon = new ImageIcon("C:\\Users\\sarar\\Desktop\\load.png");
+    Image scaledImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+    loadingLabel.setIcon(scaledIcon);
 
-        // Set the close operation for the Browse Products frame
-        browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    // Add the label to the content panel
+    contentPanel.setLayout(new BorderLayout());
+    contentPanel.add(loadingLabel, BorderLayout.CENTER);
 
-        // Optionally, you can add a listener for closing events (if needed)
-        // this.dispose(); // Uncomment this only if you want to close the current frame
+    // Add the styled panel to the dialog
+    loadingDialog.add(contentPanel);
+    loadingDialog.setSize(350, 110); // Adjust size
+    loadingDialog.setLocationRelativeTo(null); // Center it on the screen
 
+    // Set it to be non-modal so it doesn't block other interactions
+    loadingDialog.setModalityType(Dialog.ModalityType.MODELESS);
+
+    // Create a SwingWorker to load products in the background
+    SwingWorker<JFrame, Void> worker = new SwingWorker<JFrame, Void>() {
+        @Override
+        protected JFrame doInBackground() throws Exception {
+            // Add an artificial delay to simulate loading time
+            Thread.sleep(2000); // 2-second delay (you can adjust this as needed)
+
+            // Create an instance of InsertImageWithPath
+            InsertImageWithPath productsPage = new InsertImageWithPath();
+
+            // Make sure to update the cart item count
+            productsPage.showcartvalue(); // Updates the cart label with the latest item count
+
+            // Call the method to display products (fetching product data)
+            return productsPage.createSearchableProductDisplay();
+        }
+
+        @Override
+        protected void done() {
+            try {
+                // Get the product display frame from the background thread
+                JFrame browseProductsFrame = get();
+
+                // Set the close operation for the Browse Products frame
+                browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                // Make the frame visible on the EDT (main thread)
+                SwingUtilities.invokeLater(() -> {
+                    browseProductsFrame.setVisible(true);
+                    browseProductsFrame.requestFocus(); // Ensure the frame gets focus
+                });
+
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to load products: " + e.getMessage());
+            } finally {
+                // Close the loading dialog once the products are loaded
+                SwingUtilities.invokeLater(() -> {
+                    loadingDialog.dispose(); // Dispose the loading dialog after loading is complete
+                });
+            }
+        }
+    };
+
+    // Show the loading dialog on EDT before executing the worker
+    SwingUtilities.invokeLater(() -> {
+        // Show the loading dialog
+        loadingDialog.setVisible(true);
+    });
+
+    // Start the background worker to load products
+    worker.execute();
     }//GEN-LAST:event_browseproductsActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
