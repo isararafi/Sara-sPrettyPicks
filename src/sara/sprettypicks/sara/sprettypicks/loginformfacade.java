@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package sara.sprettypicks;
+import org.junit.Test;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -78,6 +79,7 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
         jLabel1 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         button = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jLabel2.setText("LOGIN PAGE");
 
@@ -195,6 +197,13 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
             }
         });
 
+        jButton1.setText("show testcases");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -225,7 +234,9 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
                         .addGap(31, 31, 31)
                         .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(328, 328, 328)
+                        .addGap(32, 32, 32)
+                        .addComponent(jButton1)
+                        .addGap(187, 187, 187)
                         .addComponent(jLabel3)))
                 .addContainerGap(407, Short.MAX_VALUE))
         );
@@ -235,8 +246,10 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jLabel3)
-                        .addGap(46, 46, 46)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jButton1))
+                        .addGap(45, 45, 45)
                         .addComponent(jLabel4)
                         .addGap(28, 28, 28)
                         .addComponent(usernamefield, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -488,6 +501,61 @@ if (isPasswordVisible) {
 
     }//GEN-LAST:event_buttonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+  
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                // Replace with the fully qualified name of your test class (without .java extension)
+                Class<?> testClass = Class.forName("sara.sprettypicks.LoginClassTesting");
+
+                // Create an instance of the test class
+                Object testInstance = testClass.getDeclaredConstructor().newInstance();
+
+                // Get all methods of the test class
+                java.lang.reflect.Method[] methods = testClass.getDeclaredMethods();
+
+                // Prepare data for displaying results
+                java.util.List<String[]> testResults = new java.util.ArrayList<>();
+
+                for (java.lang.reflect.Method method : methods) {
+                    if (method.isAnnotationPresent(org.junit.Test.class)) {
+                        String testName = method.getName();
+                        String result;
+
+                        try {
+                            method.invoke(testInstance);
+                            result = "Pass";
+                        } catch (Exception e) {
+                            result = "Fail: " + e.getCause().getMessage();
+                        }
+
+                        testResults.add(new String[] {testName, result});
+                    }
+                }
+
+                // Convert list to array for JTable
+                String[][] testCasesArray = testResults.toArray(new String[0][0]);
+                String[] columnNames = {"Test Case Name", "Result"};
+
+                // Create and display the test results in a JTable
+                javax.swing.JTable table = new javax.swing.JTable(testCasesArray, columnNames);
+                javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(table);
+                javax.swing.JFrame resultFrame = new javax.swing.JFrame("Test Results");
+                resultFrame.add(scrollPane);
+                resultFrame.setSize(400, 300);
+                resultFrame.setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(null, "Error retrieving test results: " + e.getMessage());
+            }
+        }
+    }).start();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -506,6 +574,7 @@ if (isPasswordVisible) {
     private javax.swing.JRadioButton adminradio;
     private javax.swing.JButton button;
     private javax.swing.JRadioButton customerradio;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import java.util.List;
 
 public class showcartitems {
-
+List<CartItem> cartItems;
     // Assuming this is the method that gets called to show the cart
     public void cart() {
         // Get database instance
@@ -27,7 +27,7 @@ public class showcartitems {
         String username = SessionManager.getLoggedInUserName(); // You can keep this if you want the first name
 
         // Fetch the cart items for the logged-in user
-        List<CartItem> cartItems = db.getCartItemsByUsername(username);  // Correct method name
+         cartItems = db.getCartItemsByUsername(username);  // Correct method name
 
         // Prepare data to display
         StringBuilder cartDetails = new StringBuilder("Cart Items for " + username + ":\n\n");
@@ -158,5 +158,9 @@ public class showcartitems {
 
     return details.toString();
 }
-
+    public boolean isCartEmpty() {
+        return cartItems == null || cartItems.isEmpty(); // Ensure that it's not null and is empty
+    }
 }
+    
+

@@ -554,8 +554,14 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_faqsActionPerformed
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
+
         showcartitems ob = new showcartitems();
-        ob.cart();
+        
+        // Call cart() method to load the cart items
+        ob.cart(); // Assuming this loads the cart
+        
+        // Check if the cart has items by using a getter or by inspecting the internal state
+       
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
