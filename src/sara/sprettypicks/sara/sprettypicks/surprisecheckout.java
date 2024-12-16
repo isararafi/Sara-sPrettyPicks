@@ -40,20 +40,18 @@ public class surprisecheckout {
 public void checkout() {
     String Username = SessionManager.getLoggedInUserName();
 
-   
-
     SwingWorker<Void, Void> checkoutWorker = new SwingWorker<Void, Void>() {
         @Override
         protected Void doInBackground() throws Exception {
             try {
-                // Step 1: Fetch all items in the user's cart from the database
+                // Step 1: Fetch all items in the user's cart
                 List<CartItem> cartItems = db.getCartItemsByUsername(Username);
 
                 if (cartItems == null || cartItems.isEmpty()) {
                     SwingUtilities.invokeLater(() -> {
                         JOptionPane.showMessageDialog(null, "Your cart is empty! Please add items before proceeding.", "Error", JOptionPane.ERROR_MESSAGE);
                     });
-                    return null;
+                    return null; // Stop further processing
                 }
 
                 // Step 2: Calculate the total bill and display cart details
@@ -74,65 +72,55 @@ public void checkout() {
                         SwingUtilities.invokeLater(() -> {
                             JOptionPane.showMessageDialog(null, "Invalid item in cart. Please check your cart and try again.", "Error", JOptionPane.ERROR_MESSAGE);
                         });
-                        return null;
+                        return null; // Stop further processing
                     }
                 }
 
-                // Step 3: Display cart details and ask if the user wants to apply a discount
+                // Step 3: Confirm discount application
                 int applyDiscountResponse = JOptionPane.showConfirmDialog(null, cartDetails.toString() + "\nApply Surprise Discount?", "Checkout", JOptionPane.YES_NO_OPTION);
 
                 if (applyDiscountResponse == JOptionPane.YES_OPTION) {
-                    applyDiscount(totalBill, cartDetails);
-                } else {
-                    cartDetails.append("\nTotal Bill: $").append(String.format("%.2f", totalBill));
+                    totalBill = applyDiscount(totalBill, cartDetails); // Adjust total bill
+                } 
+
+                // Step 4: Prompt for shipping address
+                String shippingAddress = JOptionPane.showInputDialog("Please enter your shipping address:");
+                if (shippingAddress == null || shippingAddress.trim().isEmpty()) {
                     SwingUtilities.invokeLater(() -> {
-                        JOptionPane.showMessageDialog(null, cartDetails.toString(), "Checkout Summary", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Shipping address is required. Please provide a valid address.", "Error", JOptionPane.ERROR_MESSAGE);
                     });
-
-                    // Step 4: Prompt for shipping address
-                    String shippingAddress = JOptionPane.showInputDialog("Please enter your shipping address:");
-
-                    if (shippingAddress == null || shippingAddress.trim().isEmpty()) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Shipping address is required. Please provide a valid address.", "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                        return null;
-                    }
-
-                    // Step 5: Store order in the database
-                    orders orderHandler = new orders();
-                    int orderId = orderHandler.storeOrderInDatabase(Username, totalBill, shippingAddress);
-                    if (orderId == -1) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Failed to place order. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                        return null;
-                    }
-
-                    // Step 6: Store cart items in the order_items table
-                    boolean itemsStored = orderHandler.storeOrderItemsInDatabase(orderId, cartItems);
-                    if (!itemsStored) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Failed to store order items in the database. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                        return null;
-                    }
-
-                    // Step 7: Handle payment
-                    try {
-                        handlePayment(totalBill, db, Username);
-                    } catch (Exception e) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Payment processing failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                        return null;
-                    }
+                    return null; // Stop further processing
                 }
 
-            } catch (HeadlessException e) {
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "UI Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                });
+                // Step 5: Store order in the database
+                orders orderHandler = new orders();
+                int orderId = orderHandler.storeOrderInDatabase(Username, totalBill, shippingAddress);
+                if (orderId == -1) {
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Failed to place order. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+                    });
+                    return null; // Stop further processing
+                }
+
+                // Step 6: Store cart items in the order_items table
+                boolean itemsStored = orderHandler.storeOrderItemsInDatabase(orderId, cartItems);
+                if (!itemsStored) {
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Failed to store order items in the database. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    });
+                    return null; // Stop further processing
+                }
+
+                // Step 7: Handle payment
+                try {
+                    handlePayment(totalBill, db, Username);
+                } catch (Exception e) {
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Payment processing failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    });
+                    return null; // Stop further processing
+                }
+
             } catch (Exception e) {
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(null, "Unexpected Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -144,49 +132,58 @@ public void checkout() {
 
         @Override
         protected void done() {
-            // Notify the user once the checkout process is complete
-            SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, "Checkout process complete! Thank you for your order.");
-                //openConfirmationFrame();  // You can customize this method to display a confirmation frame
-            });
+            try {
+                if (!isCancelled()) { // Ensure task wasn't cancelled
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Checkout process complete! Thank you for your order.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
-    // Execute the SwingWorker in the background
+    // Execute the SwingWorker
     checkoutWorker.execute();
 
-    // Display a message indicating that the checkout process is running in the background
+    // Notify user of background process
     JOptionPane.showMessageDialog(null, "Checkout is now processing in the background. Please wait until the process completes.");
 }
 
 
 
-    public void applyDiscount(double totalBill, StringBuilder cartDetails) {
-        // Log the state of variables before checking the condition
-        System.out.println("surpriseMeClicked: " + surpriseMeClicked);
-        System.out.println("discountExpiryTime: " + discountExpiryTime);
-        System.out.println("Current Time: " + LocalDateTime.now());
+    public double applyDiscount(double totalBill, StringBuilder cartDetails) {
+    // Log the state of variables before checking the condition
+    System.out.println("surpriseMeClicked: " + surpriseMeClicked);
+    System.out.println("discountExpiryTime: " + discountExpiryTime);
+    System.out.println("Current Time: " + LocalDateTime.now());
 
-        // Check if the discount is valid
-        if (surpriseMeClicked && discountExpiryTime != null && LocalDateTime.now().isBefore(discountExpiryTime)) {
-            double discountAmount = totalBill * (surpriseDiscount / 100);
-            totalBill -= discountAmount;
+    // Initialize discountAmount to 0 in case no discount is applied
+    double discountAmount = 0;
 
-            // Append discount information to the cart details
-            cartDetails.append("\nSurprise Discount Applied: -$").append(String.format("%.2f", discountAmount));
-            cartDetails.append("\nTotal Bill After Discount: $").append(String.format("%.2f", totalBill));
+    // Check if the discount is valid
+    if (surpriseMeClicked && discountExpiryTime != null && LocalDateTime.now().isBefore(discountExpiryTime)) {
+        discountAmount = totalBill * (surpriseDiscount / 100);
+        totalBill -= discountAmount;
 
-            JOptionPane.showMessageDialog(null, cartDetails.toString(), "Discount Applied", JOptionPane.INFORMATION_MESSAGE);
-            try {
-                handlePayment(totalBill, db, SessionManager.getLoggedInUserName());
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Payment failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Sorry, you don’t have any discount available.", "No Discount", JOptionPane.ERROR_MESSAGE);
+        // Append discount information to the cart details
+        cartDetails.append("\nSurprise Discount Applied: -$").append(String.format("%.2f", discountAmount));
+        cartDetails.append("\nTotal Bill After Discount: $").append(String.format("%.2f", totalBill));
+
+        JOptionPane.showMessageDialog(null, cartDetails.toString(), "Discount Applied", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            handlePayment(totalBill, db, SessionManager.getLoggedInUserName());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Payment failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "Sorry, you don’t have any discount available.", "No Discount", JOptionPane.ERROR_MESSAGE);
     }
+
+    return discountAmount; // Return the discount amount
+}
 
     // Method to handle payment processing
    public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
