@@ -7,6 +7,10 @@ package sara.sprettypicks;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  *
@@ -330,159 +334,254 @@ button2.setIcon(smallIcon);
     }// </editor-fold>//GEN-END:initComponents
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
- // Database instance
+// // Database instance
+//Database db = Database.getInstance();
+//
+//// Clear previous messages
+//firstnamelabel.setText("<html>First Name *:</html>");
+//lastnamelabel.setText("<html>Last Name *:</html>");
+//usernamelabel.setText("<html>Username *:</html>");
+//emaillabel.setText("<html>Email *:</html>");
+//passwordlabel.setText("<html>Password *:</html>");
+//confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
+//
+//// Retrieve input values
+//String firstName = firstnametext.getText().trim();
+//String lastName = lastnametext.getText().trim();
+//String username = usernametext.getText().trim();
+//String email = emailtext.getText().trim();
+//String password = new String(passwordtext.getPassword());
+//String confirmPassword = new String(confirmpassword.getPassword());
+//
+//// Validation flags
+//boolean validFirstName = false;
+//boolean validLastName = false;
+//boolean validUsername = false;
+//boolean validEmail = false;
+//boolean validPassword = false;
+//boolean validConfirmPassword = false;
+//
+//// Validation checks for fields (firstName, lastName, username, email, password, confirmPassword)
+//
+//// Check first name
+//if (firstName.isEmpty()) {
+//    firstnamelabel.setText("<html><b style='color:red;'>First Name is a mandatory field. *</b></html>");
+//} else if (!firstName.matches("[a-zA-Z]+")) { // Check if it does NOT match the regex
+//    firstnamelabel.setText("<html><b style='color:red;'>First Name must contain only alphabets. *</b></html>");
+//} else {
+//    firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+//    validFirstName = true;
+//}
+//
+//
+//// Check last name
+//if (lastName.isEmpty()) {
+//    lastnamelabel.setText("<html><b style='color:red;'>Last Name is a mandatory field *</b></html>");
+//}
+//else if(!lastName.matches("[a-zA-Z]+")){
+//    lastnamelabel.setText("<html><b style='color:red;'>Last Name must contain only alphabets. *</b></html>");
+//}
+//else {
+//    lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+//    validLastName = true;
+//}
+//
+//// Check username uniqueness
+//if (username.isEmpty()) {
+//    usernamelabel.setText("<html><b style='color:red;'>Username is a mandatory field. *</b></html>");
+//} else {
+//    String alphanumericRegex = "^[a-zA-Z0-9_]+$"; // Allows starting with a number, underscore, or letter and includes valid characters
+//    if (username.length() < 3 || username.length() > 255) {
+//        usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
+//    } else if (!username.matches(alphanumericRegex)) {
+//        usernamelabel.setText("<html><b style='color:red;'>Username can only contain letters, numbers, and underscores. *</b></html>");
+//    } else if (!username.matches(".*[a-zA-Z].*") || !username.matches(".*\\d.*")) {
+//        // Additional check: must contain at least one letter and one number
+//        usernamelabel.setText("<html><b style='color:red;'>Username must contain both letters and numbers. *</b></html>");
+//    } else if (db.checkUsernameExists(username)) { // Check if username exists
+//        usernamelabel.setText("<html><b style='color:red;'>Username already exists. Please enter another username. *</b></html>");
+//    } else {
+//        usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+//        validUsername = true;
+//    }
+//}
+//
+//
+//
+//// Check email uniqueness
+//if (email.isEmpty()) {
+//    emaillabel.setText("<html><b style='color:red;'>Email is a mandatory field. *</b></html>");
+//} else {
+//    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+//    if (!email.matches(emailRegex)) {
+//        emaillabel.setText("<html><b style='color:red;'>Incorrect email format. *</b></html>");
+//    } else if (db.checkEmailExists2(email)) {  // Check if email exists
+//        emaillabel.setText("<html><b style='color:red;'>Email already exists. Please enter another email. *</b></html>");
+//    } else {
+//        emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+//        validEmail = true;
+//    }
+//}
+//
+//// Check password complexity
+//// Validate password
+//if (password.isEmpty()) {
+//    passwordlabel.setText("<html><b style='color:red;'>Password is a mandatory field. *</b></html>");
+//    validPassword = false;
+//} else {
+//    // Updated regex to allow all special characters
+//    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W])[A-Za-z\\d\\W]{8,}$";
+//    if (!password.matches(passwordRegex)) {
+//        passwordlabel.setText("<html><b style='color:red;'>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character. Minimum length: 8 characters. *</b></html>");
+//        validPassword = false;
+//    } else {
+//        passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+//        validPassword = true;
+//    }
+//}
+//
+//
+//// Validate confirm password
+//if (confirmPassword.isEmpty()) {
+//    confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm password is a mandatory field. *</b></html>");
+//    validConfirmPassword = false;
+//} else if (!validPassword) {
+//    // If the original password does not meet syntax rules, block confirm password validation
+//    confirmpasswordlabel.setText("<html><b style='color:red;'>Fix the password requirements first. *</b></html>");
+//    validConfirmPassword = false;
+//} else if (!confirmPassword.equals(password)) {
+//    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. *</b></html>");
+//    validConfirmPassword = false;
+//} else {
+//    confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+//    validConfirmPassword = true;
+//}
+//
+//
+//// Check if all fields are valid
+//if (validFirstName && validLastName && validUsername && validEmail && validPassword && validConfirmPassword) {
+//    // Proceed with user signup
+//    boolean signupSuccess;
+//    if (role.equals("admin")) {
+//        signupSuccess = db.signupAdmin(email, password, firstName, username);
+//    } else {
+//        signupSuccess = db.signupCustomer(firstName, lastName, username, email, password);  // Assuming first name and last name are required for customers
+//    }
+//
+//    if (signupSuccess) {
+//        JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+//        // Clear fields after successful signup
+//        firstnametext.setText(""); 
+//        lastnametext.setText(""); 
+//        usernametext.setText(""); 
+//        emailtext.setText(""); 
+//        passwordtext.setText(""); 
+//        confirmpassword.setText(""); 
+//
+//     loginformfacade ob=new loginformfacade();
+//     ob.setVisible(true);
+//this.dispose();
+//    } else {
+//        JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+//    }
+//} else {
+//    JOptionPane.showMessageDialog(this, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
+//}
+
+
+
 Database db = Database.getInstance();
 
-// Clear previous messages
-firstnamelabel.setText("<html>First Name *:</html>");
-lastnamelabel.setText("<html>Last Name *:</html>");
-usernamelabel.setText("<html>Username *:</html>");
-emaillabel.setText("<html>Email *:</html>");
-passwordlabel.setText("<html>Password *:</html>");
-confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
+        // Clear previous messages
+        firstnamelabel.setText("<html>First Name *:</html>");
+        lastnamelabel.setText("<html>Last Name *:</html>");
+        usernamelabel.setText("<html>Username *:</html>");
+        emaillabel.setText("<html>Email *:</html>");
+        passwordlabel.setText("<html>Password *:</html>");
+        confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
 
-// Retrieve input values
-String firstName = firstnametext.getText().trim();
-String lastName = lastnametext.getText().trim();
-String username = usernametext.getText().trim();
-String email = emailtext.getText().trim();
-String password = new String(passwordtext.getPassword());
-String confirmPassword = new String(confirmpassword.getPassword());
+        // Retrieve input values
+        String firstName = firstnametext.getText().trim();
+        String lastName = lastnametext.getText().trim();
+        String username = usernametext.getText().trim();
+        String email = emailtext.getText().trim();
+        String password = new String(passwordtext.getPassword());
+        String confirmPassword = new String(confirmpassword.getPassword());
 
-// Validation flags
-boolean validFirstName = false;
-boolean validLastName = false;
-boolean validUsername = false;
-boolean validEmail = false;
-boolean validPassword = false;
-boolean validConfirmPassword = false;
+        // Validation flags
+        boolean validFirstName = false;
+        boolean validLastName = false;
+        boolean validUsername = false;
+        boolean validEmail = false;
+        boolean validPassword = false;
+        boolean validConfirmPassword = false;
 
-// Validation checks for fields (firstName, lastName, username, email, password, confirmPassword)
+        // Validation checks (similar to the original code)
+        if (!validateFields(firstName, lastName, username, email, password, confirmPassword)) {
+            JOptionPane.showMessageDialog(null, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+ExecutorService executor = Executors.newFixedThreadPool(5); // Creates a thread pool with 5 threads
+JOptionPane.showMessageDialog(null, "Processing your request. Please wait...", "Processing", JOptionPane.INFORMATION_MESSAGE);
+        // Proceed with multi-threaded database operations
+        executor.submit(() -> {
+            try {
+                boolean signupSuccess;
+                if (role.equals("admin")) {
+                    signupSuccess = db.signupAdmin(email, password, firstName, username);
+                } else {
+                    signupSuccess = db.signupCustomer(firstName, lastName, username, email, password);
+                }
 
-// Check first name
-if (firstName.isEmpty()) {
-    firstnamelabel.setText("<html><b style='color:red;'>First Name is a mandatory field. *</b></html>");
-} else if (!firstName.matches("[a-zA-Z]+")) { // Check if it does NOT match the regex
-    firstnamelabel.setText("<html><b style='color:red;'>First Name must contain only alphabets. *</b></html>");
-} else {
-    firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-    validFirstName = true;
-}
+                SwingUtilities.invokeLater(() -> {
+                    if (signupSuccess) {
+                        JOptionPane.showMessageDialog(null, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
+                        // Clear fields after successful signup
+                        firstnametext.setText("");
+                        lastnametext.setText("");
+                        usernametext.setText("");
+                        emailtext.setText("");
+                        passwordtext.setText("");
+                        confirmpassword.setText("");
 
-// Check last name
-if (lastName.isEmpty()) {
-    lastnamelabel.setText("<html><b style='color:red;'>Last Name is a mandatory field *</b></html>");
-}
-else if(!lastName.matches("[a-zA-Z]+")){
-    lastnamelabel.setText("<html><b style='color:red;'>Last Name must contain only alphabets. *</b></html>");
-}
-else {
-    lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-    validLastName = true;
-}
-
-// Check username uniqueness
-if (username.isEmpty()) {
-    usernamelabel.setText("<html><b style='color:red;'>Username is a mandatory field. *</b></html>");
-} else {
-    String alphanumericRegex = "^[a-zA-Z0-9_]+$"; // Allows starting with a number, underscore, or letter and includes valid characters
-    if (username.length() < 3 || username.length() > 255) {
-        usernamelabel.setText("<html><b style='color:red;'>Username must be between 3 and 255 characters. *</b></html>");
-    } else if (!username.matches(alphanumericRegex)) {
-        usernamelabel.setText("<html><b style='color:red;'>Username can only contain letters, numbers, and underscores. *</b></html>");
-    } else if (!username.matches(".*[a-zA-Z].*") || !username.matches(".*\\d.*")) {
-        // Additional check: must contain at least one letter and one number
-        usernamelabel.setText("<html><b style='color:red;'>Username must contain both letters and numbers. *</b></html>");
-    } else if (db.checkUsernameExists(username)) { // Check if username exists
-        usernamelabel.setText("<html><b style='color:red;'>Username already exists. Please enter another username. *</b></html>");
-    } else {
-        usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validUsername = true;
-    }
-}
-
-
-
-// Check email uniqueness
-if (email.isEmpty()) {
-    emaillabel.setText("<html><b style='color:red;'>Email is a mandatory field. *</b></html>");
-} else {
-    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    if (!email.matches(emailRegex)) {
-        emaillabel.setText("<html><b style='color:red;'>Incorrect email format. *</b></html>");
-    } else if (db.checkEmailExists2(email)) {  // Check if email exists
-        emaillabel.setText("<html><b style='color:red;'>Email already exists. Please enter another email. *</b></html>");
-    } else {
-        emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validEmail = true;
-    }
-}
-
-// Check password complexity
-// Validate password
-if (password.isEmpty()) {
-    passwordlabel.setText("<html><b style='color:red;'>Password is a mandatory field. *</b></html>");
-    validPassword = false;
-} else {
-    // Updated regex to allow all special characters
-    String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W])[A-Za-z\\d\\W]{8,}$";
-    if (!password.matches(passwordRegex)) {
-        passwordlabel.setText("<html><b style='color:red;'>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character. Minimum length: 8 characters. *</b></html>");
-        validPassword = false;
-    } else {
-        passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        validPassword = true;
-    }
-}
-
-
-// Validate confirm password
-if (confirmPassword.isEmpty()) {
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Confirm password is a mandatory field. *</b></html>");
-    validConfirmPassword = false;
-} else if (!validPassword) {
-    // If the original password does not meet syntax rules, block confirm password validation
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Fix the password requirements first. *</b></html>");
-    validConfirmPassword = false;
-} else if (!confirmPassword.equals(password)) {
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match. *</b></html>");
-    validConfirmPassword = false;
-} else {
-    confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-    validConfirmPassword = true;
-}
-
-
-// Check if all fields are valid
-if (validFirstName && validLastName && validUsername && validEmail && validPassword && validConfirmPassword) {
-    // Proceed with user signup
-    boolean signupSuccess;
-    if (role.equals("admin")) {
-        signupSuccess = db.signupAdmin(email, password, firstName, username);
-    } else {
-        signupSuccess = db.signupCustomer(firstName, lastName, username, email, password);  // Assuming first name and last name are required for customers
+                        // Navigate to login form
+                        loginformfacade ob = new loginformfacade();
+                        ob.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
+            }
+        });
     }
 
-    if (signupSuccess) {
-        JOptionPane.showMessageDialog(this, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        // Clear fields after successful signup
-        firstnametext.setText(""); 
-        lastnametext.setText(""); 
-        usernametext.setText(""); 
-        emailtext.setText(""); 
-        passwordtext.setText(""); 
-        confirmpassword.setText(""); 
+    private  boolean validateFields(String firstName, String lastName, String username, String email, String password, String confirmPassword) {
+        // Perform field validations as in the original code
+        // Update labels (e.g., firstnamelabel, lastnamelabel) based on validations
+        // Return true if all validations pass, otherwise false
+        boolean valid = true;
 
-     loginformfacade ob=new loginformfacade();
-     ob.setVisible(true);
-this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-} else {
-    JOptionPane.showMessageDialog(this, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
-}
+        if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+")) {
+            firstnamelabel.setText("<html><b style='color:red;'>Invalid First Name *</b></html>");
+            valid = false;
+        } else {
+            firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+        }
+
+        if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
+            lastnamelabel.setText("<html><b style='color:red;'>Invalid Last Name *</b></html>");
+            valid = false;
+        } else {
+            lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+        }
+
+        // Other field validations...
+
+        return valid;
+    
 
     }//GEN-LAST:event_signupActionPerformed
 

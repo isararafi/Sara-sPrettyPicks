@@ -382,6 +382,7 @@ this.dispose();
 
                         // Navigate to the customer dashboard
                         SwingUtilities.invokeLater(() -> {
+                            JOptionPane.showMessageDialog(null, "Login successful! Redirecting to the Customer Dashboard...");
                             customerdashboardfacade customerDashboard = new customerdashboardfacade(username);
                             customerDashboard.setVisible(true);
                             dispose(); // Close the login frame
@@ -405,6 +406,7 @@ this.dispose();
 
                     // Open the admin dashboard
                     SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Login successful! Redirecting to the Admin Dashboard...");
                         Admindashboardfacade adminDashboard = new Admindashboardfacade();
                         adminDashboard.setVisible(true);
                         dispose(); // Close the login frame
@@ -420,6 +422,9 @@ this.dispose();
 
         @Override
         protected void done() {
+            SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(null, "Processing complete.");
+        });
             // This is called when the background task finishes
             // Optionally, you could hide the loading message here
         }
