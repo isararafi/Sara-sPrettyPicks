@@ -9,6 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
+    //remember to first update info then put anything in cart etc
     //work on showtestcases button
 //SwingWorker is used for threading in GUI-based Java programs to keep the UI responsive.
     //admin 1,2,3,4 button done

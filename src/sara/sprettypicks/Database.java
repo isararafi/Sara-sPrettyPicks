@@ -1033,7 +1033,7 @@ public boolean deleteUserRelatedData() {
     return customerInfo;
 
 }
-public boolean updateCustomerInfo(String username, String firstName, String lastName, String password) {
+public boolean updateCustomerInfo(String currentUsername, String username, String firstName, String lastName, String password) {
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -1041,39 +1041,33 @@ public boolean updateCustomerInfo(String username, String firstName, String last
     try {
         conn = Database.getInstance().connect();
         
-        // Check if the new username already exists, excluding the current user's username
+        // Check if the new username already exists
         String checkQuery = "SELECT COUNT(*) FROM customers WHERE cuser_name = ? AND cuser_name != ?";
         ps = conn.prepareStatement(checkQuery);
         ps.setString(1, username); // New username to check
-        ps.setString(2, username); // Current username to exclude from check
+        ps.setString(2, currentUsername); // Current username to exclude from check
         rs = ps.executeQuery();
         
         if (rs.next() && rs.getInt(1) > 0) {
-            // Username already exists, return false to indicate failure
-            return false;
+            return false; // Username already exists, return false
         }
+
         
-        // SQL query to update customer info
-        String query = "UPDATE customers SET cuser_name = ?, first_name = ?, last_name = ?, password = ? WHERE cuser_name = ?";
-        ps = conn.prepareStatement(query);
+        // Step 2: Update customer info in the customers table
+        String updateCustomerQuery = "UPDATE customers SET cuser_name = ?, first_name = ?, last_name = ?, password = ? WHERE cuser_name = ?";
+        ps = conn.prepareStatement(updateCustomerQuery);
         ps.setString(1, username); // Update username
         ps.setString(2, firstName);
         ps.setString(3, lastName);
         ps.setString(4, password);
-        ps.setString(5, username); // Original username (for identification)
-        
-        // Execute the update
+        ps.setString(5, currentUsername); // Original username
         int rowsUpdated = ps.executeUpdate();
-        
-        if (rowsUpdated == 0) {
-            System.out.println("No rows updated. Check query or data.");
-        }
-        
-        return rowsUpdated > 0; // Return true if at least one row was updated
+
+        return rowsUpdated > 0; // Return true if the update was successful
     } catch (SQLException e) {
         System.err.println("SQLException occurred while updating account info: " + e.getMessage());
-        e.printStackTrace(); // This will give you more details about where it failed
-        return false; // Return false in case of an exception
+        e.printStackTrace();
+        return false; // Return false if an exception occurred
     } finally {
         try {
             if (rs != null) rs.close();
@@ -1084,6 +1078,8 @@ public boolean updateCustomerInfo(String username, String firstName, String last
         }
     }
 }
+
+
 
 public boolean checkUsernameExists(String username) {
     // Query the database to check if the username exists

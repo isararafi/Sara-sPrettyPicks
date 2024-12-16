@@ -1266,10 +1266,10 @@ if (isCancelled) {
 
         // Step 1: Retrieve the username from the session manager
         Database db = Database.getInstance();
-        String username = SessionManager.getLoggedInUserName();
+        String oldusername = SessionManager.getLoggedInUserName();
 
         // Step 2: Fetch customer details from the database based on the username
-        String[] customerInfo = db.getCustomerInfoByUsername(username); // Fetch customer details as an array
+        String[] customerInfo = db.getCustomerInfoByUsername(oldusername); // Fetch customer details as an array
 
         // Step 3: Create a dialog window to show and edit account info
         JDialog accountDialog = new JDialog();
@@ -1312,43 +1312,53 @@ if (isCancelled) {
         panel.add(new JLabel()); // Empty label to align the save button properly
         panel.add(saveButton);
 
-        // Save button action listener
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Step 4: Get the updated values from the text fields
-                String newUsername = usernameField.getText().trim(); // Username can be updated
-                String newFirstName = firstNameField.getText().trim();
-                String newLastName = lastNameField.getText().trim();
-                String newPassword = new String(passwordField.getPassword()).trim();
+      // Save button action listener
+saveButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Step 4: Get the updated values from the text fields
+        String currentUsername = oldusername;/* Get the current username (e.g., from a field or variable) */;
+        String newUsername = usernameField.getText().trim(); // Username can be updated
+        String newFirstName = firstNameField.getText().trim();
+        String newLastName = lastNameField.getText().trim();
+        String newPassword = new String(passwordField.getPassword()).trim();
 
-                // Step 5: Validation before saving
-                if (newUsername.isEmpty() || newFirstName.isEmpty() || newLastName.isEmpty() || newPassword.isEmpty()) {
-                    // Show error message if any field is empty
-                    JOptionPane.showMessageDialog(accountDialog, "All fields are required. Please fill them in.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+        // Step 5: Validation before saving
+        if (newUsername.isEmpty() || newFirstName.isEmpty() || newLastName.isEmpty() || newPassword.isEmpty()) {
+            // Show error message if any field is empty
+            JOptionPane.showMessageDialog(accountDialog, "All fields are required. Please fill them in.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-                // Step 6: Check if the new username is unique (except for the current username)
-                boolean updateSuccessful = db.updateCustomerInfo(newUsername, newFirstName, newLastName, newPassword);
+        // Step 6: Check if the new username is unique (except for the current username)
+        boolean updateSuccessful = false;
 
-                // Step 7: Close the dialog
-                if (updateSuccessful) {
-                    // Show success message
-                    JOptionPane.showMessageDialog(accountDialog, "Account updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    // Show error message
-                    JOptionPane.showMessageDialog(accountDialog, "Error updating account. Username may already exist or try again later.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        // If the username is different, check uniqueness
+        if (!newUsername.equals(currentUsername)) {
+            updateSuccessful = db.updateCustomerInfo(currentUsername, newUsername, newFirstName, newLastName, newPassword);
+        } else {
+            // If the username is the same, directly update the account
+            updateSuccessful = db.updateCustomerInfo(currentUsername, currentUsername, newFirstName, newLastName, newPassword);
+        }
 
-                // Close the dialog regardless of success/failure
-                accountDialog.dispose();
-            }
-        });
+        // Step 7: Close the dialog
+        if (updateSuccessful) {
+            // Show success message
+            JOptionPane.showMessageDialog(accountDialog, "Account updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Show error message
+            JOptionPane.showMessageDialog(accountDialog, "Error updating account. Username may already exist or try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
-        // Add the panel to the dialog
-        accountDialog.add(panel);
-        accountDialog.setVisible(true);
+        // Close the dialog regardless of success/failure
+        accountDialog.dispose();
+    }
+});
+
+// Add the panel to the dialog
+accountDialog.add(panel);
+accountDialog.setVisible(true);
+
     }//GEN-LAST:event_accountinfoActionPerformed
 
     /**
