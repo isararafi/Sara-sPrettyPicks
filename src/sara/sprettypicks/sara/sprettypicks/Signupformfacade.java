@@ -487,100 +487,126 @@ button2.setIcon(smallIcon);
 //} else {
 //    JOptionPane.showMessageDialog(this, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
 //}
-
-
-
 Database db = Database.getInstance();
 
-        // Clear previous messages
-        firstnamelabel.setText("<html>First Name *:</html>");
-        lastnamelabel.setText("<html>Last Name *:</html>");
-        usernamelabel.setText("<html>Username *:</html>");
-        emaillabel.setText("<html>Email *:</html>");
-        passwordlabel.setText("<html>Password *:</html>");
-        confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
+// Clear previous messages for labels
+firstnamelabel.setText("<html>First Name *:</html>");
+lastnamelabel.setText("<html>Last Name *:</html>");
+usernamelabel.setText("<html>Username *:</html>");
+emaillabel.setText("<html>Email *:</html>");
+passwordlabel.setText("<html>Password *:</html>");
+confirmpasswordlabel.setText("<html>Confirm Password *:</html>");
 
-        // Retrieve input values
-        String firstName = firstnametext.getText().trim();
-        String lastName = lastnametext.getText().trim();
-        String username = usernametext.getText().trim();
-        String email = emailtext.getText().trim();
-        String password = new String(passwordtext.getPassword());
-        String confirmPassword = new String(confirmpassword.getPassword());
+// Retrieve input values
+String firstName = firstnametext.getText().trim();
+String lastName = lastnametext.getText().trim();
+String username = usernametext.getText().trim();
+String email = emailtext.getText().trim();
+String password = new String(passwordtext.getPassword());
+String confirmPassword = new String(confirmpassword.getPassword());
 
-        // Validation flags
-        boolean validFirstName = false;
-        boolean validLastName = false;
-        boolean validUsername = false;
-        boolean validEmail = false;
-        boolean validPassword = false;
-        boolean validConfirmPassword = false;
+// Validation flags
+boolean validFirstName = true;
+boolean validLastName = true;
+boolean validUsername = true;
+boolean validEmail = true;
+boolean validPassword = true;
+boolean validConfirmPassword = true;
 
-        // Validation checks (similar to the original code)
-        if (!validateFields(firstName, lastName, username, email, password, confirmPassword)) {
-            JOptionPane.showMessageDialog(null, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+// Validate fields directly in the code
+if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+")) {
+    firstnamelabel.setText("<html><b style='color:red;'>Invalid First Name *</b></html>");
+    validFirstName = false;
+} else {
+    firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+}
+
+if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
+    lastnamelabel.setText("<html><b style='color:red;'>Invalid Last Name *</b></html>");
+    validLastName = false;
+} else {
+    lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+}
+
+if (username.isEmpty()) {
+    usernamelabel.setText("<html><b style='color:red;'>Invalid Username *</b></html>");
+    validUsername = false;
+} else {
+    usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+}
+
+if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+    emaillabel.setText("<html><b style='color:red;'>Invalid Email *</b></html>");
+    validEmail = false;
+} else {
+    emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+}
+
+if (password.isEmpty()) {
+    passwordlabel.setText("<html><b style='color:red;'>Invalid Password *</b></html>");
+    validPassword = false;
+} else {
+    passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+}
+
+if (confirmPassword.isEmpty() || !confirmPassword.equals(password)) {
+    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match *</b></html>");
+    validConfirmPassword = false;
+} else {
+    confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+}
+
+// Check if all fields are valid
+if (!validFirstName || !validLastName || !validUsername || !validEmail || !validPassword || !validConfirmPassword) {
+    JOptionPane.showMessageDialog(null, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
 ExecutorService executor = Executors.newFixedThreadPool(5); // Creates a thread pool with 5 threads
 JOptionPane.showMessageDialog(null, "Processing your request. Please wait...", "Processing", JOptionPane.INFORMATION_MESSAGE);
-        // Proceed with multi-threaded database operations
-        executor.submit(() -> {
-            try {
-                boolean signupSuccess;
-                if (role.equals("admin")) {
-                    signupSuccess = db.signupAdmin(email, password, firstName, username);
-                } else {
-                    signupSuccess = db.signupCustomer(firstName, lastName, username, email, password);
-                }
 
-                SwingUtilities.invokeLater(() -> {
-                    if (signupSuccess) {
-                        JOptionPane.showMessageDialog(null, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+// Proceed with multi-threaded database operations
+executor.submit(() -> {
+    try {
+        boolean signupSuccess;
+        if (role.equals("admin")) {
+            signupSuccess = db.signupAdmin(email, password, firstName, username);
+        } else {
+            signupSuccess = db.signupCustomer(firstName, lastName, username, email, password);
+        }
 
-                        // Clear fields after successful signup
-                        firstnametext.setText("");
-                        lastnametext.setText("");
-                        usernametext.setText("");
-                        emailtext.setText("");
-                        passwordtext.setText("");
-                        confirmpassword.setText("");
+        SwingUtilities.invokeLater(() -> {
+            if (signupSuccess) {
+                JOptionPane.showMessageDialog(null, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                        // Navigate to login form
-                        loginformfacade ob = new loginformfacade();
-                        ob.setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                });
-            } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
+                // Clear the text fields after successful signup
+                firstnametext.setText("");
+                lastnametext.setText("");
+                usernametext.setText("");
+                emailtext.setText("");
+                passwordtext.setText("");
+                confirmpassword.setText("");
+
+                // Update labels to indicate successful signup
+                firstnamelabel.setText("<html><b style='color:green;'>First Name: Correct!</b></html>");
+                lastnamelabel.setText("<html><b style='color:green;'>Last Name: Correct!</b></html>");
+                usernamelabel.setText("<html><b style='color:green;'>Username: Correct!</b></html>");
+                emaillabel.setText("<html><b style='color:green;'>Email: Correct!</b></html>");
+                passwordlabel.setText("<html><b style='color:green;'>Password: Correct!</b></html>");
+                confirmpasswordlabel.setText("<html><b style='color:green;'>Confirm Password: Correct!</b></html>");
+
+                // Navigate to login form
+                loginformfacade ob = new loginformfacade();
+                ob.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+    } catch (Exception e) {
+        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
     }
+});
 
-    private  boolean validateFields(String firstName, String lastName, String username, String email, String password, String confirmPassword) {
-        // Perform field validations as in the original code
-        // Update labels (e.g., firstnamelabel, lastnamelabel) based on validations
-        // Return true if all validations pass, otherwise false
-        boolean valid = true;
-
-        if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+")) {
-            firstnamelabel.setText("<html><b style='color:red;'>Invalid First Name *</b></html>");
-            valid = false;
-        } else {
-            firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        }
-
-        if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
-            lastnamelabel.setText("<html><b style='color:red;'>Invalid Last Name *</b></html>");
-            valid = false;
-        } else {
-            lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
-        }
-
-        // Other field validations...
-
-        return valid;
     
 
     }//GEN-LAST:event_signupActionPerformed

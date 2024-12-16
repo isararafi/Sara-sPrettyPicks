@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -222,56 +223,66 @@ public class Addproducts extends javax.swing.JFrame {
     }//GEN-LAST:event_descriptionTextFieldActionPerformed
 
     private void addproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addproductActionPerformed
-        // Get the input values from the form
-        String productIdString = productIdTextField.getText(); // Should be String
-        String name = nameTextField.getText();
-        String description = descriptionTextField.getText();
-        String category = categoryTextField.getText();
-        String priceStr = priceTextField.getText();
-        String imagePath = imagetextfield.getText(); // Text field for image path
-        String quantityStr = quantityTextField.getText();
+       // Get the input values from the form
+String productIdString = productIdTextField.getText(); // Should be String
+String name = nameTextField.getText();
+String description = descriptionTextField.getText();
+String category = categoryTextField.getText();
+String priceStr = priceTextField.getText();
+String imagePath = imagetextfield.getText(); // Text field for image path
+String quantityStr = quantityTextField.getText();
 
 // Validate inputs to make sure none are empty
-        if (productIdString.isEmpty() || name.isEmpty() || description.isEmpty() || category.isEmpty() || priceStr.isEmpty() || imagePath.isEmpty() || quantityStr.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all fields!");
-            return; // Stop execution if validation fails
-        }
+if (productIdString.isEmpty() || name.isEmpty() || description.isEmpty() || category.isEmpty() || priceStr.isEmpty() || imagePath.isEmpty() || quantityStr.isEmpty()) {
+    JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+    return; // Stop execution if validation fails
+}
 
 // Convert productId from String to int
-        int productId = 0;
-        try {
-            productId = Integer.parseInt(productIdString); // Convert productId from String to int
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid product ID format! Please enter a valid integer.");
-            return; // Stop execution if conversion fails
-        }
+int productId = 0;
+try {
+    productId = Integer.parseInt(productIdString); // Convert productId from String to int
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(null, "Invalid product ID format! Please enter a valid integer.");
+    return; // Stop execution if conversion fails
+}
 
 // Convert price to double
-        double price = 0;
-        try {
-            price = Double.parseDouble(priceStr); // Convert price to double
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid price format! Please enter a valid number.");
-            return;
-        }
+double price = 0;
+try {
+    price = Double.parseDouble(priceStr); // Convert price to double
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(null, "Invalid price format! Please enter a valid number.");
+    return;
+}
 
 // Convert quantity to int
-        int quantity = 0;
-        try {
-            quantity = Integer.parseInt(quantityStr); // Convert quantity to integer
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid quantity format! Please enter a valid integer.");
-            return;
-        }
+int quantity = 0;
+try {
+    quantity = Integer.parseInt(quantityStr); // Convert quantity to integer
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(null, "Invalid quantity format! Please enter a valid integer.");
+    return;
+}
 
 // Create an instance of InsertImageWithPath and call the insert method
-        InsertImageWithPath insertImage = new InsertImageWithPath();
-        insertImage.insertProductImage(productId, name, category, description, price, quantity, imagePath);
+InsertImageWithPath insertImage = new InsertImageWithPath();
+insertImage.insertProductImage(productId, name, category, description, price, quantity, imagePath);
 
 // Optionally, show a confirmation message
-        JOptionPane.showMessageDialog(null, "Product added successfully!");
+JOptionPane.showMessageDialog(null, "Product added successfully!");
 
-       
+// Clear the text fields after the product is added successfully
+SwingUtilities.invokeLater(() -> {
+    productIdTextField.setText("");
+    nameTextField.setText("");
+    descriptionTextField.setText("");
+    categoryTextField.setText("");
+    priceTextField.setText("");
+    imagetextfield.setText("");
+    quantityTextField.setText("");
+});
+
 
     }//GEN-LAST:event_addproductActionPerformed
 

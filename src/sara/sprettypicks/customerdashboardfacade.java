@@ -661,8 +661,10 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     private void checkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutActionPerformed
 
-//surprisecheckout checkoutProcess = new surprisecheckout(); // Create a new instance to ensure no previous values
-        checkoutProcess.checkout(); // Call checkout
+surprisecheckout checkoutProcess = new surprisecheckout(); // Create a new instance to ensure no previous values
+       
+        checkoutProcess.checkout(); // Call checkout from EDT
+  
 
 
     }//GEN-LAST:event_checkoutActionPerformed
