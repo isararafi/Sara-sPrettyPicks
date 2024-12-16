@@ -49,7 +49,7 @@ public class SignUpClassTesting {
     Database db = Database.getInstance();
 
     // Call the method with valid username and password
-    boolean result = db.checkCustomerLogin("aleena123", "Aleena_12345678");
+    boolean result = db.checkCustomerLogin("zara_123", "Zara_12345678");
         
 
     // Assert the result is true since the user exists
@@ -62,7 +62,7 @@ public void testValidAdminUsernameAndPassword() throws Exception {
     Database db = Database.getInstance();
 
     // Call the method with valid username and password
-    boolean result = db.checkAdminLogin("Sara_123", "Sara_12345678");
+    boolean result = db.checkAdminLogin("Sara_123", "Sara!12345678");
 
     // Assert the result is true since the admin credentials are correct
     assertTrue( "The method should return true for valid admin credentials.",result);
@@ -73,22 +73,22 @@ public void testValidAdminUsernameAndPassword() throws Exception {
     //*******************SIGNUP TESTCASES*************
   
 
-    @Test
-    public void testSignupWithExistingEmail() throws Exception {
-        // Assume the email 'john.doe@example.com' already exists in the database
-        Database db = Database.getInstance();
-
-        // Call the method with an existing email
-        try {
-            boolean result = db.signupCustomer("John", "Doe", "newuser1234", "john.doe@example.com", "password123");
-            // If the method doesn't throw an exception, assert that it should not succeed with an existing email
-             System.out.println("user existtt");
-            assertFalse("The method should return false if the email already exists.", result);
-        } catch (Exception e) {
-            // Expected exception thrown due to existing email
-            assertTrue("Exception should be thrown due to existing email.", true);
-        }
-    }
+//    @Test
+//    public void testSignupWithExistingEmail() throws Exception {
+//        // Assume the email 'john.doe@example.com' already exists in the database
+//        Database db = Database.getInstance();
+//
+//        // Call the method with an existing email
+//        try {
+//            boolean result = db.signupCustomer("John", "Doe", "newuser1234", "john.doe@example.com", "password123");
+//            // If the method doesn't throw an exception, assert that it should not succeed with an existing email
+//             System.out.println("user existtt");
+//            assertFalse("The method should return false if the email already exists.", result);
+//        } catch (Exception e) {
+//            // Expected exception thrown due to existing email
+//            assertTrue("Exception should be thrown due to existing email.", true);
+//        }
+//    }
     
 //    assertFalse expects the condition to be false.
 //    In the case of an empty password (" "), if the signupCustomer

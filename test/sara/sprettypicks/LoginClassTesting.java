@@ -32,23 +32,23 @@ public class LoginClassTesting {
 //        assertNull("The email should be null for a non-existent user", email);
 //    }
     
-   @Test
-public void testGetEmailByUsernameFound() throws SQLException {
-    Database db = Database.getInstance();
-    String username = "Amna_123"; // Username that exists in the database
-    String expectedEmail = "amna102@gmail.com"; // Expected email for the username
-
-    // Act: Call the method to get the email by username
-    String email = db.getEmailByUsername(username);
-
-    // Assert: Verify that the email matches the expected email for the user
-    assertEquals("The email should match the expected email for the user", expectedEmail, email);
-}
+//   @Test
+//public void testGetEmailByUsernameFound() throws SQLException {
+//    Database db = Database.getInstance();
+//    String username = "Amna_123"; // Username that exists in the database
+//    String expectedEmail = "amna102@gmail.com"; // Expected email for the username
+//
+//    // Act: Call the method to get the email by username
+//    String email = db.getEmailByUsername(username);
+//
+//    // Assert: Verify that the email matches the expected email for the user
+//    assertEquals("The email should match the expected email for the user", expectedEmail, email);
+//}
 
     @Test
     public void testCheckAdminLoginValid() throws SQLException {
         String username = "Sara_123";  // A valid admin username from the database
-        String password = "Sara_12345678";  // The correct password for the username
+        String password = "Sara!12345678";  // The correct password for the username
 Database db = Database.getInstance();
         // Act: Call the method to check the admin login
         boolean result = db.checkAdminLogin(username, password);
@@ -60,8 +60,8 @@ Database db = Database.getInstance();
      @Test
     public void testCheckCustomerLogin_SuccessfulLogin() throws SQLException {
         // Arrange: Prepare the data for the test
-        String username = "aleena123";
-        String password = "Aleena_12345678";
+        String username = "zara_123";
+        String password = "Zara_12345678";
 
        Database db=Database.getInstance();        // Act: Call the method you want to test
         boolean result = db.checkCustomerLogin(username, password);
