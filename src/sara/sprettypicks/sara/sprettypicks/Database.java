@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.sql.Connection;
 
 
 
@@ -1140,7 +1141,103 @@ public boolean insertOrderItem(int orderId, CartItem item) {
         return false; // Return false if an error occurs
     }
 }
+ public String[] getValidCustomerCredentials() {
+    String[] credentials = new String[2]; // [0] -> username, [1] -> password
+    
+    // Adjust the query if necessary
+    String query = "SELECT cuser_name, password FROM customers LIMIT 1";  // Ensure column names are correct
+    
+    try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(query)) {
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                credentials[0] = rs.getString("cuser_name");
+                credentials[1] = rs.getString("password");
+            } else {
+                // If no credentials found, return null or handle as needed
+                return null;  
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("SQL Error: " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+    return credentials;  // Returns the username and password as an array, or null if not found
+}
 
+  public void storeTestResult(String testName, String result) {
+    // Using try-with-resources to automatically close the resources
+    String query = "INSERT INTO test_case_results (test_case_name, result) VALUES (?, ?)";
+
+    try (Connection conn = Database.getInstance().connect(); 
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        // Set the test name and result
+        ps.setString(1, testName);
+        ps.setString(2, result);
+
+        // Execute the query to insert the data
+        ps.executeUpdate();
+        
+        System.out.println("Test result stored: " + testName + " - " + result);
+
+    } catch (SQLException e) {
+        System.err.println("SQL Error: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+  
+public String[][] fetchTestCasesFromDatabase() {
+    String[][] testCases = new String[0][0];  // Placeholder for the test case data
+    String query = "SELECT test_case_name, result FROM test_case_results";  // Your query to fetch test cases
+
+    try {
+        // Assuming Database.getInstance().connect() establishes a connection to your database
+        Connection conn = Database.getInstance().connect();
+
+        // If the connection is null, we return an empty array
+        if (conn == null) {
+            System.out.println("Failed to establish a database connection.");
+            return testCases;  // Return empty array if the connection fails
+        }
+
+        // Create a Statement with scrollable result set type
+        java.sql.Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+        // Execute the query and get the result set
+        ResultSet rs = stmt.executeQuery(query);
+
+        // Move to the last row to get the number of rows in the result set
+        rs.last();  // Moves the cursor to the last row
+        int rowCount = rs.getRow();  // Get the number of rows
+        rs.beforeFirst();  // Move the cursor back to the first row (before the first row)
+
+        // Initialize the 2D array to hold the test case data (2 columns: test_case_name and result)
+        testCases = new String[rowCount][2];
+        int rowIndex = 0;
+
+        // Loop through the result set and fill the 2D array
+        while (rs.next()) {
+            // Set the test case name and result from the result set to the array
+            testCases[rowIndex][0] = rs.getString("test_case_name");  // Test case name
+            testCases[rowIndex][1] = rs.getString("result");  // Test case result
+            rowIndex++;  // Move to the next row in the array
+        }
+
+        // Close the resources
+        rs.close();
+        stmt.close();
+        conn.close();
+
+    } catch (SQLException e) {
+        // Print SQL exception details if any
+        System.out.println("SQL Exception: " + e.getMessage());
+        e.printStackTrace();  // Print the stack trace for debugging
+    }
+
+    // Return the populated array of test cases
+    return testCases;
+}
 
 
 }

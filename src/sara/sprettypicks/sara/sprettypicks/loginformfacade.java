@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package sara.sprettypicks;
+import java.awt.BorderLayout;
 import org.junit.Test;
+import sara.sprettypicks.TestcasesFrame;  // Make sure the import is correct
 
 import java.awt.Color;
 import java.awt.Image;
@@ -24,9 +26,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -36,11 +41,20 @@ import javax.swing.UIManager;
  */
 public class loginformfacade extends javax.swing.JFrame {
 
-   
+   public JTable testCaseTable;  // Declare the JTable
+         // Button to show test cases
     public loginformfacade() {
          UIManager.put("Button.background", Color.ORANGE);
         UIManager.put("Button.foreground", Color.BLACK); // Set text color to black
         UIManager.put("Button.focus", Color.ORANGE);
+       
+ testCaseTable = new JTable();  
+        JScrollPane scrollPane = new JScrollPane(testCaseTable);
+        add(scrollPane, BorderLayout.CENTER);  // Add it to the center of the frame
+        setSize(800, 600);  // Set size of the frame
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Close operation
+    // Assuming you are adding the JScrollPane to a JPanel
+    
         initComponents();
          ImageIcon eyeIcon = new ImageIcon("C:\\initialshopping\\eye.png"); // Load the image
 Image scaledImage = eyeIcon.getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH); // Scale to a smaller size (16x16)
@@ -79,7 +93,7 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
         jLabel1 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         button = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        showtestcases = new javax.swing.JButton();
 
         jLabel2.setText("LOGIN PAGE");
 
@@ -197,10 +211,10 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
             }
         });
 
-        jButton1.setText("show testcases");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        showtestcases.setText("show testcases");
+        showtestcases.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                showtestcasesActionPerformed(evt);
             }
         });
 
@@ -234,11 +248,11 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
                         .addGap(31, 31, 31)
                         .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton1)
-                        .addGap(187, 187, 187)
-                        .addComponent(jLabel3)))
-                .addContainerGap(407, Short.MAX_VALUE))
+                        .addGap(328, 328, 328)
+                        .addComponent(jLabel3)
+                        .addGap(156, 156, 156)
+                        .addComponent(showtestcases, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +262,7 @@ button.setIcon(smallIcon); // Set the smaller icon on the button
                         .addGap(15, 15, 15)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jButton1))
+                            .addComponent(showtestcases))
                         .addGap(45, 45, 45)
                         .addComponent(jLabel4)
                         .addGap(28, 28, 28)
@@ -339,7 +353,7 @@ this.dispose();
     }//GEN-LAST:event_signupbuttonActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-
+//SwingWorker is used for threading in GUI-based Java programs to keep the UI responsive.
     // Get username and password from fields
     String username = usernamefield.getText();
     String password = new String(passwordfield.getPassword());
@@ -363,7 +377,11 @@ this.dispose();
     // Show a loading message while processing
     JOptionPane.showMessageDialog(this, "Processing login, please wait...");
 
-    // Run the login logic in a separate thread using SwingWorker
+     //Run the login logic in a separate thread using SwingWorker
+    //The doInBackground() method runs on a separate thread,
+   //ensuring that time-consuming operations like database queries do not block the UI.
+  //SwingWorker is a class in the Java Swing framework that helps you perform background tasks in a Swing-based graphical user interface (GUI) application without freezing the user interface (UI). It allows long-running tasks (such as network requests, database queries, or complex calculations) to run in the background while keeping the UI responsive, meaning the user can still interact with the application during the task.
+
     SwingWorker<Void, Void> loginWorker = new SwingWorker<Void, Void>() {
         @Override
         protected Void doInBackground() throws Exception {
@@ -423,7 +441,7 @@ this.dispose();
         @Override
         protected void done() {
             SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(null, "Processing complete.");
+           // JOptionPane.showMessageDialog(null, "Processing complete.");
         });
             // This is called when the background task finishes
             // Optionally, you could hide the loading message here
@@ -506,60 +524,11 @@ if (isPasswordVisible) {
 
     }//GEN-LAST:event_buttonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-  
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                // Replace with the fully qualified name of your test class (without .java extension)
-                Class<?> testClass = Class.forName("sara.sprettypicks.LoginClassTesting");
-
-                // Create an instance of the test class
-                Object testInstance = testClass.getDeclaredConstructor().newInstance();
-
-                // Get all methods of the test class
-                java.lang.reflect.Method[] methods = testClass.getDeclaredMethods();
-
-                // Prepare data for displaying results
-                java.util.List<String[]> testResults = new java.util.ArrayList<>();
-
-                for (java.lang.reflect.Method method : methods) {
-                    if (method.isAnnotationPresent(org.junit.Test.class)) {
-                        String testName = method.getName();
-                        String result;
-
-                        try {
-                            method.invoke(testInstance);
-                            result = "Pass";
-                        } catch (Exception e) {
-                            result = "Fail: " + e.getCause().getMessage();
-                        }
-
-                        testResults.add(new String[] {testName, result});
-                    }
-                }
-
-                // Convert list to array for JTable
-                String[][] testCasesArray = testResults.toArray(new String[0][0]);
-                String[] columnNames = {"Test Case Name", "Result"};
-
-                // Create and display the test results in a JTable
-                javax.swing.JTable table = new javax.swing.JTable(testCasesArray, columnNames);
-                javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(table);
-                javax.swing.JFrame resultFrame = new javax.swing.JFrame("Test Results");
-                resultFrame.add(scrollPane);
-                resultFrame.setSize(400, 300);
-                resultFrame.setVisible(true);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                javax.swing.JOptionPane.showMessageDialog(null, "Error retrieving test results: " + e.getMessage());
-            }
-        }
-    }).start();
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void showtestcasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showtestcasesActionPerformed
+        // TODO add your handling code here:
+        TestcasesFrame object=new TestcasesFrame();
+        object.setVisible(true);
+    }//GEN-LAST:event_showtestcasesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -579,7 +548,6 @@ if (isPasswordVisible) {
     private javax.swing.JRadioButton adminradio;
     private javax.swing.JButton button;
     private javax.swing.JRadioButton customerradio;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -592,6 +560,7 @@ if (isPasswordVisible) {
     private javax.swing.JButton loginbutton;
     private javax.swing.JPasswordField passwordfield;
     private javax.swing.JButton resetpassword;
+    private javax.swing.JButton showtestcases;
     private javax.swing.JButton signupbutton;
     private javax.swing.JTextField usernamefield;
     // End of variables declaration//GEN-END:variables
