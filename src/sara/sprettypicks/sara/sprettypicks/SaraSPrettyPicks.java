@@ -9,6 +9,7 @@ package sara.sprettypicks;
  * @author sarars
  */
 public class SaraSPrettyPicks {
+    //we ot it back
     //APPLY A PROGRESS BAR GURING LOGIN 
     //remember to first update info then put anything in cart etc
     //work on showtestcases button
