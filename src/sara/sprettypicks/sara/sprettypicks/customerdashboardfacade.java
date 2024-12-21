@@ -381,7 +381,10 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        frequentlyaskedquestions.setText("faqs");
+        frequentlyaskedquestions.setBackground(new java.awt.Color(153, 204, 255));
+        frequentlyaskedquestions.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
+        frequentlyaskedquestions.setText("Faqs");
+        frequentlyaskedquestions.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         frequentlyaskedquestions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frequentlyaskedquestionsActionPerformed(evt);
@@ -400,9 +403,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cancelorder, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cancelorder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(deleteaccount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(vieworders, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                             .addComponent(createwishlist, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(browseproducts, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(viewcart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -425,8 +428,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(viewcart, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(frequentlyaskedquestions)
-                .addGap(18, 18, 18)
+                .addComponent(frequentlyaskedquestions, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(createwishlist, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,7 +447,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(286, Short.MAX_VALUE))
+                .addContainerGap(289, Short.MAX_VALUE))
         );
 
         notificationList.setBackground(new java.awt.Color(255, 204, 204));
@@ -484,7 +487,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 585, Short.MAX_VALUE)))
+                        .addGap(0, 589, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -577,7 +580,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1394,11 +1397,23 @@ accountDialog.setVisible(true);
     }//GEN-LAST:event_accountinfoActionPerformed
 
     private void frequentlyaskedquestionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequentlyaskedquestionsActionPerformed
-       
+   // Create an instance of FaqClient
     FaqClient ob = new FaqClient();
-       
+    
+    // Set the FAQ frame to be visible
     ob.getFaqFrame().setVisible(true);
-        
+    
+    // Set the FAQ frame close operation to DO_NOTHING_ON_CLOSE
+    ob.getFaqFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    
+    // Add a window listener to handle window closing event
+    ob.getFaqFrame().addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            // When the FAQ frame is closed, just hide it instead of closing it
+            ob.getFaqFrame().setVisible(false);
+        }
+    });
     
     }//GEN-LAST:event_frequentlyaskedquestionsActionPerformed
 

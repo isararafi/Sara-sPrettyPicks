@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.*;
 
 public class FaqClient {
+
     private JFrame faqFrame;
     private JTextArea faqDisplay;
     private JTextArea answerDisplay; // Declare the answer display JTextArea
@@ -15,57 +16,70 @@ public class FaqClient {
     private JTextField questionNumberField;
 
     public FaqClient() {
-        faqFrame = new JFrame("FAQ Client");
-        faqFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        faqFrame.setSize(500, 500); // Increase frame size to accommodate both FAQs and answers
+       faqFrame = new JFrame("FAQ Client");
+faqFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+faqFrame.setSize(600, 600); // Increase frame size to accommodate both FAQs and answers
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.setBackground(new Color(230, 230, 250)); // Light purple background for the main panel
+JPanel panel = new JPanel();
+panel.setLayout(new BorderLayout());
+panel.setBackground(new Color(230, 230, 250)); // Light purple background for the main panel
 
-        // Display area for FAQs
-        faqDisplay = new JTextArea();
-        faqDisplay.setEditable(false);
-        faqDisplay.setBackground(new Color(255, 255, 255)); // White background for the FAQs
-        faqDisplay.setFont(new Font("Arial", Font.PLAIN, 14));
-        JScrollPane faqScroll = new JScrollPane(faqDisplay);
-        faqScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(faqScroll, BorderLayout.CENTER); // Place FAQs display in the center
+// Display area for FAQs
+faqDisplay = new JTextArea();
+faqDisplay.setEditable(false); // FAQs are not editable
+faqDisplay.setBackground(new Color(230, 200, 255)); // Lighter purple background
+faqDisplay.setFont(new Font("Arial", Font.PLAIN, 14)); // Set font size and style for FAQs
+faqDisplay.setForeground(Color.BLACK); // Set the text color to black for visibility
 
-        // Display area for answers
-        answerDisplay = new JTextArea();
-        answerDisplay.setEditable(false);
-        answerDisplay.setBackground(new Color(255, 255, 240)); // Light yellow background for the answers
-        answerDisplay.setFont(new Font("Arial", Font.PLAIN, 14));
-        JScrollPane answerScroll = new JScrollPane(answerDisplay);
-        answerScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(answerScroll, BorderLayout.SOUTH); // Place answers display in the bottom
+// JScrollPane for FAQs to handle vertical scrolling
+JScrollPane faqScroll = new JScrollPane(faqDisplay);
+faqScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Border for scroll
 
-        // Panel for buttons and input field
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout()); // Using FlowLayout for alignment
-        buttonPanel.setBackground(new Color(230, 230, 250)); // Light purple background for the button panel
+// Create a panel for answers
+answerDisplay = new JTextArea();
+answerDisplay.setEditable(true); // Answers should be editable
+answerDisplay.setBackground(new Color(144, 238, 144)); // Light green background for answers
+answerDisplay.setFont(new Font("Arial", Font.BOLD, 14)); // Bold font for answers
 
-        getQuestionsButton = new JButton("Get Questions");
-        getQuestionsButton.setBackground(new Color(255, 165, 0)); // Orange background for the button
-        getQuestionsButton.setFont(new Font("Arial", Font.PLAIN, 14));
-        
-        getAnswerButton = new JButton("Get Answer");
-        getAnswerButton.setBackground(new Color(255, 165, 0)); // Orange background for the button
-        getAnswerButton.setFont(new Font("Arial", Font.PLAIN, 14));
-        
-        questionNumberField = new JTextField(5);
-        questionNumberField.setFont(new Font("Arial", Font.PLAIN, 14));
+// Enable line wrapping and word wrapping
+answerDisplay.setLineWrap(true);
+answerDisplay.setWrapStyleWord(true);
 
-        buttonPanel.add(getQuestionsButton);
-        buttonPanel.add(new JLabel("Enter Question Number:"));
-        buttonPanel.add(questionNumberField);
-        buttonPanel.add(getAnswerButton);
+// Set preferred size for answer display to avoid horizontal scroll
+answerDisplay.setPreferredSize(new Dimension(600, 200)); // Adjust the height for the answer area
+answerDisplay.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Border for the answer text area
 
-        panel.add(buttonPanel, BorderLayout.NORTH); // Place the buttons and input field at the top
+// Panel for FAQ and answers (combining them in a split pane)
+JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, faqScroll, new JScrollPane(answerDisplay));
+splitPane.setDividerLocation(300); // Set divider location to allow ample space for both FAQs and answers
 
-        faqFrame.add(panel);
-        faqFrame.setVisible(true);
+// Panel for buttons and input field
+JPanel buttonPanel = new JPanel();
+buttonPanel.setLayout(new FlowLayout()); // Using FlowLayout for button alignment
+buttonPanel.setBackground(new Color(230, 230, 250)); // Light purple background for the button panel
+
+getQuestionsButton = new JButton("Get Questions");
+getQuestionsButton.setBackground(new Color(255, 165, 0)); // Orange background for the button
+getQuestionsButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+getAnswerButton = new JButton("Get Answer");
+getAnswerButton.setBackground(new Color(255, 165, 0)); // Orange background for the button
+getAnswerButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+questionNumberField = new JTextField(5);
+questionNumberField.setFont(new Font("Arial", Font.PLAIN, 14));
+
+buttonPanel.add(getQuestionsButton);
+buttonPanel.add(new JLabel("Enter Question Number:"));
+buttonPanel.add(questionNumberField);
+buttonPanel.add(getAnswerButton);
+
+// Place the buttons and input field at the top
+panel.add(buttonPanel, BorderLayout.NORTH);
+panel.add(splitPane, BorderLayout.CENTER); // Place the split pane with FAQs and answers in the center
+
+faqFrame.add(panel);
+faqFrame.setVisible(true);
 
         // Set up the "Get Questions" button listener
         getQuestionsButton.addActionListener(e -> fetchQuestions());
@@ -73,9 +87,11 @@ public class FaqClient {
         // Set up the "Get Answer" button listener
         getAnswerButton.addActionListener(e -> fetchAnswer());
     }
-public JFrame getFaqFrame() {
+
+    public JFrame getFaqFrame() {
         return faqFrame;
     }
+
     // Fetches the list of questions from the server
     private void fetchQuestions() {
         new Thread(() -> {

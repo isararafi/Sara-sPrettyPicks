@@ -36,19 +36,34 @@ public class servermanager {
         ) {
             // FAQ data
             HashMap<Integer, String> faqs = new HashMap<>();
-            faqs.put(1, "What is this application?");
-            faqs.put(2, "How do I use this feature?");
-            faqs.put(3, "Who can I contact for support?");
-            faqs.put(4, "What is the refund policy?");
-            faqs.put(5, "How to reset my password?");
+            faqs.put(1, "What is 'Sara's Pretty Picks'?");
+faqs.put(2, "How do I browse products on 'Sara's Pretty Picks'?");
+faqs.put(3, "How can I track my order?");
+faqs.put(4, "What are the payment currency available?");
+faqs.put(5, "How do I return or exchange an item?");
+faqs.put(6, "How do I create an account on 'Sara's Pretty Picks'?");
+faqs.put(7, "What should I do if I forget my password?");
+faqs.put(8, "Is it safe to shop on 'Sara's Pretty Picks'?");
+faqs.put(9, "How do I apply a discount code?");
+faqs.put(10, "Can I cancel my order after it's placed?");
+faqs.put(11, "Do you offer gift cards?");
+faqs.put(12, "How do I contact customer support?");
 
             // Answers for each FAQ
             HashMap<Integer, String> answers = new HashMap<>();
-            answers.put(1, "This is a FAQ client-server application.");
-            answers.put(2, "You can ask questions, and the server will provide answers.");
-            answers.put(3, "You can contact support@example.com.");
-            answers.put(4, "Please refer to the refund policy page on our website.");
-            answers.put(5, "To reset your password, click on 'Forgot Password' on the login page.");
+              // Updated answers for 'Sara's Pretty Picks' FAQ questions
+answers.put(1, "Sara's Pretty Picks is an online shopping platform that offers a curated selection of trendy and cute items for women, including phone cases, skincare products, fairy lights, and hijabs.");
+answers.put(2, "You can browse products by category, such as Phone Cases, Skincare, Fairy Lights, and Hijabs. Simply click on the desired category to see the available products.");
+answers.put(3, "To track your order, log in to your account, go to 'Order History', and select the order you wish to track. You will find real-time tracking information there.");
+answers.put(4, "We accept payments via dollar,rupee,euro currency. We ensure that your payment information is processed securely.");
+answers.put(5, "If you'd like to return or exchange an item, visit the 'Returns & Exchanges' section on our website and follow the instructions for initiating a return request.");
+answers.put(6, "To create an account, click on the 'Sign Up' button on the homepage. Fill in your details, including your name, email, and password, and click 'Register'. You'll receive a confirmation email.");
+answers.put(7, "If you've forgotten your password, click on the 'Forgot Password' link on the login page. Enter your registered email address, and we'll send you a link to reset your password.");
+answers.put(8, "Yes, shopping on Sara's Pretty Picks is safe! We use encrypted payment methods and secure transaction processes to protect your personal and financial data.");
+answers.put(9, "To apply a discount code, enter the code during checkout in the 'Promo Code' box. The discount will be applied to your order total automatically.");
+answers.put(10, "Once an order is placed, it may not be cancellable. However, you can reach out to our customer support team within 24 hours, and we'll try our best to assist you with your request.");
+answers.put(11, "Yes, we offer gift cards! You can purchase them from our website and send them to loved ones as a perfect gift. Gift cards can be used for shopping on our platform.");
+answers.put(12, "You can contact customer support by emailing us at support@saraspick.com or by using the live chat option available on our website during business hours.");
 
             boolean continueCommunication = true;
             while (continueCommunication) {
