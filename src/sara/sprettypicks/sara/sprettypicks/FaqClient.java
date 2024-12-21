@@ -65,7 +65,7 @@ public class FaqClient {
         panel.add(buttonPanel, BorderLayout.NORTH); // Place the buttons and input field at the top
 
         faqFrame.add(panel);
-        faqFrame.setVisible(false);
+        faqFrame.setVisible(true);
 
         // Set up the "Get Questions" button listener
         getQuestionsButton.addActionListener(e -> fetchQuestions());

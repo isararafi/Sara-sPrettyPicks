@@ -1394,13 +1394,11 @@ accountDialog.setVisible(true);
     }//GEN-LAST:event_accountinfoActionPerformed
 
     private void frequentlyaskedquestionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequentlyaskedquestionsActionPerformed
-       // Create a new instance of FaqClient
-        System.out.println("button clicked");
+       
     FaqClient ob = new FaqClient();
-        System.out.println("buttonclicked3333");
-    // Get the faqFrame and set it visible
+       
     ob.getFaqFrame().setVisible(true);
-        System.out.println("buttonclicskder4444");
+        
     
     }//GEN-LAST:event_frequentlyaskedquestionsActionPerformed
 
