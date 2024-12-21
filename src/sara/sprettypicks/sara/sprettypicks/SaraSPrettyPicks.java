@@ -4,12 +4,17 @@
  */
 package sara.sprettypicks;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sarars
  */
 public class SaraSPrettyPicks {
-    //we ot it back
+    //fix faqs button
+    //we got it back
     //APPLY A PROGRESS BAR GURING LOGIN 
     //remember to first update info then put anything in cart etc
     //work on showtestcases button
@@ -31,9 +36,14 @@ public class SaraSPrettyPicks {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> {
-            new loginformfacade().setVisible(true); // Display the login form
-        });
-    }
+    
+// Start the server
+        servermanager serverManager = new servermanager();
+        serverManager.startServer();
+    // Then, run the login form on the EDT
+    java.awt.EventQueue.invokeLater(() -> {
+        new loginformfacade().setVisible(true); // Display the login form
+    });
+}
 
 }

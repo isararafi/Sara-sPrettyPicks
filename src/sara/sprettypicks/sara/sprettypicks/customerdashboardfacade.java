@@ -19,6 +19,11 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +61,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -90,6 +96,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         // Initialize components in the dashboard
         initComponents();
         setUserNameInTextField();
+        
+        // Start the server when the dashboard is created
+        
 //*****************************************************************************************
         // Inside the customer dashboard, you should have something like this:
 // DefaultListModel to hold the notifications
@@ -136,6 +145,52 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         notificationList.setModel(notificationListModel);
 
     }
+    
+    // Method to start the server
+    public  void startServer() {
+        new Thread(() -> {
+            try {
+                // Initialize the server socket
+                ServerSocket serverSocket = new ServerSocket(12345); // Use the same port as in the client
+                System.out.println("Server started on port 12345...");
+
+                // Accept incoming client connections
+                while (true) {
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("Client connected: " + clientSocket.getInetAddress());
+
+                    // Handle the client request in a separate thread (to avoid blocking the server)
+                    new Thread(() -> handleClient(clientSocket)).start();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error starting server: " + e.getMessage());
+            }
+        }).start(); // Start the server thread
+    }
+
+    // Method to handle client requests
+    private void handleClient(Socket clientSocket) {
+        try {
+            // Create input and output streams to communicate with the client
+            DataInputStream input = new DataInputStream(clientSocket.getInputStream());
+            DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
+
+            // Read data from the client and send a response
+            String message = input.readUTF();
+            System.out.println("Received from client: " + message);
+            output.writeUTF("Message received: " + message);
+
+            // Close the connection
+            input.close();
+            output.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error handling client: " + e.getMessage());
+        }
+    }
+    //////////////////////////////////////////////////////////////
 
     private void setUserNameInTextField() {
         String username = SessionManager.getLoggedInUserName(); // Assuming you have a method to get the logged-in username.
@@ -162,7 +217,6 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         browseproducts = new javax.swing.JButton();
         viewcart = new javax.swing.JButton();
-        faqs = new javax.swing.JButton();
         checkout = new javax.swing.JButton();
         createwishlist = new javax.swing.JButton();
         showwishlist = new javax.swing.JButton();
@@ -172,6 +226,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         cancelorder = new javax.swing.JButton();
         deleteaccount = new javax.swing.JButton();
         vieworders = new javax.swing.JButton();
+        frequentlyaskedquestions = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane6 = new javax.swing.JScrollPane();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -196,8 +251,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(153, 153, 255));
 
-        jPanel2.setBackground(new java.awt.Color(255, 102, 204));
+        jPanel2.setBackground(new java.awt.Color(255, 102, 255));
 
+        jLabel4.setBackground(new java.awt.Color(255, 51, 51));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("DASHBOARD");
 
@@ -232,16 +288,6 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         viewcart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewcartActionPerformed(evt);
-            }
-        });
-
-        faqs.setBackground(new java.awt.Color(153, 204, 255));
-        faqs.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        faqs.setText("FAQ's");
-        faqs.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        faqs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                faqsActionPerformed(evt);
             }
         });
 
@@ -335,6 +381,13 @@ public class customerdashboardfacade extends javax.swing.JFrame {
             }
         });
 
+        frequentlyaskedquestions.setText("faqs");
+        frequentlyaskedquestions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frequentlyaskedquestionsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -346,20 +399,19 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(54, 54, 54)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(createwishlist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(browseproducts, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                .addComponent(viewcart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(showwishlist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(findgift, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(reviews, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(faqs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(checkout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(cancelorder, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(deleteaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(vieworders, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(createwishlist, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(browseproducts, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(viewcart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(showwishlist, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(findgift, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(reviews, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(checkout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(frequentlyaskedquestions, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 51, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -373,8 +425,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(viewcart, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(faqs, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(frequentlyaskedquestions)
+                .addGap(18, 18, 18)
                 .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(createwishlist, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -532,26 +584,6 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void faqsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faqsActionPerformed
-        // Create a String to store all the FAQ questions and answers
-        String faqs = "Frequently Asked Questions (FAQs):\n\n"
-                + "1. How do I create an account?\n"
-                + "Answer: Click on the 'Sign Up' button and fill in your details.\n\n"
-                + "2. How can I reset my password?\n"
-                + "Answer: Click on 'Forgot Password' on the login page and follow the instructions.\n\n"
-                + "3. Can we cancel our Order?\n"
-                + "Answer: Yes you can cancel order within certain time limit.\n\n"
-                + "4. How do I track my order?\n"
-                + "Answer: After placing an order, you'll receive a tracking link via email.\n\n"
-                + "5. Can I return an item?\n"
-                + "Answer: Yes, returns are accepted within 30 days of purchase.\n\n"
-                + "6. How do I contact customer service?\n"
-                + "Answer: You can reach us at support@ourshop.com or call our helpline.\n";
-
-        // Display the FAQ list in a dialog box
-        JOptionPane.showMessageDialog(this, faqs, "FAQs", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_faqsActionPerformed
 
     private void viewcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcartActionPerformed
 
@@ -1361,6 +1393,17 @@ accountDialog.setVisible(true);
 
     }//GEN-LAST:event_accountinfoActionPerformed
 
+    private void frequentlyaskedquestionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequentlyaskedquestionsActionPerformed
+       // Create a new instance of FaqClient
+        System.out.println("button clicked");
+    FaqClient ob = new FaqClient();
+        System.out.println("buttonclicked3333");
+    // Get the faqFrame and set it visible
+    ob.getFaqFrame().setVisible(true);
+        System.out.println("buttonclicskder4444");
+    
+    }//GEN-LAST:event_frequentlyaskedquestionsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1412,8 +1455,8 @@ accountDialog.setVisible(true);
     private javax.swing.JButton createwishlist;
     private javax.swing.JLabel customer;
     private javax.swing.JButton deleteaccount;
-    private javax.swing.JButton faqs;
     private javax.swing.JButton findgift;
+    private javax.swing.JButton frequentlyaskedquestions;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
