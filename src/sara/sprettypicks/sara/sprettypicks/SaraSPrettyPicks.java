@@ -13,7 +13,8 @@ import java.util.logging.Logger;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-    
+    //work on testcase button closing
+    //work on browse product product frames
     //we got it back
    
     //remember to first update info then put anything in cart etc

@@ -270,18 +270,18 @@ InsertImageWithPath insertImage = new InsertImageWithPath();
 insertImage.insertProductImage(productId, name, category, description, price, quantity, imagePath);
 
 // Optionally, show a confirmation message
-JOptionPane.showMessageDialog(null, "Product added successfully!");
+//JOptionPane.showMessageDialog(null, "Product added successfully!");
 
-// Clear the text fields after the product is added successfully
-SwingUtilities.invokeLater(() -> {
-    productIdTextField.setText("");
-    nameTextField.setText("");
-    descriptionTextField.setText("");
-    categoryTextField.setText("");
-    priceTextField.setText("");
-    imagetextfield.setText("");
-    quantityTextField.setText("");
-});
+//// Clear the text fields after the product is added successfully
+//SwingUtilities.invokeLater(() -> {
+//    productIdTextField.setText("");
+//    nameTextField.setText("");
+//    descriptionTextField.setText("");
+//    categoryTextField.setText("");
+//    priceTextField.setText("");
+//    imagetextfield.setText("");
+//    quantityTextField.setText("");
+//});
 
 
     }//GEN-LAST:event_addproductActionPerformed

@@ -605,7 +605,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
     // Set background panel with custom styling
     JPanel contentPanel = new JPanel();
-    contentPanel.setBackground(new Color(30, 144, 255)); // Set background color (Dodger Blue)
+   contentPanel.setBackground(new Color(70, 130, 180)); // Set background color (Steel Blue)
+
     contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add a black border
 
     // Add a label with custom font and color
