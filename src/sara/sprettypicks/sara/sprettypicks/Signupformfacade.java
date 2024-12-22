@@ -5,10 +5,15 @@
 package sara.sprettypicks;
 
 import java.awt.Image;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.util.concurrent.ExecutorService;
+import javax.swing.JDialog;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import java.util.concurrent.Executors;
 
 
@@ -562,52 +567,98 @@ if (!validFirstName || !validLastName || !validUsername || !validEmail || !valid
     return;
 }
 
-ExecutorService executor = Executors.newFixedThreadPool(5); // Creates a thread pool with 5 threads
-JOptionPane.showMessageDialog(null, "Processing your request. Please wait...", "Processing", JOptionPane.INFORMATION_MESSAGE);
+// Create and show the progress bar dialog
+JDialog progressDialog = new JDialog(this, "Processing Signup", true);
+JProgressBar progressBar = new JProgressBar(0, 100);
+progressBar.setStringPainted(true);
+progressDialog.add(progressBar);
+progressDialog.setSize(300, 100);
+progressDialog.setLocationRelativeTo(this);
 
-// Proceed with multi-threaded database operations
-executor.submit(() -> {
-    try {
-        boolean signupSuccess;
+// Create the SwingWorker for signup logic
+SwingWorker<Void, Integer> signupWorker = new SwingWorker<Void, Integer>() {
+    private boolean signupSuccess = false; // Flag to track signup success
+
+    @Override
+    protected Void doInBackground() throws Exception {
+        // Simulate progress updates
+        publish(20); // Update to 20%
+        Thread.sleep(500); // Simulating delay
+
         if (role.equals("admin")) {
-            signupSuccess = db.signupAdmin(email, password, firstName, username);
+            publish(50); // Update to 50%
+            signupSuccess = db.signupAdmin(email, password, firstName, username); // signup logic
         } else {
-            signupSuccess = db.signupCustomer(firstName, lastName, username, email, password);
+            publish(50); // Update to 50%
+            signupSuccess = db.signupCustomer(firstName, lastName, username, email, password); // signup logic
         }
 
-        SwingUtilities.invokeLater(() -> {
-            if (signupSuccess) {
-                JOptionPane.showMessageDialog(null, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        publish(80); // Update to 80%
+        Thread.sleep(500); // Simulating delay
 
-                // Clear the text fields after successful signup
-                firstnametext.setText("");
-                lastnametext.setText("");
-                usernametext.setText("");
-                emailtext.setText("");
-                passwordtext.setText("");
-                confirmpassword.setText("");
-
-                // Update labels to indicate successful signup
-                firstnamelabel.setText("<html><b style='color:green;'>First Name: Correct!</b></html>");
-                lastnamelabel.setText("<html><b style='color:green;'>Last Name: Correct!</b></html>");
-                usernamelabel.setText("<html><b style='color:green;'>Username: Correct!</b></html>");
-                emaillabel.setText("<html><b style='color:green;'>Email: Correct!</b></html>");
-                passwordlabel.setText("<html><b style='color:green;'>Password: Correct!</b></html>");
-                confirmpasswordlabel.setText("<html><b style='color:green;'>Confirm Password: Correct!</b></html>");
-
-                // Navigate to login form
-                loginformfacade ob = new loginformfacade();
-                ob.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-    } catch (Exception e) {
-        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
+        publish(100); // Complete progress
+        return null;
     }
-});
 
-    
+    @Override
+    protected void process(List<Integer> chunks) {
+        // Update progress bar
+        for (int progress : chunks) {
+            progressBar.setValue(progress);
+        }
+    }
+
+    @Override
+    protected void done() {
+        try {
+            // SwingUtilities.invokeLater to ensure UI updates happen on the Event Dispatch Thread (EDT)
+            SwingUtilities.invokeLater(() -> {
+                progressDialog.dispose(); // Close the progress dialog
+                
+                if (signupSuccess) {
+                    // Show success message and clear fields
+                    JOptionPane.showMessageDialog(null, "Signup successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    clearFormFields(); // Helper method to clear form fields
+                    updateLabelsSuccess(); // Helper method to update labels on success
+
+                    // Navigate to login form
+                    new loginformfacade().setVisible(true);
+                } else {
+                    // Show failure message
+                    JOptionPane.showMessageDialog(null, "Signup failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        } catch (Exception e) {
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                progressDialog.dispose(); // Close progress dialog on error
+            });
+        }
+    }
+};
+
+// Show the progress dialog and start the worker thread
+SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
+signupWorker.execute();
+    }
+// Helper method to clear form fields
+private void clearFormFields() {
+    firstnametext.setText("");
+    lastnametext.setText("");
+    usernametext.setText("");
+    emailtext.setText("");
+    passwordtext.setText("");
+    confirmpassword.setText("");
+}
+
+// Helper method to update labels to indicate success
+private void updateLabelsSuccess() {
+    firstnamelabel.setText("<html><b style='color:green;'>First Name: Correct!</b></html>");
+    lastnamelabel.setText("<html><b style='color:green;'>Last Name: Correct!</b></html>");
+    usernamelabel.setText("<html><b style='color:green;'>Username: Correct!</b></html>");
+    emaillabel.setText("<html><b style='color:green;'>Email: Correct!</b></html>");
+    passwordlabel.setText("<html><b style='color:green;'>Password: Correct!</b></html>");
+    confirmpasswordlabel.setText("<html><b style='color:green;'>Confirm Password: Correct!</b></html>");
 
     }//GEN-LAST:event_signupActionPerformed
 

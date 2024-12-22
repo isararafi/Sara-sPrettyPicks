@@ -13,11 +13,11 @@ import java.util.logging.Logger;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-    //fix faqs button
+    
     //we got it back
-    //APPLY A PROGRESS BAR GURING LOGIN 
+   
     //remember to first update info then put anything in cart etc
-    //work on showtestcases button
+   
 //SwingWorker is used for threading in GUI-based Java programs to keep the UI responsive.
     //admin 1,2,3,4 button done
     //applied singleton and observer
