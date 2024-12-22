@@ -533,8 +533,13 @@ if (isPasswordVisible) {
 
     private void showtestcasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showtestcasesActionPerformed
         // TODO add your handling code here:
-        TestcasesFrame object=new TestcasesFrame();
-        object.setVisible(true);
+       TestcasesFrame object = new TestcasesFrame();
+
+    // Set the default close operation to dispose the frame
+    object.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+    // Make the TestcasesFrame visible
+    object.setVisible(true);
     }//GEN-LAST:event_showtestcasesActionPerformed
 
     /**

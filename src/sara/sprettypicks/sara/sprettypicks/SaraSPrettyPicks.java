@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  */
 public class SaraSPrettyPicks {
     //work on testcase button closing
+    //work on reviews
     //we got it back
    
     //remember to first update info then put anything in cart etc
