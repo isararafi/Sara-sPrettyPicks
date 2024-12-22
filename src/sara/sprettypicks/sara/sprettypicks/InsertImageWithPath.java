@@ -4,6 +4,8 @@ import java.sql.*;
 import java.io.*;
 import javax.swing.*; // For ImageIcon and JFrame
 import java.awt.*;    // For Dimension
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sara.sprettypicks.Database;
@@ -194,7 +196,7 @@ public static JFrame createSearchableProductDisplay() {
     JLabel cartIcon = new JLabel(scaledCartIcon);
 
     // Create a label for the cart count (number of items in cart)
-    JLabel cartLabel = new JLabel("0 items"); // Default text (0 items)
+    //JLabel cartLabel = new JLabel("0 items"); // Default text (0 items)
     cartLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
     // Add both the cart icon and cart label to the cart panel side by side
@@ -389,6 +391,8 @@ public static JFrame createSearchableProductDisplay() {
         e.printStackTrace();
     }
 }
+
+
 
 //   public static void displayAllProducts() {
 //       
@@ -648,6 +652,7 @@ public static JFrame createSearchableProductDisplay() {
                         }
                     }
                 });
+                
 
                 // Add buttons to the button panel
                 buttonPanel.add(decreaseButton);

@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import static sara.sprettypicks.InsertImageWithPath.cartLabel;
+import static sara.sprettypicks.InsertImageWithPath.updateCartItemCount;
 
 public class showcartitems {
 List<CartItem> cartItems;
@@ -95,6 +97,8 @@ List<CartItem> cartItems;
                                         int productIdToRemove = cartItems.get(itemNumberToClear - 1).getProductId(); // Adjusted to get product ID directly from CartItem
                                         db.removeItemFromCart(username, productIdToRemove); // Remove the item
                                         JOptionPane.showMessageDialog(null, "Item removed successfully.");
+                                        ///////////////////////newwww
+                                         updateCartItemCount(cartLabel);
                                     } else {
                                         JOptionPane.showMessageDialog(null, "Invalid item number.");
                                     }
@@ -106,6 +110,8 @@ List<CartItem> cartItems;
                             // Clear entire cart
                             db.clearCart(username); // Clears the entire cart for this user
                             JOptionPane.showMessageDialog(null, "Cart cleared successfully.");
+                            ////////////////////newwww
+                             updateCartItemCount(cartLabel);
                         } else {
                             JOptionPane.showMessageDialog(null, "Invalid option.");
                         }
