@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -353,104 +355,109 @@ this.dispose();
     }//GEN-LAST:event_signupbuttonActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
-//SwingWorker is used for threading in GUI-based Java programs to keep the UI responsive.
-    // Get username and password from fields
-    String username = usernamefield.getText();
-    String password = new String(passwordfield.getPassword());
+ String username = usernamefield.getText();
+String password = new String(passwordfield.getPassword());
 
-    // Validate input fields
-    if (username.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please enter both username and password.");
-        return;
-    }
+if (username.isEmpty() || password.isEmpty()) {
+    JOptionPane.showMessageDialog(null, "Please enter both username and password.");
+    return;
+}
 
-    // Validate radio button selection
-    if (customerradio.isSelected() && adminradio.isSelected()) {
-        JOptionPane.showMessageDialog(this, "Please select only one user type.");
-        return;
-    }
-    if (!customerradio.isSelected() && !adminradio.isSelected()) {
-        JOptionPane.showMessageDialog(this, "Please select a user type.");
-        return;
-    }
+if (customerradio.isSelected() && adminradio.isSelected()) {
+    JOptionPane.showMessageDialog(this, "Please select only one user type.");
+    return;
+}
+if (!customerradio.isSelected() && !adminradio.isSelected()) {
+    JOptionPane.showMessageDialog(this, "Please select a user type.");
+    return;
+}
 
-    // Show a loading message while processing
-    JOptionPane.showMessageDialog(this, "Processing login, please wait...");
+// Create and show the progress bar dialog
+JDialog progressDialog = new JDialog(this, "Processing Login", true);
+JProgressBar progressBar = new JProgressBar(0, 100);
+progressBar.setStringPainted(true);
+progressDialog.add(progressBar);
+progressDialog.setSize(300, 100);
+progressDialog.setLocationRelativeTo(this);
 
-     //Run the login logic in a separate thread using SwingWorker
-    //The doInBackground() method runs on a separate thread,
-   //ensuring that time-consuming operations like database queries do not block the UI.
-  //SwingWorker is a class in the Java Swing framework that helps you perform background tasks in a Swing-based graphical user interface (GUI) application without freezing the user interface (UI). It allows long-running tasks (such as network requests, database queries, or complex calculations) to run in the background while keeping the UI responsive, meaning the user can still interact with the application during the task.
+// Create the SwingWorker for login logic
+SwingWorker<Void, Integer> loginWorker = new SwingWorker<Void, Integer>() {
+    @Override
+    protected Void doInBackground() throws Exception {
+        Database db = Database.getInstance();
 
-    SwingWorker<Void, Void> loginWorker = new SwingWorker<Void, Void>() {
-        @Override
-        protected Void doInBackground() throws Exception {
-            Database db = Database.getInstance(); // Singleton pattern
+        // Simulate progress updates gradually
+        for (int i = 0; i <= 100; i++) {
+            Thread.sleep(50); // Delay for smooth progress
+            publish(i); // Update progress
 
-            // Determine user type and validate login
-            if (customerradio.isSelected()) {
-                // Check login credentials for a customer
-                boolean isLoginSuccessful = db.checkCustomerLogin(username, password);
-                if (isLoginSuccessful) {
-                    String email = db.getEmailByUsername(username); // Fetch email for the customer
-                    if (email != null) {
-                        // Store session details
-                        SessionManager.setLoggedInUserEmail(email);
-                        SessionManager.setLoggedInUserName(username);
+            // Show messages at key points
+            if (i == 20) {
+                JOptionPane.showMessageDialog(null, "Checking credentials...");
+            } else if (i == 50) {
+                JOptionPane.showMessageDialog(null, "Verifying user type...");
+            } else if (i == 80) {
+                JOptionPane.showMessageDialog(null, "Finalizing login...");
+            }
+        }
 
-                        // Navigate to the customer dashboard
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Login successful! Redirecting to the Customer Dashboard...");
-                            customerdashboardfacade customerDashboard = new customerdashboardfacade(username);
-                            customerDashboard.setVisible(true);
-                            dispose(); // Close the login frame
-                        });
-                    } else {
-                        SwingUtilities.invokeLater(() ->
-                            JOptionPane.showMessageDialog(null, "Error retrieving email. Please contact support.")
-                        );
-                    }
-                } else {
-                    SwingUtilities.invokeLater(() ->
-                        JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.")
-                    );
-                }
-            } else if (adminradio.isSelected()) {
-                // Check login credentials for an admin
-                boolean isLoginSuccessful = db.checkAdminLogin(username, password);
-                if (isLoginSuccessful) {
-                    // Set the logged-in admin's username in the session
+        // Perform login check
+        if (customerradio.isSelected()) {
+            boolean isLoginSuccessful = db.checkCustomerLogin(username, password);
+            if (isLoginSuccessful) {
+                String email = db.getEmailByUsername(username);
+                if (email != null) {
+                    SessionManager.setLoggedInUserEmail(email);
                     SessionManager.setLoggedInUserName(username);
-
-                    // Open the admin dashboard
+                    publish(100); // Complete progress
                     SwingUtilities.invokeLater(() -> {
-                        JOptionPane.showMessageDialog(null, "Login successful! Redirecting to the Admin Dashboard...");
-                        Admindashboardfacade adminDashboard = new Admindashboardfacade();
-                        adminDashboard.setVisible(true);
-                        dispose(); // Close the login frame
+                        JOptionPane.showMessageDialog(null, "Redirecting to the Customer Dashboard...");
+                        customerdashboardfacade customerDashboard = new customerdashboardfacade(username);
+                        customerDashboard.setVisible(true);
+                        dispose();
                     });
                 } else {
-                    SwingUtilities.invokeLater(() ->
-                        JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again.")
-                    );
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error retrieving email. Please contact support."));
                 }
+            } else {
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again."));
             }
-            return null;
+        } else if (adminradio.isSelected()) {
+            boolean isLoginSuccessful = db.checkAdminLogin(username, password);
+            if (isLoginSuccessful) {
+                SessionManager.setLoggedInUserName(username);
+                publish(100); // Complete progress
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "Redirecting to the Admin Dashboard...");
+                    Admindashboardfacade adminDashboard = new Admindashboardfacade();
+                    adminDashboard.setVisible(true);
+                    dispose();
+                });
+            } else {
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Username or password is incorrect. Please try again."));
+            }
         }
 
-        @Override
-        protected void done() {
-            SwingUtilities.invokeLater(() -> {
-           // JOptionPane.showMessageDialog(null, "Processing complete.");
-        });
-            // This is called when the background task finishes
-            // Optionally, you could hide the loading message here
+        return null;
+    }
+
+    @Override
+    protected void process(List<Integer> chunks) {
+        // Update progress bar
+        for (int progress : chunks) {
+            progressBar.setValue(progress);
         }
-    };
+    }
 
-    // Start the worker thread
-    loginWorker.execute();
+    @Override
+    protected void done() {
+        progressDialog.dispose(); // Close the progress dialog
+    }
+};
 
+// Show the progress dialog and start the worker thread
+SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
+loginWorker.execute();
 
     }//GEN-LAST:event_loginbuttonActionPerformed
 
