@@ -1,6 +1,7 @@
 package sara.sprettypicks;
 
 import java.sql.*;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 
@@ -172,13 +173,19 @@ public class reviews extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    // Ensure radio buttons belong to the same ButtonGroup
+    ButtonGroup experienceGroup = new ButtonGroup();
+    experienceGroup.add(satisfied);
+    experienceGroup.add(best);
+    experienceGroup.add(good);
+    experienceGroup.add(bad);
+
     // Get the selected product name from the combo box
     String selectedProduct = (String) listofproducts.getSelectedItem();
     System.out.println("Selected product before submission: " + selectedProduct);
 
-    // Debugging: Check if a product is selected
-    if (selectedProduct == null) {
-        System.out.println("No product selected!");
+    // Check if a product is selected
+    if (selectedProduct == null || selectedProduct.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Please select a product before submitting a review.");
         return; // Exit if no product is selected
     } else {
@@ -186,7 +193,7 @@ public class reviews extends javax.swing.JFrame {
     }
 
     // Get the review text from the text area
-    String reviewText = reviewTextArea.getText();
+    String reviewText = reviewTextArea.getText().trim();
 
     // Ensure that the review text is not empty
     if (reviewText.isEmpty()) {
@@ -210,9 +217,11 @@ public class reviews extends javax.swing.JFrame {
     if (selectedExperience == null) {
         JOptionPane.showMessageDialog(null, "Please select your experience.");
         return; // Exit if no experience is selected
+    } else {
+        System.out.println("Selected experience: " + selectedExperience);
     }
 
-    // Create an instance of SessionManager to get the logged-in user's name
+    // Retrieve the logged-in user's name
     String customerName = SessionManager.getLoggedInUserName();
 
     // Check if customerName is not null or empty
@@ -225,7 +234,7 @@ public class reviews extends javax.swing.JFrame {
     ComboBoxRetriveProduct productRetriever = new ComboBoxRetriveProduct();
 
     // Get the product ID from the selected product name
-    int selectedProductId = productRetriever.getProductIdFromSelectedItem(selectedProduct); // Get product ID as int
+    int selectedProductId = productRetriever.getProductIdFromSelectedItem(selectedProduct);
 
     // Check if selectedProductId is valid (not -1)
     if (selectedProductId == -1) {
