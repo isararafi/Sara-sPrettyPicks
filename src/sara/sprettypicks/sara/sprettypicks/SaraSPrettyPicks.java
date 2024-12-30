@@ -16,7 +16,6 @@ public class SaraSPrettyPicks {
   
     
    //we got it back
-   //work on test case suite
     //remember to first update info then put anything in cart etc
    
 //SwingWorker is used for threading in GUI-based Java programs to keep the UI responsive.
