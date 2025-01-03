@@ -1238,6 +1238,32 @@ public String[][] fetchTestCasesFromDatabase() {
     // Return the populated array of test cases
     return testCases;
 }
+public boolean updateProductInDatabase(int productId, double productPrice, int productQuantity) {
+    // Validate inputs
+    if (productId <= 0) { // Check for invalid product ID (e.g., 0 or negative)
+        return false; // Invalid product ID
+    }
+
+    String updateQuery = "UPDATE products SET price = ?, quantity = ? WHERE product_id = ?";
+    Database db = Database.getInstance();
+
+    try (Connection connection = db.connect(); 
+         PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+
+        // Set query parameters
+        stmt.setDouble(1, productPrice);
+        stmt.setInt(2, productQuantity);
+        stmt.setInt(3, productId); // Using setInt instead of setString for productId
+
+        // Execute the update
+        int rowsUpdated = stmt.executeUpdate();
+        return rowsUpdated > 0; // Return true if at least one row was updated
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; // Return false in case of an error
+    }
+}
 
 
 }

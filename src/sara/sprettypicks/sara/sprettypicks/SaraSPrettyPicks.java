@@ -13,11 +13,11 @@ import java.util.logging.Logger;
  * @author sarars
  */
 public class SaraSPrettyPicks {
+    //create testcases and multi threading 
    //we got it back
     //remember to first update info then put anything in cart etc
    
 //SwingWorker is used for threading in GUI-based Java programs to keep the UI responsive.
-    //admin 1,2,3,4 button done
     //applied singleton and observer
     //****************************************************************************
     /* Subject (Observable): The Admin acts as the subject, responsible for sending notifications. When the admin triggers a notification, the system notifies all registered observers (customers).

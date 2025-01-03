@@ -142,52 +142,102 @@ public class updateproductinfo extends javax.swing.JFrame {
     }//GEN-LAST:event_product_quantityActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        // TODO add your handling code here:
-         // Get input values
-    String productId = product_id.getText().trim();
-    String productPriceStr = product_price.getText().trim();
-    String productQuantityStr = product_quantity.getText().trim();
+//        // TODO add your handling code here:
+//         // Get input values
+//    String productId = product_id.getText().trim();
+//    String productPriceStr = product_price.getText().trim();
+//    String productQuantityStr = product_quantity.getText().trim();
+//
+//    // Validate inputs
+//    if (productId.isEmpty() || productPriceStr.isEmpty() || productQuantityStr.isEmpty()) {
+//        JOptionPane.showMessageDialog(this, "Please fill all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+//        return;
+//    }
+//
+//    double productPrice;
+//    int productQuantity;
+//
+//    try {
+//        productPrice = Double.parseDouble(productPriceStr);
+//        productQuantity = Integer.parseInt(productQuantityStr);
+//    } catch (NumberFormatException e) {
+//        JOptionPane.showMessageDialog(this, "Invalid price or quantity. Please enter valid numbers!", "Error", JOptionPane.ERROR_MESSAGE);
+//        return;
+//    }
+//
+//    // Update product in database
+//    String updateQuery = "UPDATE products SET price = ?, quantity = ? WHERE product_id = ?";
+//Database db=Database.getInstance();
+//    try (Connection connection = db.connect(); 
+//         PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+//
+//        // Set query parameters
+//        stmt.setDouble(1, productPrice);
+//        stmt.setInt(2, productQuantity);
+//        stmt.setString(3, productId);
+//
+//        // Execute the update
+//        int rowsUpdated = stmt.executeUpdate();
+//
+//        if (rowsUpdated > 0) {
+//            JOptionPane.showMessageDialog(this, "Product updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+//        } else {
+//            JOptionPane.showMessageDialog(this, "No product found with the provided Product ID!", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//        JOptionPane.showMessageDialog(this, "An error occurred while updating the product.", "Error", JOptionPane.ERROR_MESSAGE);
+//    }
 
-    // Validate inputs
-    if (productId.isEmpty() || productPriceStr.isEmpty() || productQuantityStr.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please fill all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+
+  // Get input values
+    // Get input values
+String productIdStr = product_id.getText().trim();
+String productPriceStr = product_price.getText().trim();
+String productQuantityStr = product_quantity.getText().trim();
+
+// Validate inputs
+if (productIdStr.isEmpty() || productPriceStr.isEmpty() || productQuantityStr.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Please fill all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+double productPrice;
+int productQuantity;
+int productId;
+
+// Try to parse the productId as an integer
+try {
+    productId = Integer.parseInt(productIdStr); // Parsing productId as an integer
+    if (productId <= 0) {
+        JOptionPane.showMessageDialog(this, "Invalid Product ID. Please enter a valid positive number!", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Invalid Product ID. Please enter a valid number!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
-    double productPrice;
-    int productQuantity;
+try {
+    // Parsing product price and quantity
+    productPrice = Double.parseDouble(productPriceStr);
+    productQuantity = Integer.parseInt(productQuantityStr);
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Invalid price or quantity. Please enter valid numbers!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
-    try {
-        productPrice = Double.parseDouble(productPriceStr);
-        productQuantity = Integer.parseInt(productQuantityStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Invalid price or quantity. Please enter valid numbers!", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+// Update product in the database
+Database db = Database.getInstance();
+boolean result = db.updateProductInDatabase(productId, productPrice, productQuantity);
 
-    // Update product in database
-    String updateQuery = "UPDATE products SET price = ?, quantity = ? WHERE product_id = ?";
-Database db=Database.getInstance();
-    try (Connection connection = db.connect(); 
-         PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+if (result) {
+    JOptionPane.showMessageDialog(this, "Product updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+} else {
+    JOptionPane.showMessageDialog(this, "Update failed. Please check the Product ID or try again!", "Error", JOptionPane.ERROR_MESSAGE);
+}
 
-        // Set query parameters
-        stmt.setDouble(1, productPrice);
-        stmt.setInt(2, productQuantity);
-        stmt.setString(3, productId);
 
-        // Execute the update
-        int rowsUpdated = stmt.executeUpdate();
-
-        if (rowsUpdated > 0) {
-            JOptionPane.showMessageDialog(this, "Product updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "No product found with the provided Product ID!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "An error occurred while updating the product.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_updateActionPerformed
 
     /**

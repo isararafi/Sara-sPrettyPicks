@@ -44,32 +44,49 @@ public class SignUpClassTesting {
     
     
      @Test
- public void testValidUsernameAndPassword() throws Exception {
-    // Assume valid credentials in the database
+public void testValidUsernameAndPassword() throws Exception {
+    // Arrange: Assume valid credentials in the database
+    String username = "zara_123";
+    String password = "Zara_12345678";
     Database db = Database.getInstance();
 
-    // Call the method with valid username and password
-    boolean result = db.checkCustomerLogin("zara_123", "Zara_12345678");
-        
+    // Act: Call the method with valid username and password
+    boolean result = db.checkCustomerLogin(username, password);
 
-    // Assert the result is true since the user exists
-  assertTrue( "The method should return true for valid credentials.",result);
-  System.out.println("User exist.");
+    // Assert: Store the test result in the database
+    if (result) {
+        db.storeTestResult("testValidUsernameAndPassword", "PASS");
+    } else {
+        db.storeTestResult("testValidUsernameAndPassword", "FAIL");
+    }
+
+    // Assert that the result is true since the user exists
+    assertTrue("The method should return true for valid credentials.", result);
+    System.out.println("User exists.");
 }
+
  @Test
 public void testValidAdminUsernameAndPassword() throws Exception {
-    // Assume valid credentials for an admin user exist in the database
+    // Arrange: Assume valid credentials for an admin user exist in the database
+    String username = "Sara_123";
+    String password = "Sara!12345678";
     Database db = Database.getInstance();
 
-    // Call the method with valid username and password
-    boolean result = db.checkAdminLogin("Sara_123", "Sara!12345678");
+    // Act: Call the method with valid username and password
+    boolean result = db.checkAdminLogin(username, password);
+
+    // Assert: Store the test result in the database
+    if (result) {
+        db.storeTestResult("testValidAdminUsernameAndPassword", "PASS");
+    } else {
+        db.storeTestResult("testValidAdminUsernameAndPassword", "FAIL");
+    }
 
     // Assert the result is true since the admin credentials are correct
-    assertTrue( "The method should return true for valid admin credentials.",result);
-     System.out.println("Admin Exist");
+    assertTrue("The method should return true for valid admin credentials.", result);
+    System.out.println("Admin exists.");
 }
 
-    
     //*******************SIGNUP TESTCASES*************
   
 

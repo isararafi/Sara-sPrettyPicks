@@ -23,7 +23,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     DatabaseTest.class,
     Loginclasstest.class,
-    SignUpClassTesting.class
+    SignUpClassTesting.class,
+        updateproductinfoTest.class 
 })
 public class AllTestsSuite {
 //    
