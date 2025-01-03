@@ -10,6 +10,9 @@ import sara.sprettypicks.Database;
 import sara.sprettypicks.SessionManager;
 import sara.sprettypicks.orders;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class surprisecheckout {
     static Database db = Database.getInstance();
@@ -141,39 +144,79 @@ public class surprisecheckout {
         return discountAmount;
     }
 
-    public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
-        String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
+   public void handlePayment(double totalBill, Database db, String userName) throws SQLException {
+    String paymentInput = JOptionPane.showInputDialog("Enter the amount to pay:\nTotal Amount: $" + String.format("%.2f", totalBill));
 
-        if (paymentInput == null || paymentInput.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Payment is required!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    if (paymentInput == null || paymentInput.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Payment is required!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        double paymentAmount;
-        try {
-            paymentAmount = Double.parseDouble(paymentInput);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid payment amount entered!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    double paymentAmount;
+    try {
+        paymentAmount = Double.parseDouble(paymentInput);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Invalid payment amount entered!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        if (paymentAmount >= totalBill) {
-            double change = paymentAmount - totalBill;
-            boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
+    if (paymentAmount >= totalBill) {
+        double change = paymentAmount - totalBill;
+        boolean paymentSaved = db.savePayment(userName, totalBill, paymentAmount);
 
-            if (paymentSaved) {
-                String message = "Payment successful!";
+        if (paymentSaved) {
+            // Update order status in the database
+            boolean statusUpdated = updateOrderStatusToCompleted(db, userName);
+
+            if (statusUpdated) {
+                String message = "Payment successful and order status updated to 'Completed'!";
                 if (change > 0) {
                     message += " Your change is: $" + String.format("%.2f", change);
                 }
                 JOptionPane.showMessageDialog(null, message, "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Failed to save payment details. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Payment saved, but failed to update order status. Please check.", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Payment unsuccessful! The amount is less than the total bill. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Failed to save payment details. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Payment unsuccessful! The amount is less than the total bill. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+private boolean updateOrderStatusToCompleted(Database db, String userName) {
+    PreparedStatement stmt = null;
+    try {
+        // Establish a database connection
+        Connection connection = db.connect();
+
+        // SQL query to update order_status for the user's pending orders
+        String updateQuery = "UPDATE orders SET order_status = 'Completed' WHERE user_name = ? AND order_status = 'Pending'";
+        stmt = connection.prepareStatement(updateQuery);
+        stmt.setString(1, userName);
+
+        int rowsUpdated = stmt.executeUpdate();
+
+        // If rows were updated, return true
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    } finally {
+        // Ensure resources are closed properly
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+}
+
+
+
 
     static void clearDiscount() {
         surpriseDiscount = 0;
