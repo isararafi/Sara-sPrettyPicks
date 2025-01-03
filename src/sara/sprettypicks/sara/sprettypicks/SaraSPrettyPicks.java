@@ -13,8 +13,6 @@ import java.util.logging.Logger;
  * @author sarars
  */
 public class SaraSPrettyPicks {
-  
-    
    //we got it back
     //remember to first update info then put anything in cart etc
    
