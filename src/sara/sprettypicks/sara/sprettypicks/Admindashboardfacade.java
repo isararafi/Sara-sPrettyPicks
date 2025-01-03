@@ -53,7 +53,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         deleteproducts = new javax.swing.JButton();
         showproducts = new javax.swing.JButton();
         viewcustomer = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        deletecustomers = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -71,6 +71,8 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         searchfield = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        review_table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,9 +116,23 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Delete Customers");
+        deletecustomers.setBackground(new java.awt.Color(153, 255, 102));
+        deletecustomers.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
+        deletecustomers.setText("Delete Customers");
+        deletecustomers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletecustomersActionPerformed(evt);
+            }
+        });
 
+        jButton7.setBackground(new java.awt.Color(153, 255, 102));
+        jButton7.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
         jButton7.setText("Show Reviews");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("View Purchasing");
 
@@ -127,7 +143,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                    .addComponent(deletecustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                     .addComponent(deleteproducts, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewcustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -148,7 +164,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(viewcustomer)
                 .addGap(28, 28, 28)
-                .addComponent(jButton6)
+                .addComponent(deletecustomers)
                 .addGap(34, 34, 34)
                 .addComponent(jButton7)
                 .addGap(30, 30, 30)
@@ -248,6 +264,26 @@ public class Admindashboardfacade extends javax.swing.JFrame {
             }
         });
 
+        review_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "review_id", "product_id", "c_username", "review", "experiance"
+            }
+        ));
+        jScrollPane4.setViewportView(review_table);
+        if (review_table.getColumnModel().getColumnCount() > 0) {
+            review_table.getColumnModel().getColumn(0).setPreferredWidth(3);
+            review_table.getColumnModel().getColumn(1).setPreferredWidth(3);
+            review_table.getColumnModel().getColumn(2).setPreferredWidth(5);
+            review_table.getColumnModel().getColumn(3).setPreferredWidth(19);
+            review_table.getColumnModel().getColumn(4).setPreferredWidth(5);
+        }
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -275,7 +311,8 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(jLabel2)))))
+                                .addComponent(jLabel2))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 231, Short.MAX_VALUE))
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -304,7 +341,9 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(67, 67, 67)
-                                .addComponent(jButton2))))
+                                .addComponent(jButton2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -601,6 +640,101 @@ if (message != null && !message.isEmpty()) {
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void deletecustomersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletecustomersActionPerformed
+        // TODO add your handling code here:
+         try {
+        // Step 1: Check if a row is selected in the customer table
+        int selectedRow = customer_table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a customer to delete.");
+            return;
+        }
+
+        // Step 2: Fetch the customer ID of the selected row
+        String customerId = customer_table.getValueAt(selectedRow, 0).toString(); // Assuming customer_id is in the first column
+
+        // Step 3: Confirm deletion
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete this customer?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION
+        );
+        if (confirm != JOptionPane.YES_OPTION) {
+            return; // User canceled the deletion
+        }
+Database db=Database.getInstance();
+        // Step 4: Delete the customer from the database
+        Connection conn = db.connect(); // Adjust this to your DB connection method
+        String deleteQuery = "DELETE FROM customers WHERE cuser_name = ?";
+        PreparedStatement stmt = conn.prepareStatement(deleteQuery);
+        stmt.setString(1, customerId);
+        int rowsAffected = stmt.executeUpdate();
+
+        if (rowsAffected > 0) {
+            JOptionPane.showMessageDialog(this, "Customer deleted successfully.");
+
+            // Step 5: Remove the row from the table
+            ((DefaultTableModel) customer_table.getModel()).removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete the customer. Please try again.");
+        }
+
+        // Close resources
+        stmt.close();
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_deletecustomersActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+        // Step 1: Establish database connection
+        Database db=Database.getInstance();
+        Connection conn = db.connect(); // Adjust this to your DB connection method
+
+        // Step 2: Create SQL query to fetch review data
+        String query = "SELECT review_id, product_id, customer_username, review_text, experience FROM reviews"; 
+        PreparedStatement stmt = conn.prepareStatement(query);
+
+        // Step 3: Execute the query
+        ResultSet rs = stmt.executeQuery();
+
+        // Step 4: Populate the review_table
+        DefaultTableModel model = (DefaultTableModel) review_table.getModel();
+        model.setRowCount(0); // Clear any existing rows in the table
+
+        while (rs.next()) {
+            // Fetch review data from the database
+            String reviewId = rs.getString("review_id");
+            String productId = rs.getString("product_id");
+            String customerId = rs.getString("customer_username");
+            String reviewText = rs.getString("review_text");
+            String rating = rs.getString("experience");
+
+            // Add a new row to the table
+            model.addRow(new Object[]{reviewId, productId, customerId, reviewText, rating});
+        }
+
+        // Check if there are no reviews
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No reviews found in the database.");
+        }
+
+        // Close resources
+        rs.close();
+        stmt.close();
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -643,11 +777,11 @@ if (message != null && !message.isEmpty()) {
     private javax.swing.JLabel admin;
     private javax.swing.JTextArea adminTextArea;
     private javax.swing.JTable customer_table;
+    private javax.swing.JButton deletecustomers;
     private javax.swing.JButton deleteproducts;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
@@ -659,6 +793,8 @@ if (message != null && !message.isEmpty()) {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable review_table;
     private javax.swing.JTextField searchfield;
     private javax.swing.JButton showproducts;
     private javax.swing.JButton viewcustomer;
