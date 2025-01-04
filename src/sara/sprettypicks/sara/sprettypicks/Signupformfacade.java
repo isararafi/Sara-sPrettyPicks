@@ -253,9 +253,9 @@ button2.setIcon(smallIcon);
                                         .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(59, 59, 59)
                                         .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(emaillabel, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(passwordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(confirmpasswordlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(30, 30, 30)
                                 .addComponent(emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -542,23 +542,29 @@ if (username.isEmpty() || !username.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]
 if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
     emaillabel.setText("<html><b style='color:red;'>Invalid Email * (Please enter a valid email)</b></html>");
     validEmail = false;
+} else if (db.isDuplicateEmail(email)) { // Call a method to check for duplicate emails
+    emaillabel.setText("<html><b style='color:red;'>Email already exists *</b></html>");
+    validEmail = false;
 } else {
     emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+    validEmail = true;
 }
 
+
 if (password.isEmpty() || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
-    passwordlabel.setText("<html><b style='color:red;'>Invalid Password * (Include uppercase, lowercase, numeric, and special characters)</b></html>");
+    passwordlabel.setText("<html><b style='color:red;'>Invalid Password * (Must include uppercase, lowercase, numeric, and special characters, and be at least 8 characters long)</b></html>");
     validPassword = false;
 } else {
     passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
 
-if (confirmPassword.isEmpty() || !confirmPassword.equals(password)) {
-    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match *</b></html>");
+if (confirmPassword.isEmpty() || !confirmPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$") || !confirmPassword.equals(password)) {
+    confirmpasswordlabel.setText("<html><b style='color:red;'>Passwords do not match or do not meet the required format *</b></html>");
     validConfirmPassword = false;
 } else {
     confirmpasswordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
+
 
 // Check if all fields are valid
 if (!validFirstName || !validLastName || !validUsername || !validEmail || !validPassword || !validConfirmPassword) {

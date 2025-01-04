@@ -104,9 +104,9 @@
                                           <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                                           <Component id="button2" min="-2" pref="32" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="confirmpasswordlabel" alignment="0" min="-2" pref="346" max="-2" attributes="0"/>
                                       <Component id="emaillabel" alignment="0" min="-2" pref="511" max="-2" attributes="0"/>
                                       <Component id="passwordlabel" min="-2" pref="552" max="-2" attributes="0"/>
+                                      <Component id="confirmpasswordlabel" alignment="0" min="-2" pref="466" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">

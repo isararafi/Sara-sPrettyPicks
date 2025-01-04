@@ -1264,6 +1264,26 @@ public boolean updateProductInDatabase(int productId, double productPrice, int p
         return false; // Return false in case of an error
     }
 }
+public boolean isDuplicateEmail(String email) {
+    boolean exists = false;
+Database db=Database.getInstance();
+    String query = "SELECT COUNT(*) FROM customers WHERE email = ?"; // Adjust table/column names as needed
+    try (Connection connection = db.connect(); // Get a database connection
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        preparedStatement.setString(1, email);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            exists = resultSet.getInt(1) > 0; // If count > 0, email exists
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Log error for debugging
+    }
+
+    return exists;
+}
 
 
 }
