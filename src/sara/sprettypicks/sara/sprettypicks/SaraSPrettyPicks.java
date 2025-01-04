@@ -14,6 +14,8 @@ import java.util.logging.Logger;
  */
 public class SaraSPrettyPicks {
     //create testcases and multi threading 
+    //testcases(4)
+    //multi threading (7)
    //we got it back
     //remember to first update info then put anything in cart etc
    
