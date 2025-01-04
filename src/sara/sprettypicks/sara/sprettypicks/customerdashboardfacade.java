@@ -606,8 +606,10 @@ public class customerdashboardfacade extends javax.swing.JFrame {
 
         // Set background panel with custom styling
         JPanel contentPanel = new JPanel();
-        contentPanel.setBackground(new Color(70, 130, 180)); // Set background color (Steel Blue)
-        contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add a black border
+      contentPanel.setBackground(new Color(34, 139, 34)); // Forest Green
+
+// Set background color (Steel Blue)
+        contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Add a black border
 
         // Add a label with custom font and color
         JLabel loadingLabel = new JLabel("Loading products, please wait...", SwingConstants.CENTER);
@@ -719,7 +721,9 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     progressBar.setIndeterminate(true);  // Make the progress bar indeterminate (for tasks with unknown duration)
     progressBar.setStringPainted(true);
     progressBar.setString("Signing out...");
-
+progressBar.setForeground(new Color(70, 130, 180)); // Progress bar color (Steel Blue)
+progressBar.setBackground(new Color(230, 230, 250)); // Background color (Light Lavender)
+progressBar.setBorder(BorderFactory.createLineBorder(new Color(100, 149, 237), 2)); // Border (Cornflower Blue)
     // Add the progress bar to the panel
     progressPanel.add(progressBar, BorderLayout.CENTER);
 

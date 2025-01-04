@@ -4,9 +4,11 @@
  */
 package sara.sprettypicks;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
 
 /**
  *
@@ -40,6 +42,7 @@ public class SaraSPrettyPicks {
 // Start the server
         servermanager serverManager = new servermanager();
         serverManager.startServer();
+       
     // Then, run the login form on the EDT
     java.awt.EventQueue.invokeLater(() -> {
         new loginformfacade().setVisible(true); // Display the login form

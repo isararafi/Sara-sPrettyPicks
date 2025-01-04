@@ -4,6 +4,7 @@
  */
 package sara.sprettypicks;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -439,8 +441,10 @@ public class Admindashboardfacade extends javax.swing.JFrame {
     JProgressBar progressBar = new JProgressBar();
     progressBar.setIndeterminate(true);  // Make the progress bar indeterminate (for tasks with unknown duration)
     progressBar.setStringPainted(true);
-    progressBar.setString("Logging out...");
-
+    progressBar.setString("Signing out...");
+progressBar.setForeground(new Color(70, 130, 180)); // Progress bar color (Steel Blue)
+progressBar.setBackground(new Color(230, 230, 250)); // Background color (Light Lavender)
+progressBar.setBorder(BorderFactory.createLineBorder(new Color(100, 149, 237), 2)); // Border (Cornflower Blue)
     // Add the progress bar to the panel
     progressPanel.add(progressBar, BorderLayout.CENTER);
 

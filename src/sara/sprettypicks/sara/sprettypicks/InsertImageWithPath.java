@@ -184,39 +184,85 @@ public static JFrame createSearchableProductDisplay() {
     searchPanel.add(searchButton);
 
     // Create the cart panel
-    JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-    cartPanel.setBackground(new Color(200, 200, 240));
+//    JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+//    cartPanel.setBackground(new Color(200, 200, 240));
+//
+//    // Load and scale the cart icon
+//    //ImageIcon originalCartIcon = new ImageIcon("C:\\initialshopping\\cart.png"); // Replace with your cart icon path
+//    ImageIcon originalCartIcon = new ImageIcon("C:\\Users\\sarar\\Downloads\\grocery-store.png");
+//    Image scaledCartImage = originalCartIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Adjust size
+//    ImageIcon scaledCartIcon = new ImageIcon(scaledCartImage);
+// // Black border
+//    // Create the cart icon and label
+//    JLabel cartIcon = new JLabel(scaledCartIcon);
+//
+//    // Create a label for the cart count (number of items in cart)
+//    //JLabel cartLabel = new JLabel("0 items"); // Default text (0 items)
+//    cartLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+//
+//    // Add both the cart icon and cart label to the cart panel side by side
+//    cartPanel.add(cartIcon);
+//    cartPanel.add(cartLabel);
+//    cartIcon.addMouseListener(new java.awt.event.MouseAdapter() {
+//        @Override
+//        public void mouseClicked(java.awt.event.MouseEvent evt) {
+//            showcartitems ob = new showcartitems();
+//            ob.cart(); // Trigger the cart display
+//            updateCartItemCount(cartLabel); // Update cart count when cart icon is clicked
+//        }
+//    });
+//
+//    // Add search and cart panels to the top bar
+//    topBar.add(searchPanel, BorderLayout.CENTER);
+//    topBar.add(cartPanel, BorderLayout.EAST);
+//
+//    // Add the top bar to the frame
+//    frame.add(topBar, BorderLayout.NORTH);
 
-    // Load and scale the cart icon
-    ImageIcon originalCartIcon = new ImageIcon("C:\\initialshopping\\cart.png"); // Replace with your cart icon path
-    Image scaledCartImage = originalCartIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Adjust size
-    ImageIcon scaledCartIcon = new ImageIcon(scaledCartImage);
+//**********************************************************
+// Create a cart panel with FlowLayout
+JPanel cartPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+cartPanel.setBackground(new Color(200, 200, 240)); // Light blue background for the cart panel
 
-    // Create the cart icon and label
-    JLabel cartIcon = new JLabel(scaledCartIcon);
+// Load and scale the cart icon
+ImageIcon originalCartIcon = new ImageIcon("C:\\Users\\sarar\\Downloads\\grocery-store.png");
+Image scaledCartImage = originalCartIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Adjust size
+ImageIcon scaledCartIcon = new ImageIcon(scaledCartImage);
 
-    // Create a label for the cart count (number of items in cart)
-    //JLabel cartLabel = new JLabel("0 items"); // Default text (0 items)
-    cartLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+// Create a JButton to hold the cart icon (styled as a button)
+JButton cartButton = new JButton(scaledCartIcon);
+cartButton.setPreferredSize(new Dimension(40, 40)); // Set the size of the button
+cartButton.setBackground(new Color(186, 85, 211)); // Medium Orchid shade
 
-    // Add both the cart icon and cart label to the cart panel side by side
-    cartPanel.add(cartIcon);
-    cartPanel.add(cartLabel);
-    cartIcon.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            showcartitems ob = new showcartitems();
-            ob.cart(); // Trigger the cart display
-            updateCartItemCount(cartLabel); // Update cart count when cart icon is clicked
-        }
-    });
+cartButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Black border for the button
+cartButton.setFocusPainted(false); // Remove focus outline
+cartButton.setContentAreaFilled(true); // Enable the custom background
+cartButton.setOpaque(true); // Make the background visible
 
-    // Add search and cart panels to the top bar
-    topBar.add(searchPanel, BorderLayout.CENTER);
-    topBar.add(cartPanel, BorderLayout.EAST);
+// Add a mouse click listener for the cart button
+cartButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        showcartitems ob = new showcartitems();
+        ob.cart(); // Trigger the cart display
+        updateCartItemCount(cartLabel); // Update cart count when cart icon is clicked
+    }
+});
 
-    // Add the top bar to the frame
-    frame.add(topBar, BorderLayout.NORTH);
+// Create a label for the cart count (number of items in cart)
+cartLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+// Add the cart button and cart label to the cart panel side by side
+cartPanel.add(cartButton);
+cartPanel.add(cartLabel);
+
+// Add search and cart panels to the top bar
+topBar.add(searchPanel, BorderLayout.CENTER);
+topBar.add(cartPanel, BorderLayout.EAST);
+
+// Add the top bar to the frame
+frame.add(topBar, BorderLayout.NORTH);
+
 
     // Initialize the main panel for product display with GridLayout
     mainPanel = new JPanel(); // Initialize the mainPanel here
