@@ -12,6 +12,12 @@ import java.sql.*;
  *
  * @author sarar
  */
+import javax.swing.*;        // For JProgressBar, JOptionPane, JDialog, SwingWorker
+import java.awt.*;           // For Layouts (e.g., BorderLayout)
+import java.util.List;       // For List (to handle cart items)
+import java.util.ArrayList;  // In case you are using an ArrayList for cart items
+import java.awt.event.*;     // If you need to add any event listeners (e.g., ActionListener)
+
 import javax.swing.JOptionPane;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -23,119 +29,114 @@ public class showcartitems {
 List<CartItem> cartItems;
     // Assuming this is the method that gets called to show the cart
     public void cart() {
-    // Display a loading popup to the user before starting the background task
-    JOptionPane.showMessageDialog(null, "Loading your cart items. Please wait...");
+    // Create a progress bar
+    JProgressBar progressBar = new JProgressBar();
+    progressBar.setIndeterminate(true); // Indeterminate mode to show ongoing work
+    progressBar.setString("Loading your cart items. Please wait...");
+    progressBar.setStringPainted(true);
 
-    // Use SwingWorker to load cart items in a separate thread
+    // Create a modal dialog to display the progress bar
+    JDialog progressDialog = new JDialog((Frame) null, "Loading", true);
+    progressDialog.setLayout(new BorderLayout());
+    progressDialog.add(progressBar, BorderLayout.CENTER);
+    progressDialog.setSize(300, 100);
+    progressDialog.setLocationRelativeTo(null);
+
+    // Run the progress dialog in a separate thread
     SwingWorker<Void, Void> cartLoader = new SwingWorker<Void, Void>() {
         @Override
         protected Void doInBackground() throws Exception {
-            // Simulate loading process with a slight delay (for demonstration purposes)
-            // Normally, you will load cart items here
-            System.out.println("Thread for cart loading: " + Thread.currentThread().getName());  // Should print background thread info
-
-            // Create database instance
+            // Simulate loading process with a slight delay
             Database db = Database.getInstance();
-            String username = SessionManager.getLoggedInUserName(); // Get the logged-in user's name
+            String username = SessionManager.getLoggedInUserName();
 
-            // Fetch the cart items for the logged-in user
-            List<CartItem> cartItems = db.getCartItemsByUsername(username);  // Correct method name
+            // Fetch cart items
+            List<CartItem> cartItems = db.getCartItemsByUsername(username);
+            Thread.sleep(2000); // Simulate delay
 
-            // Simulate some delay to mimic background work
-            Thread.sleep(2000); // Simulate delay (adjust this as needed)
-
-            // Check if cartItems is null or empty
             if (cartItems == null || cartItems.isEmpty()) {
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(null, "Your cart is empty.");
                 });
-            } else {
-                // Prepare data to display
-                StringBuilder cartDetails = new StringBuilder("Cart Items for " + username + ":\n\n");
-                int itemNumber = 1;
-                double totalCartPrice = 0;  // Initialize total cart price
-
-                for (CartItem item : cartItems) {
-                    String productId = String.valueOf(item.getProductId());
-                    String productName = item.getProductName(); // Assuming this method exists in CartItem
-                    int quantity = item.getQuantity();
-                    double price = item.getPrice();
-
-                    // Calculate total price for the current item
-                    double totalPriceForItem = price * quantity;
-
-                    cartDetails.append(itemNumber++)
-                            .append(". Product ID: ").append(productId)
-                            .append(", Product Name: ").append(productName)
-                            .append(", Quantity: ").append(quantity)
-                            .append(", Price per Unit: $").append(String.format("%.2f", price))
-                            .append(", Total Price: $").append(String.format("%.2f", totalPriceForItem))
-                            .append("\n");
-
-                    totalCartPrice += totalPriceForItem; // Add to total cart price
-                }
-
-                // Show the total cart price
-                cartDetails.append("\nTotal Cart Price: $").append(String.format("%.2f", totalCartPrice)).append("\n");
-
-                cartDetails.append("\nOptions:\n1. Clear specific item\n2. Clear entire cart\n");
-
-                // Show the cart items and ask for user input on the background thread
-                SwingUtilities.invokeLater(() -> {
-                    String input = JOptionPane.showInputDialog(null, cartDetails.toString() + "\nEnter your option (1 or 2):");
-
-                    // Handle user input for clearing specific item or entire cart
-                    if (input != null) {
-                        if (input.equals("1")) {
-                            // Clear specific item
-                            String itemNumberStr = JOptionPane.showInputDialog(null, "Enter the item number to clear:");
-                            if (itemNumberStr != null) {
-                                try {
-                                    int itemNumberToClear = Integer.parseInt(itemNumberStr);
-                                    if (itemNumberToClear >= 1 && itemNumberToClear <= cartItems.size()) {
-                                        // Get the product ID for the selected item number
-                                        int productIdToRemove = cartItems.get(itemNumberToClear - 1).getProductId(); // Adjusted to get product ID directly from CartItem
-                                        db.removeItemFromCart(username, productIdToRemove); // Remove the item
-                                        JOptionPane.showMessageDialog(null, "Item removed successfully.");
-                                        ///////////////////////newwww
-                                         updateCartItemCount(cartLabel);
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "Invalid item number.");
-                                    }
-                                } catch (NumberFormatException e) {
-                                    JOptionPane.showMessageDialog(null, "Please enter a valid number.");
-                                }
-                            }
-                        } else if (input.equals("2")) {
-                            // Clear entire cart
-                            db.clearCart(username); // Clears the entire cart for this user
-                            JOptionPane.showMessageDialog(null, "Cart cleared successfully.");
-                            ////////////////////newwww
-                             updateCartItemCount(cartLabel);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Invalid option.");
-                        }
-                    }
-                });
+                return null;
             }
+
+            // Prepare cart details
+            StringBuilder cartDetails = new StringBuilder("Cart Items for " + username + ":\n\n");
+            int itemNumber = 1;
+            double totalCartPrice = 0;
+
+            for (CartItem item : cartItems) {
+                String productId = String.valueOf(item.getProductId());
+                String productName = item.getProductName();
+                int quantity = item.getQuantity();
+                double price = item.getPrice();
+                double totalPriceForItem = price * quantity;
+
+                cartDetails.append(itemNumber++)
+                        .append(". Product ID: ").append(productId)
+                        .append(", Product Name: ").append(productName)
+                        .append(", Quantity: ").append(quantity)
+                        .append(", Price per Unit: $").append(String.format("%.2f", price))
+                        .append(", Total Price: $").append(String.format("%.2f", totalPriceForItem))
+                        .append("\n");
+
+                totalCartPrice += totalPriceForItem;
+            }
+
+            cartDetails.append("\nTotal Cart Price: $").append(String.format("%.2f", totalCartPrice)).append("\n");
+            cartDetails.append("\nOptions:\n1. Clear specific item\n2. Clear entire cart\n");
+
+            SwingUtilities.invokeLater(() -> {
+                // Display cart details to the user
+                String input = JOptionPane.showInputDialog(null, cartDetails.toString() + "\nEnter your option (1 or 2):");
+
+                if (input != null) {
+                    if (input.equals("1")) {
+                        String itemNumberStr = JOptionPane.showInputDialog(null, "Enter the item number to clear:");
+                        if (itemNumberStr != null) {
+                            try {
+                                int itemNumberToClear = Integer.parseInt(itemNumberStr);
+                                if (itemNumberToClear >= 1 && itemNumberToClear <= cartItems.size()) {
+                                    int productIdToRemove = cartItems.get(itemNumberToClear - 1).getProductId();
+                                    db.removeItemFromCart(username, productIdToRemove);
+                                    JOptionPane.showMessageDialog(null, "Item removed successfully.");
+                                    updateCartItemCount(cartLabel);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Invalid item number.");
+                                }
+                            } catch (NumberFormatException e) {
+                                JOptionPane.showMessageDialog(null, "Please enter a valid number.");
+                            }
+                        }
+                    } else if (input.equals("2")) {
+                        db.clearCart(username);
+                        JOptionPane.showMessageDialog(null, "Cart cleared successfully.");
+                        updateCartItemCount(cartLabel);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid option.");
+                    }
+                }
+            });
 
             return null;
         }
 
         @Override
         protected void done() {
-            // This method will be called when the background task is complete
-            // You can add any actions you need to take after the task is finished
+            // Close the progress dialog once the task is complete
+            progressDialog.dispose();
             System.out.println("Cart loading is complete.");
         }
     };
 
-    // Execute the SwingWorker
+    // Show the progress dialog and execute the worker
+    SwingUtilities.invokeLater(() -> {
+        progressDialog.setVisible(true);
+    });
     cartLoader.execute();
+}
 
-
-    }
-    
     
     public String getOrderDetails(int orderId) {
     StringBuilder details = new StringBuilder();
