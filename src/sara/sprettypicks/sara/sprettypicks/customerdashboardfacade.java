@@ -234,7 +234,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         notificationList = new javax.swing.JList<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        signout = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         customer = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -383,8 +383,8 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         });
 
         frequentlyaskedquestions.setBackground(new java.awt.Color(153, 204, 255));
-        frequentlyaskedquestions.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
-        frequentlyaskedquestions.setText("Faqs");
+        frequentlyaskedquestions.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
+        frequentlyaskedquestions.setText("FAQs");
         frequentlyaskedquestions.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         frequentlyaskedquestions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -497,13 +497,13 @@ public class customerdashboardfacade extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 2, 24)); // NOI18N
         jLabel2.setText("Sara's Pretty Picks");
 
-        jButton1.setBackground(new java.awt.Color(255, 153, 0));
-        jButton1.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-        jButton1.setText("Sign Out");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        signout.setBackground(new java.awt.Color(255, 153, 0));
+        signout.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+        signout.setText("Sign Out");
+        signout.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        signout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                signoutActionPerformed(evt);
             }
         });
 
@@ -539,7 +539,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(accountinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(180, 180, 180)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(signout, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(94, 94, 94))
         );
         jPanel3Layout.setVerticalGroup(
@@ -557,7 +557,7 @@ public class customerdashboardfacade extends javax.swing.JFrame {
                                 .addComponent(jLabel3))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(signout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -703,14 +703,65 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     
     }//GEN-LAST:event_browseproductsActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Close the current JFrame (Log Out)
-        this.dispose();
+    private void signoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signoutActionPerformed
+        // Create a JFrame for the progress bar (or you can use a JDialog if preferred)
+    JDialog progressDialog = new JDialog();
+    progressDialog.setUndecorated(true);
+    progressDialog.setSize(300, 100);
+    progressDialog.setLocationRelativeTo(this); // Center it relative to the current window
 
-        // Open the LoginForm JFrame
-        loginformfacade loginForm = new loginformfacade(); // Assuming LoginForm is the name of your login JFrame class
-        loginForm.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    // Create a panel to hold the progress bar and label
+    JPanel progressPanel = new JPanel();
+    progressPanel.setLayout(new BorderLayout());
+
+    // Create a progress bar
+    JProgressBar progressBar = new JProgressBar();
+    progressBar.setIndeterminate(true);  // Make the progress bar indeterminate (for tasks with unknown duration)
+    progressBar.setStringPainted(true);
+    progressBar.setString("Signing out...");
+
+    // Add the progress bar to the panel
+    progressPanel.add(progressBar, BorderLayout.CENTER);
+
+    // Add the progress panel to the dialog
+    progressDialog.add(progressPanel);
+
+    // Show the progress dialog
+    SwingUtilities.invokeLater(() -> {
+        progressDialog.setVisible(true);
+    });
+
+    // Create a SwingWorker to perform the sign-out process in the background
+    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        @Override
+        protected Void doInBackground() throws Exception {
+            // Simulate some background task during sign-out (e.g., clearing session, saving data, etc.)
+            // You can add any real tasks here, such as database or network calls, if needed
+
+            Thread.sleep(2000); // Simulate a delay of 2 seconds for sign-out tasks (can be removed if no real tasks)
+
+            // Close the current JFrame (Log Out)
+            dispose();  // Dispose of the current frame
+
+            // Open the LoginForm JFrame in the background
+            loginformfacade loginForm = new loginformfacade();
+            loginForm.setVisible(true);
+
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            // After background task is done, hide the progress dialog
+            SwingUtilities.invokeLater(() -> {
+                progressDialog.dispose();
+            });
+        }
+    };
+
+    // Start the SwingWorker
+    worker.execute();
+    }//GEN-LAST:event_signoutActionPerformed
 
     private void checkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutActionPerformed
 
@@ -1488,7 +1539,6 @@ accountDialog.setVisible(true);
     private javax.swing.JButton deleteaccount;
     private javax.swing.JButton findgift;
     private javax.swing.JButton frequentlyaskedquestions;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -1507,6 +1557,7 @@ accountDialog.setVisible(true);
     private javax.swing.JList<String> notificationList;
     private javax.swing.JButton reviews;
     private javax.swing.JButton showwishlist;
+    private javax.swing.JButton signout;
     private javax.swing.JButton viewcart;
     private javax.swing.JButton vieworders;
     // End of variables declaration//GEN-END:variables

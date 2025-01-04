@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package sara.sprettypicks;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
 import java.sql.Connection;
@@ -12,9 +13,14 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -61,7 +67,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         Product_table = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        signout = new javax.swing.JButton();
         admin = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         customer_table = new javax.swing.JTable();
@@ -213,12 +219,12 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setText("Admin Dashboard");
 
-        jButton1.setBackground(new java.awt.Color(255, 153, 0));
-        jButton1.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        jButton1.setText("Sign out");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        signout.setBackground(new java.awt.Color(255, 153, 0));
+        signout.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        signout.setText("Sign out");
+        signout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                signoutActionPerformed(evt);
             }
         });
 
@@ -235,7 +241,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                 .addGap(236, 236, 236)
                 .addComponent(admin, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(412, 412, 412)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(signout, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -247,7 +253,7 @@ public class Admindashboardfacade extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                         .addComponent(admin))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(signout)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -418,11 +424,65 @@ public class Admindashboardfacade extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        loginformfacade logout=new loginformfacade();
-        logout.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void signoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signoutActionPerformed
+         // Create a JFrame for the progress bar (or use a JDialog if you prefer)
+    JDialog progressDialog = new JDialog();
+    progressDialog.setUndecorated(true);
+    progressDialog.setSize(300, 100);
+    progressDialog.setLocationRelativeTo(this); // Center it relative to the current window
+
+    // Create a panel to hold the progress bar and label
+    JPanel progressPanel = new JPanel();
+    progressPanel.setLayout(new BorderLayout());
+
+    // Create a progress bar
+    JProgressBar progressBar = new JProgressBar();
+    progressBar.setIndeterminate(true);  // Make the progress bar indeterminate (for tasks with unknown duration)
+    progressBar.setStringPainted(true);
+    progressBar.setString("Logging out...");
+
+    // Add the progress bar to the panel
+    progressPanel.add(progressBar, BorderLayout.CENTER);
+
+    // Add the progress panel to the dialog
+    progressDialog.add(progressPanel);
+
+    // Show the progress dialog
+    SwingUtilities.invokeLater(() -> {
+        progressDialog.setVisible(true);
+    });
+
+    // Create a SwingWorker to perform the sign-out process in the background
+    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        @Override
+        protected Void doInBackground() throws Exception {
+            // Simulate some background task during sign-out (e.g., clearing session, saving data, etc.)
+            // You can add any real tasks here if needed, like logging out the admin session, etc.
+
+            Thread.sleep(2000); // Simulate a delay of 2 seconds for sign-out tasks (can be removed if no real tasks)
+
+            // Open the LoginForm JFrame (simulate user sign-out)
+            loginformfacade logout = new loginformfacade();
+            logout.setVisible(true);
+
+            // Close the current JFrame (Admin dashboard)
+            dispose();
+
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            // After background task is done, hide the progress dialog
+            SwingUtilities.invokeLater(() -> {
+                progressDialog.dispose();
+            });
+        }
+    };
+
+    // Start the SwingWorker
+    worker.execute();
+    }//GEN-LAST:event_signoutActionPerformed
 
     private void viewcustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewcustomerActionPerformed
         // TODO add your handling code here:
@@ -880,7 +940,6 @@ Database db=Database.getInstance();
     private javax.swing.JTable customer_table;
     private javax.swing.JButton deletecustomers;
     private javax.swing.JButton deleteproducts;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -901,6 +960,7 @@ Database db=Database.getInstance();
     private javax.swing.JTable review_table;
     private javax.swing.JTextField searchfield;
     private javax.swing.JButton showproducts;
+    private javax.swing.JButton signout;
     private javax.swing.JButton viewcustomer;
     private javax.swing.JButton vieworders;
     // End of variables declaration//GEN-END:variables
