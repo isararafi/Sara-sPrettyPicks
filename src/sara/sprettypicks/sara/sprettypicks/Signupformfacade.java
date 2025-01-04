@@ -340,7 +340,7 @@ button2.setIcon(smallIcon);
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
 // // Database instance
-//Database db = Database.getInstance();
+Database db = Database.getInstance();
 //
 //// Clear previous messages
 //firstnamelabel.setText("<html>First Name *:</html>");
@@ -492,8 +492,6 @@ button2.setIcon(smallIcon);
 //} else {
 //    JOptionPane.showMessageDialog(this, "Please fill in all required fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
 //}
-Database db = Database.getInstance();
-
 // Clear previous messages for labels
 firstnamelabel.setText("<html>First Name *:</html>");
 lastnamelabel.setText("<html>Last Name *:</html>");
@@ -533,22 +531,23 @@ if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
     lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
 
-if (username.isEmpty()) {
-    usernamelabel.setText("<html><b style='color:red;'>Invalid Username *</b></html>");
+if (username.isEmpty() || !username.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]+$")) {
+    usernamelabel.setText("<html><b style='color:red;'>Invalid Username * (Must contain both alphabets and numbers)</b></html>");
     validUsername = false;
 } else {
     usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
 
+
 if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-    emaillabel.setText("<html><b style='color:red;'>Invalid Email *</b></html>");
+    emaillabel.setText("<html><b style='color:red;'>Invalid Email * (Please enter a valid email)</b></html>");
     validEmail = false;
 } else {
     emaillabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
 
-if (password.isEmpty()) {
-    passwordlabel.setText("<html><b style='color:red;'>Invalid Password *</b></html>");
+if (password.isEmpty() || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+    passwordlabel.setText("<html><b style='color:red;'>Invalid Password * (Include uppercase, lowercase, numeric, and special characters)</b></html>");
     validPassword = false;
 } else {
     passwordlabel.setText("<html><b style='color:green;'>Correct!</b></html>");
@@ -642,7 +641,7 @@ SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
 signupWorker.execute();
     }
 // Helper method to clear form fields
-private void clearFormFields() {
+public void clearFormFields() {
     firstnametext.setText("");
     lastnametext.setText("");
     usernametext.setText("");
