@@ -60,6 +60,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -599,91 +600,107 @@ public class customerdashboardfacade extends javax.swing.JFrame {
     }//GEN-LAST:event_viewcartActionPerformed
 
     private void browseproductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseproductsActionPerformed
-     // Create and set up the loading dialog
-    JDialog loadingDialog = new JDialog();
-    loadingDialog.setUndecorated(true); // Remove the default title bar
+      // Create and set up the loading dialog
+        JDialog loadingDialog = new JDialog();
+        loadingDialog.setUndecorated(true); // Remove the default title bar
 
-    // Set background panel with custom styling
-    JPanel contentPanel = new JPanel();
-   contentPanel.setBackground(new Color(70, 130, 180)); // Set background color (Steel Blue)
+        // Set background panel with custom styling
+        JPanel contentPanel = new JPanel();
+        contentPanel.setBackground(new Color(70, 130, 180)); // Set background color (Steel Blue)
+        contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add a black border
 
-    contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add a black border
+        // Add a label with custom font and color
+        JLabel loadingLabel = new JLabel("Loading products, please wait...", SwingConstants.CENTER);
+        loadingLabel.setForeground(Color.WHITE); // Set text color
+        loadingLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set custom font
 
-    // Add a label with custom font and color
-    JLabel loadingLabel = new JLabel("Loading products, please wait...", SwingConstants.CENTER);
-    loadingLabel.setForeground(Color.WHITE); // Set text color
-    loadingLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set custom font
+        // Load and scale the image
+        ImageIcon originalIcon = new ImageIcon("C:\\Users\\sarar\\Downloads\\loading.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        loadingLabel.setIcon(scaledIcon);
 
-    // Load and scale the image
-    ImageIcon originalIcon = new ImageIcon("C:\\Users\\sarar\\Desktop\\load.png");
-    Image scaledImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-    ImageIcon scaledIcon = new ImageIcon(scaledImage);
-    loadingLabel.setIcon(scaledIcon);
+        // Create a progress bar
+        JProgressBar progressBar = new JProgressBar(0, 100);
+        progressBar.setStringPainted(true); // Show percentage text on the progress bar
+        progressBar.setBackground(Color.WHITE); // Background color of the progress bar
+        progressBar.setForeground(Color.GREEN); // Foreground color (progress color)
 
-    // Add the label to the content panel
-    contentPanel.setLayout(new BorderLayout());
-    contentPanel.add(loadingLabel, BorderLayout.CENTER);
+        // Layout the label and progress bar in the content panel
+        contentPanel.setLayout(new BorderLayout());
+        contentPanel.add(loadingLabel, BorderLayout.NORTH);
+        contentPanel.add(progressBar, BorderLayout.SOUTH);
 
-    // Add the styled panel to the dialog
-    loadingDialog.add(contentPanel);
-    loadingDialog.setSize(350, 110); // Adjust size
-    loadingDialog.setLocationRelativeTo(null); // Center it on the screen
+        // Add the styled panel to the dialog
+        loadingDialog.add(contentPanel);
+        loadingDialog.setSize(350, 110); // Adjust size
+        loadingDialog.setLocationRelativeTo(null); // Center it on the screen
 
-    // Set it to be non-modal so it doesn't block other interactions
-    loadingDialog.setModalityType(Dialog.ModalityType.MODELESS);
+        // Set it to be non-modal so it doesn't block other interactions
+        loadingDialog.setModalityType(Dialog.ModalityType.MODELESS);
 
-    // Create a SwingWorker to load products in the background
-    SwingWorker<JFrame, Void> worker = new SwingWorker<JFrame, Void>() {
-        @Override
-        protected JFrame doInBackground() throws Exception {
-            // Add an artificial delay to simulate loading time
-            Thread.sleep(2000); // 2-second delay (you can adjust this as needed)
+        // Create a SwingWorker to load products in the background
+        SwingWorker<JFrame, Integer> worker = new SwingWorker<JFrame, Integer>() {
+            @Override
+            protected JFrame doInBackground() throws Exception {
+                // Simulate loading process and update the progress bar
+                int totalSteps = 100; // Total progress steps (100%)
+                for (int i = 0; i <= totalSteps; i++) {
+                    // Simulate a task (loading products, etc.)
+                    Thread.sleep(50); // 50ms delay for each step (adjust as needed)
 
-            // Create an instance of InsertImageWithPath
-            InsertImageWithPath productsPage = new InsertImageWithPath();
+                    // Update the progress bar in the background thread
+                    publish(i); // This will trigger process() method
+                }
 
-            // Make sure to update the cart item count
-            productsPage.showcartvalue(); // Updates the cart label with the latest item count
-
-            // Call the method to display products (fetching product data)
-            return productsPage.createSearchableProductDisplay();
-        }
-
-        @Override
-        protected void done() {
-            try {
-                // Get the product display frame from the background thread
-                JFrame browseProductsFrame = get();
-
-                // Set the close operation for the Browse Products frame
-                browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-                // Make the frame visible on the EDT (main thread)
-                SwingUtilities.invokeLater(() -> {
-                    browseProductsFrame.setVisible(true);
-                    browseProductsFrame.requestFocus(); // Ensure the frame gets focus
-                });
-
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Failed to load products: " + e.getMessage());
-            } finally {
-                // Close the loading dialog once the products are loaded
-                SwingUtilities.invokeLater(() -> {
-                    loadingDialog.dispose(); // Dispose the loading dialog after loading is complete
-                });
+                // Create an instance of InsertImageWithPath to load products
+                InsertImageWithPath productsPage = new InsertImageWithPath();
+                productsPage.showcartvalue(); // Update the cart item count
+                return productsPage.createSearchableProductDisplay(); // Display products
             }
-        }
-    };
 
-    // Show the loading dialog on EDT before executing the worker
-    SwingUtilities.invokeLater(() -> {
-        // Show the loading dialog
-        loadingDialog.setVisible(true);
-    });
+            @Override
+            protected void process(java.util.List<Integer> chunks) {
+                // Update the progress bar based on the current progress
+                int progress = chunks.get(chunks.size() - 1);
+                progressBar.setValue(progress); // Update the progress bar value
+            }
 
-    // Start the background worker to load products
-    worker.execute();
+            @Override
+            protected void done() {
+                try {
+                    // Get the product display frame from the background thread
+                    JFrame browseProductsFrame = get();
+
+                    // Set the close operation for the Browse Products frame
+                    browseProductsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                    // Make the frame visible on the EDT (main thread)
+                    SwingUtilities.invokeLater(() -> {
+                        browseProductsFrame.setVisible(true);
+                        browseProductsFrame.requestFocus(); // Ensure the frame gets focus
+                    });
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Failed to load products: " + e.getMessage());
+                } finally {
+                    // Close the loading dialog once the products are loaded
+                    SwingUtilities.invokeLater(() -> {
+                        loadingDialog.dispose(); // Dispose the loading dialog after loading is complete
+                    });
+                }
+            }
+        };
+
+        // Show the loading dialog on EDT before executing the worker
+        SwingUtilities.invokeLater(() -> {
+            // Show the loading dialog
+            loadingDialog.setVisible(true);
+        });
+
+        // Start the background worker to load products
+        worker.execute();
+    
     }//GEN-LAST:event_browseproductsActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
