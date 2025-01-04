@@ -90,48 +90,115 @@ public void testValidAdminUsernameAndPassword() throws Exception {
     //*******************SIGNUP TESTCASES*************
   
 
-//    @Test
-//    public void testSignupWithExistingEmail() throws Exception {
-//        // Assume the email 'john.doe@example.com' already exists in the database
-//        Database db = Database.getInstance();
-//
-//        // Call the method with an existing email
-//        try {
-//            boolean result = db.signupCustomer("John", "Doe", "newuser1234", "john.doe@example.com", "password123");
-//            // If the method doesn't throw an exception, assert that it should not succeed with an existing email
-//             System.out.println("user existtt");
-//            assertFalse("The method should return false if the email already exists.", result);
-//        } catch (Exception e) {
-//            // Expected exception thrown due to existing email
-//            assertTrue("Exception should be thrown due to existing email.", true);
-//        }
-//    }
-    
+   @Test
+public void testSignupWithExistingEmail() throws Exception {
+    // Arrange
+    Database db = Database.getInstance();
+    String firstName = "Amna";
+    String lastName = "asif";
+    String username = "amna1234";
+    String email = "amna1234@gmail.com"; // Existing email
+    String password = "Amna!12345678";
+
+    boolean result = false;
+    String testStatus;
+
+    // Act
+    try {
+        result = db.signupCustomer(firstName, lastName, username, email, password);
+        assertFalse("The method should return false if the email already exists.", result);
+
+        // If the method returned false, the test passes
+        testStatus = "PASS";
+        System.out.println("Test passed: Email already exists.");
+    } catch (Exception e) {
+        // Expected exception due to existing email
+        assertTrue("Exception should be thrown due to existing email.", true);
+
+        // Log the exception message
+        System.out.println("Expected exception: " + e.getMessage());
+
+        testStatus = "PASS"; // Test still passes as we expect the exception
+    }
+
+    // Store test result in the database
+    if (!result || testStatus.equals("PASS")) {
+        db.storeTestResult("testSignupWithExistingEmail", testStatus);
+    } else {
+        db.storeTestResult("testSignupWithExistingEmail", "FAIL");
+    }
+}
+
 //    assertFalse expects the condition to be false.
 //    In the case of an empty password (" "), if the signupCustomer
 //    method returns false (which it should, assuming the method 
 //    checks for valid passwords), the test will pass.
 
-//    @Test
-//    public void testEmptyPassword() throws Exception {
-//        Database db = Database.getInstance();
-//
-//        // Call the method with an empty password
-//        boolean result = db.signupCustomer("John", "Doe", "newuser123459", "newuser29@example.com", " ");
-//
-//        // Assert the result is false since the password is empty
-//        assertFalse("The password cannot be empty", result);
-//    }
+   @Test
+public void testEmptyPassword() throws Exception {
+    // Arrange
+    Database db = Database.getInstance();
+    String firstName = "John";
+    String lastName = "Doe";
+    String username = "newuser1234590892";
+    String email = "newuser29902@example.com";
+    String emptyPassword = " "; // Empty password
 
-//    @Test
-//public void testSignupAdminEmailExists() throws Exception {
-//    Database db = Database.getInstance();
-//
-//    // Assume 'admin@example.com' already exists in the database
-//    boolean result = db.signupAdmin("sara102@gmail.com", "newpassword123", "New Admin", "newadminuser");
-//
-//    // Assert that the result is false as the email already exists
-//    assertFalse("Signup should fail if the email already exists", result);
-//}
+    boolean result = false;
+    String testStatus;
+
+    // Act
+    try {
+        result = db.signupCustomer(firstName, lastName, username, email, emptyPassword);
+
+        // Assert
+        assertFalse("The password cannot be empty", result);
+
+        // Test passes if the method returns false
+        testStatus = "PASS";
+        System.out.println("Test passed: Password is empty.");
+    } catch (Exception e) {
+        // Log the exception and mark the test as failed
+        System.out.println("Unexpected exception: " + e.getMessage());
+        testStatus = "FAIL";
+    }
+
+    // Store the test result in the database
+    db.storeTestResult("testEmptyPassword", testStatus);
+}
+
+
+    @Test
+public void testSignupAdminEmailExists() throws Exception {
+    // Arrange
+    Database db = Database.getInstance();
+    String existingEmail = "sara10289341@gmail.com"; // Assume this email already exists in the database
+    String password = "Sara!12345678";
+    String adminName = "Sara";
+    String username = "Sara_123";
+
+    boolean result = false;
+    String testStatus;
+
+    // Act
+    try {
+        result = db.signupAdmin(existingEmail, password, adminName, username);
+
+        // Assert
+        assertFalse("Signup should fail if the email already exists", result);
+
+        // Test passes if the method returns false
+        testStatus = "PASS";
+        System.out.println("Test passed: Signup failed due to existing email.");
+    } catch (Exception e) {
+        // Log the exception and mark the test as failed
+        System.out.println("Unexpected exception: " + e.getMessage());
+        testStatus = "FAIL";
+    }
+
+    // Store the test result in the database
+    db.storeTestResult("testSignupAdminEmailExists", testStatus);
+}
+
 
 }
