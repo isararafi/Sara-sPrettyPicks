@@ -517,26 +517,36 @@ boolean validPassword = true;
 boolean validConfirmPassword = true;
 
 // Validate fields directly in the code
-if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+")) {
-    firstnamelabel.setText("<html><b style='color:red;'>Invalid First Name *</b></html>");
+if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+") || firstName.length() < 3) {
+    firstnamelabel.setText("<html><b style='color:red;'>Invalid First Name * (Must contain only alphabets and be at least 3 characters long)</b></html>");
     validFirstName = false;
 } else {
     firstnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
 
-if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
-    lastnamelabel.setText("<html><b style='color:red;'>Invalid Last Name *</b></html>");
+
+if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+") || lastName.length() < 3) {
+    lastnamelabel.setText("<html><b style='color:red;'>Invalid Last Name * (Must contain only alphabets and be at least 3 characters long)</b></html>");
     validLastName = false;
 } else {
     lastnamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
 }
 
-if (username.isEmpty() || !username.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]+$")) {
-    usernamelabel.setText("<html><b style='color:red;'>Invalid Username * (Must contain both alphabets and numbers)</b></html>");
+
+if (username.isEmpty() || 
+    !username.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]+$") || 
+    username.length() < 3) {
+    usernamelabel.setText("<html><b style='color:red;'>Invalid Username * (Must contain both alphabets and numbers and be at least 3 characters long)</b></html>");
+    validUsername = false;
+} else if (!db.isUsernameUnique(username)) {
+    usernamelabel.setText("<html><b style='color:red;'>Username Already Taken *</b></html>");
     validUsername = false;
 } else {
     usernamelabel.setText("<html><b style='color:green;'>Correct!</b></html>");
+    validUsername = true;
 }
+
+
 
 
 if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {

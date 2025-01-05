@@ -1285,5 +1285,37 @@ Database db=Database.getInstance();
     return exists;
 }
 
+// Method to check if the username is unique
+public boolean isUsernameUnique(String username) {
+    boolean isUnique = true;
+    try {
+        // Establish connection to the database
+        Database db=Database.getInstance();
+        Connection connection = db.connect();
+
+        // Query to check if the username exists
+        String query = "SELECT COUNT(*) FROM customers WHERE cuser_name = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, username);
+
+        // Execute the query
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            int count = resultSet.getInt(1);
+            isUnique = count == 0; // If count > 0, username is not unique
+        }
+
+        // Close resources
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle database connection or query issues
+        isUnique = false; // Assuming not unique in case of failure
+    }
+
+    return isUnique;
+}
 
 }
